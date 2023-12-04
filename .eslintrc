@@ -1,0 +1,24 @@
+{
+  "extends": "@folio/eslint-config-stripes",
+  "parser": "@babel/eslint-parser",
+  "overrides": [
+    {
+      "files": ["src/**/tests/*", "*.test.js", "test/**/*"],
+      "rules": {
+        "react/prop-types": "off",
+        "func-names": "off",
+      }
+    },
+    {
+      "files": ["*"],
+      "rules": {
+        "import/prefer-default-export": "off",
+        "react/jsx-closing-tag-location": "off"
+      }
+    }
+  ],
+  "env": {
+    "jest": true
+  },
+  "settings": {}
+}

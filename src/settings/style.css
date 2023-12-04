@@ -1,0 +1,27 @@
+@import "@folio/stripes-components/lib/variables";
+
+.lookupSearchContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lookupSearch {
+  flex-grow: 1;
+  margin-right: var(--gutter-static-two-thirds);
+  width: unset;
+}
+
+.alignRightWrapper{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.gridCheckbox {
+    margin-left: 24px;
+}
+
+.gutterTop{
+    margin-block-start: var(--gutter);
+}

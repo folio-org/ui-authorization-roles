@@ -1,0 +1,20 @@
+.checkbox-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.checkbox-with-asterisk {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkbox-with-asterisk::after {
+    content: "*";
+    position: absolute;
+    top: 0;
+    right: -10px;
+    font-size: 14px;
+}

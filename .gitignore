@@ -1,0 +1,16 @@
+.DS_Store
+*.swp
+*.swo
+artifacts
+node_modules
+.idea
+.vscode
+
+ModuleDescriptor.json
+yarn-error.log
+.npmrc
+junit.xml
+
+# stripes
+.stripesclirc
+stripes.config.local.js
