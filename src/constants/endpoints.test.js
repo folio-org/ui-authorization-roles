@@ -8,6 +8,6 @@ describe('Endpoints', () => {
   });
 
   it('test roles endpoint without search term', () => {
-    expect(ROLES_ENDPOINT()).toBe('roles?limit=1000&query=cql.allRecords=1');
+    expect(ROLES_ENDPOINT()).toBe('roles?limit=1000&query=cql.allRecords=1 sortby id');
   });
 });
