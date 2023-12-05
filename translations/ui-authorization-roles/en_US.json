@@ -34,7 +34,7 @@
   "crud.delete": "Delete",
   "form.labels.name": "Name",
   "form.labels.description": "Description",
-  "form.labels.multiplePolicies": "Multiple policies on action {{action}}",
+  "form.labels.multiplePolicies": "Multiple policies on action {action}",
   "applications.select": "Select application",
   "applications.found": "{count} applications found",
   "applications.totalSelected": "Total selected: {count}",
