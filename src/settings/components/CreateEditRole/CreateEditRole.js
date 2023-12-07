@@ -18,11 +18,10 @@ import {
 } from '@folio/stripes/components';
 import PropTypes from 'prop-types';
 
-/* Capabilities api is going to be changed and there are US to be done for capabilities
-import useCapabilities from '../../../hooks/useCapabilities';
-import { CapabilitiesSection } from '../Capabilities/CapabilitiesSection';
-import { getKeyBasedArrayGroup } from '../../utils'; */
 import css from '../../style.css';
+import { CapabilitiesSection } from '../Capabilities/CapabilitiesSection';
+import { getKeyBasedArrayGroup } from '../../utils';
+import useCapabilities from '../../../hooks/useCapabilities';
 
 const CreateEditRole = ({ refetch, selectedRole }) => {
   const ky = useOkapiKy();
@@ -33,6 +32,8 @@ const CreateEditRole = ({ refetch, selectedRole }) => {
 
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');
+
+  const { data } = useCapabilities();
 
   const defineCrudOperationTitleId = () => (selectedRole ? 'ui-authorization-roles.crud.editRole' : 'ui-authorization-roles.crud.createRole');
 
@@ -138,7 +139,10 @@ const CreateEditRole = ({ refetch, selectedRole }) => {
                   <Pluggable type="select-application" renderTrigger={props => <Button icon="plus-sign" {...props}><FormattedMessage id="ui-authorization-roles.crud.addApplication" /></Button>} />
                 }
               >
-                <></>
+                <CapabilitiesSection
+                  readOnly
+                  capabilities={getKeyBasedArrayGroup(data, 'type')}
+                />
               </Accordion>
             </AccordionSet>
           </AccordionStatus>
