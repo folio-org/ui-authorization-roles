@@ -9,7 +9,7 @@ import { renderWithIntl } from '@folio/stripes-erm-testing';
 import { MemoryRouter } from 'react-router';
 import translationsProperties from '../../../../test/helpers/translationsProperties';
 
-import { RoleDetails } from '.';
+import RoleDetails from './RoleDetails';
 import { RoleDetailsContextProvider } from './context/RoleDetailsContext';
 
 const onClose = jest.fn();
