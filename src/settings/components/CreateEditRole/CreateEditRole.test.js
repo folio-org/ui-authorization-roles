@@ -11,6 +11,18 @@ import '@testing-library/jest-dom';
 
 import CreateEditRole from './CreateEditRole';
 
+const mockPutRequest = jest.fn().mockReturnValue({ ok:true });
+const mockPostRequest = jest.fn().mockReturnValue({ ok:true });
+
+jest.mock('@folio/stripes/core', () => ({
+  ...jest.requireActual('@folio/stripes/core'),
+  useOkapiKy: () => ({
+    put: mockPutRequest,
+    post: mockPostRequest
+  }),
+  Pluggable: () => <div>Pluggable</div>
+}));
+
 function mockFunction() {
   const original = jest.requireActual('react-router-dom');
   return {
@@ -71,9 +83,10 @@ describe('SearchForm component', () => {
   });
 
   it('actions on click footer buttons', async () => {
+    const mockRefetch = jest.fn();
     const { getByTestId, getByRole } = renderWithIntl(
       <MemoryRouter>
-        <CreateEditRole refetch={jest.fn()} />
+        <CreateEditRole refetch={mockRefetch} />
       </MemoryRouter>,
       translationsProperties
     );
@@ -87,5 +100,53 @@ describe('SearchForm component', () => {
     await userEvent.type(getByTestId('rolename-input'), 'New Role');
 
     expect(submitButton).toBeEnabled();
+  });
+
+  it('should set role name and description when selectedRole is truthy', () => {
+    const mockFn = jest.fn();
+    const { getByTestId } = renderWithIntl(
+      <MemoryRouter>
+        <CreateEditRole refetch={mockFn} selectedRole={{ id: 1, name: 'Admin', description: 'Administrator role' }} />
+      </MemoryRouter>,
+      translationsProperties
+    );
+
+    const roleNameInput = getByTestId('rolename-input');
+    const descriptionInput = getByTestId('description-input');
+
+    expect(roleNameInput.value).toBe('Admin');
+    expect(descriptionInput.value).toBe('Administrator role');
+  });
+
+  it('should call ky.put with correct parameters and refetchAndGoBack when onEditRole is called with a valid role', async () => {
+    const mockRefetch = jest.fn();
+    const { getByTestId, getByRole } = renderWithIntl(
+      <MemoryRouter>
+        <CreateEditRole refetch={mockRefetch} selectedRole={{ id: 1, name: 'Admin', description: 'Administrator role' }} />
+      </MemoryRouter>,
+      translationsProperties
+    );
+
+    await userEvent.type(getByTestId('rolename-input'), 'New Role111');
+    await userEvent.click(getByRole('button', { name: 'Save and close' }));
+
+    expect(mockPutRequest).toHaveBeenCalled();
+  });
+
+  it('should call ky.put with correct parameters and refetchAndGoBack when onEditRole is called with a valid role', async () => {
+    const mockRefetch = jest.fn();
+    const { getByTestId, getByRole } = renderWithIntl(
+      <MemoryRouter>
+        <CreateEditRole refetch={mockRefetch} />
+      </MemoryRouter>,
+      translationsProperties
+    );
+
+    await userEvent.type(getByTestId('rolename-input'), 'New Role');
+    await userEvent.type(getByTestId('description-input'), 'Description');
+    await userEvent.click(getByRole('button', { name: 'Save and close' }));
+
+    expect(mockPostRequest).toHaveBeenCalledWith('roles', { json:{ name:'New Role', description: 'Description' } });
+    expect(mockRefetch).toHaveBeenCalled();
   });
 });
