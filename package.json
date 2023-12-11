@@ -17,7 +17,7 @@
     "test:jest": "jest --ci --coverage",
     "test:unit": "yarn run test:jest && yarn run test:unit:report",
     "build-mod-descriptor": "stripes mod descriptor --full --strict | jq '.[]' > module-descriptor.json ",
-    "formatjs-compile": "formatjs compile-folder --ast --format simple ./translations/ui-authorization-roles ./translations/ui-authorization-roles/compiled",
+    "formatjs-compile": "stripes translate compile",
     "test:unit:report": "cp -r ./artifacts/coverage-jest ./artifacts/coverage"
   },
   "stripes": {
@@ -61,7 +61,7 @@
     "@babel/preset-flow": "^7.18.6",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
-    "@folio/eslint-config-stripes": "^6.1.0",
+    "@folio/eslint-config-stripes": "^7.0.0",
     "@folio/handler-stripes-registry": "^1.1.1",
     "@folio/service-interaction": "^1.0.0",
     "@folio/stripes": "^9.0.0",
