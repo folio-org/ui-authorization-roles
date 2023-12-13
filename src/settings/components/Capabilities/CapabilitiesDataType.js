@@ -3,13 +3,13 @@ import { MultiColumnList, Headline } from '@folio/stripes/components';
 import { FormattedMessage } from 'react-intl';
 
 import PropTypes from 'prop-types';
-import { CheckBoxWithAsterisk } from '../../../components/CheckBoxWithAsterisk/CheckBoxWithAsterisk';
+import { CheckboxWithAsterisk } from '../../../components/CheckboxWithAsterisk/CheckboxWithAsterisk';
 import { getApplicationName } from '../../utils';
 import { capabilitiesPropType } from '../../types';
 import { columnTranslations } from '../../../constants/translations';
 import { useCheckboxAriaStates } from './helpers';
 
-const CapabilitiesDataType = ({ content, readOnly, onChangeCapabilityCheckbox }) => {
+const CapabilitiesDataType = ({ content, readOnly, onChangeCapabilityCheckbox, isCapabilitySelected }) => {
   const { getCheckBoxAriaLabel, formatMessage } = useCheckboxAriaStates();
 
   const columnMapping = {
@@ -25,24 +25,36 @@ const CapabilitiesDataType = ({ content, readOnly, onChangeCapabilityCheckbox })
     // policies: formatMessage(columnTranslations.policies)
   };
 
+  /**
+   * Renders an action checkbox for an item.
+   *
+   * @param {Object} item - The capability item object.
+   * @param {string} action - The action to render checkbox for action(e.g. 'view').
+   * @return {JSX.Element} By requirements on non-readonly mode we should hide the checkboxes on
+   * not related actions. Since every capability have only one action
+   * (e.g. {...capability, action: 'view'}),
+   * show only checkbox for that particular action.
+   * If readOnly mode we should show the checkbox for all actions.
+   */
+  const renderItemActionCheckBox = (item, action) => {
+    if (!readOnly && item.action !== action) return null;
+    return <CheckboxWithAsterisk
+      aria-describedby="asterisk-policy-desc"
+      aria-label={getCheckBoxAriaLabel(action, item.resource)}
+      onChange={event => onChangeCapabilityCheckbox?.(event, item.id)}
+      readOnly={readOnly}
+      checked={isCapabilitySelected(item.id) && action === item.action}
+    />;
+  };
+
   const resultsFormatter = {
     application: (item) => getApplicationName(item.applicationId),
     resource: (item) => item.resource,
-    view: (item) => (
-      <CheckBoxWithAsterisk onChange={event => onChangeCapabilityCheckbox(event, item.id, 'view')} aria-describedby="asterisk-policy-desc" aria-label={getCheckBoxAriaLabel('view', item.resource)} readOnly={readOnly} checked={item.actions.view} />
-    ),
-    edit: (item) => (
-      <CheckBoxWithAsterisk onChange={event => onChangeCapabilityCheckbox(event, item.id, 'edit')} aria-describedby="asterisk-policy-desc" aria-label={getCheckBoxAriaLabel('edit', item.resource)} readOnly={readOnly} checked={item.actions.edit} />
-    ),
-    create: (item) => (
-      <CheckBoxWithAsterisk onChange={event => onChangeCapabilityCheckbox(event, item.id, 'create')} aria-describedby="asterisk-policy-desc" aria-label={getCheckBoxAriaLabel('create', item.resource)} readOnly={readOnly} checked={item.actions.create} />
-    ),
-    delete: (item) => (
-      <CheckBoxWithAsterisk onChange={event => onChangeCapabilityCheckbox(event, item.id, 'delete')} aria-describedby="asterisk-policy-desc" aria-label={getCheckBoxAriaLabel('delete', item.resource)} readOnly={readOnly} checked={item.actions.delete} />
-    ),
-    manage: (item) => (
-      <CheckBoxWithAsterisk onChange={event => onChangeCapabilityCheckbox(event, item.id, 'manage')} aria-describedby="asterisk-policy-desc" aria-label={getCheckBoxAriaLabel('manage', item.resource)} readOnly={readOnly} checked={item.actions.manage} />
-    ),
+    view: (item) => renderItemActionCheckBox(item, 'view'),
+    edit: (item) => renderItemActionCheckBox(item, 'edit'),
+    create: (item) => renderItemActionCheckBox(item, 'create'),
+    delete: (item) => renderItemActionCheckBox(item, 'delete'),
+    manage: (item) => renderItemActionCheckBox(item, 'manage'),
     // policies: item => <Badge>{item.policiesCount}</Badge>
   };
 
@@ -82,6 +94,7 @@ const CapabilitiesDataType = ({ content, readOnly, onChangeCapabilityCheckbox })
 
 CapabilitiesDataType.propTypes = { content: capabilitiesPropType,
   readOnly: PropTypes.bool,
-  onChangeCapabilityCheckbox: PropTypes.func };
+  onChangeCapabilityCheckbox: PropTypes.func,
+  isCapabilitySelected: PropTypes.func };
 
 export { CapabilitiesDataType };

@@ -9,6 +9,15 @@ import translationsProperties from '../../../../test/helpers/translationsPropert
 
 import useAuthorizationRoles from '../../../hooks/useAuthorizationRoles';
 
+import useCapabilities from '../../../hooks/useCapabilities';
+import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
+
+jest.mock('../../../hooks/useCapabilities');
+jest.mock('../../../hooks/useRoleCapabilities');
+
+useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
+useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
+
 jest.mock('../RoleDetails/RoleDetails', () => () => (
   <div data-testid="mock-role-details">Role details pane</div>
 ));
@@ -25,7 +34,7 @@ jest.mock('../../../hooks/useAuthorizationRoles', () => {
 });
 
 describe('SettingsPage', () => {
-  afterEach(() => {
+  afterAll(() => {
     jest.clearAllMocks();
   });
 

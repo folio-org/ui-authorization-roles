@@ -12,6 +12,12 @@ import translationsProperties from '../../../../test/helpers/translationsPropert
 import RoleDetails from './RoleDetails';
 import { RoleDetailsContextProvider } from './context/RoleDetailsContext';
 
+import useCapabilities from '../../../hooks/useCapabilities';
+import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
+
+jest.mock('../../../hooks/useCapabilities');
+jest.mock('../../../hooks/useRoleCapabilities');
+
 const onClose = jest.fn();
 
 const getRoleData = (data) => ({
@@ -46,13 +52,6 @@ const capabilities = [{
     createdDate: '2023-07-14T15:32:15.560+00:00',
     modifiedDate: '2023-07-14T15:32:15.561+00:00',
   },
-  actions: {
-    view: false,
-    edit: false,
-    create: false,
-    delete: false,
-    manage: false,
-  },
 },
 {
   id: 'setting-capability-id',
@@ -72,13 +71,6 @@ const capabilities = [{
   metadata: {
     createdDate: '2023-07-14T15:32:15.560+00:00',
     modifiedDate: '2023-07-14T15:32:15.561+00:00',
-  },
-  actions: {
-    view: false,
-    edit: false,
-    create: false,
-    delete: false,
-    manage: false,
   },
 },
 {
@@ -100,13 +92,6 @@ const capabilities = [{
     createdDate: '2023-07-14T15:32:15.560+00:00',
     modifiedDate: '2023-07-14T15:32:15.561+00:00',
   },
-  actions: {
-    view: false,
-    edit: false,
-    create: false,
-    delete: false,
-    manage: false,
-  },
 }
 ];
 
@@ -123,9 +108,16 @@ const renderComponent = (data) => renderWithIntl(
   translationsProperties
 );
 
+useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
+useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
+
 describe('RoleDetails component', () => {
   afterEach(() => {
     cleanup();
+  });
+
+  afterAll(() => {
+    jest.clearAllMocks();
   });
 
   describe('renders roles details pane with expanded information', () => {

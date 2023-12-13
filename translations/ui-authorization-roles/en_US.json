@@ -15,7 +15,7 @@
     "details.procedural": "Procedural",
     "details.nonSinglePolicyText": "* indicates one or more policies are set for the action.",
     "columns.application": "Application",
-    "columns.resource": "Resource/Resource sets",
+    "columns.resource": "Resource",
     "columns.view": "View",
     "columns.edit": "Edit",
     "columns.create": "Create",

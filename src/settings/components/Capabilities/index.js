@@ -1,1 +1,1 @@
-export * from './Capabilities';
+export * from './RoleDetailsCapabilities';

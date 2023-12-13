@@ -17,7 +17,7 @@ import {
 
 import { useHistory, useLocation } from 'react-router';
 import css from '../../style.css';
-import { Capabilities } from '../Capabilities';
+import { RoleDetailsCapabilities } from '../Capabilities';
 import { RoleDetailsContext } from './context/RoleDetailsContext';
 
 const RoleDetails = ({ onClose }) => {
@@ -99,7 +99,7 @@ const RoleDetails = ({ onClose }) => {
               </Badge>
             }
           >
-            <Capabilities />
+            <RoleDetailsCapabilities />
           </Accordion>
           <Accordion
             label={

@@ -10,9 +10,14 @@ import translationsProperties from '../../../../test/helpers/translationsPropert
 import '@testing-library/jest-dom';
 
 import CreateEditRole from './CreateEditRole';
+import useCapabilities from '../../../hooks/useCapabilities';
+import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
 
 const mockPutRequest = jest.fn().mockReturnValue({ ok:true });
 const mockPostRequest = jest.fn().mockReturnValue({ ok:true });
+
+jest.mock('../../../hooks/useCapabilities');
+jest.mock('../../../hooks/useRoleCapabilities');
 
 jest.mock('@folio/stripes/core', () => ({
   ...jest.requireActual('@folio/stripes/core'),
@@ -47,13 +52,18 @@ jest.mock('@folio/stripes/components', () => {
   };
 });
 
-describe('SearchForm component', () => {
+describe('CreateEditRole component', () => {
   afterEach(() => {
     cleanup();
   });
 
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
 
-  it('renders SearchField and Button components', async () => {
+  it('renders TextField and Button components', async () => {
+    useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
+    useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
     const { getByTestId } = renderWithIntl(
       <MemoryRouter>
         <CreateEditRole refetch={jest.fn()} />
@@ -65,6 +75,8 @@ describe('SearchForm component', () => {
   });
 
   it('changes name, description input values', async () => {
+    useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
+    useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
     const { getByTestId } = renderWithIntl(
       <MemoryRouter>
         <CreateEditRole refetch={jest.fn()} />
@@ -84,6 +96,8 @@ describe('SearchForm component', () => {
 
   it('actions on click footer buttons', async () => {
     const mockRefetch = jest.fn();
+    useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
+    useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
     const { getByTestId, getByRole } = renderWithIntl(
       <MemoryRouter>
         <CreateEditRole refetch={mockRefetch} />
@@ -120,6 +134,8 @@ describe('SearchForm component', () => {
 
   it('should call ky.put with correct parameters and refetchAndGoBack when onEditRole is called with a valid role', async () => {
     const mockRefetch = jest.fn();
+    useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
+    useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
     const { getByTestId, getByRole } = renderWithIntl(
       <MemoryRouter>
         <CreateEditRole refetch={mockRefetch} selectedRole={{ id: 1, name: 'Admin', description: 'Administrator role' }} />
@@ -135,6 +151,8 @@ describe('SearchForm component', () => {
 
   it('should call ky.put with correct parameters and refetchAndGoBack when onEditRole is called with a valid role', async () => {
     const mockRefetch = jest.fn();
+    useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
+    useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
     const { getByTestId, getByRole } = renderWithIntl(
       <MemoryRouter>
         <CreateEditRole refetch={mockRefetch} />

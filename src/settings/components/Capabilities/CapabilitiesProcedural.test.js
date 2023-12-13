@@ -1,4 +1,7 @@
 import React from 'react';
+import { MemoryRouter } from 'react-router';
+import userEvent from '@testing-library/user-event';
+
 import {
   translationsProperties,
   renderWithIntl,
@@ -16,26 +19,43 @@ const proceduralTypeCapabilities = [
     action: 'execute',
     type: 'procedural',
     permissions: ['foo.item.post'],
-    actions: {
-      view: false,
-      edit: false,
-      create: false,
-      delete: false,
-      manage: false,
-    },
   },
 ];
 
-const renderComponent = () => renderWithIntl(
-  <CapabilitiesProcedural content={proceduralTypeCapabilities} />,
+const renderComponent = (data, onChange) => renderWithIntl(
+  <MemoryRouter>
+    <CapabilitiesProcedural content={data} isCapabilitySelected={jest.fn().mockReturnValue(true)} onChangeCapabilityCheckbox={onChange} />
+  </MemoryRouter>,
   translationsProperties
 );
 
 describe('Procedural capabilities type', () => {
-  const { getByText } = renderComponent();
-
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
   it('renders fields in the grid', () => {
+    const mockChangeHandler = jest.fn();
+    const { getByText } = renderComponent(proceduralTypeCapabilities, mockChangeHandler);
     expect(getByText('Settings source')).toBeInTheDocument();
     expect(getByText('Fees/fines')).toBeInTheDocument();
+  });
+
+  it('renders checkboxes', async () => {
+    const mockChangeHandler = jest.fn().mockReturnValue(true);
+    const { getAllByRole } = renderComponent(proceduralTypeCapabilities, mockChangeHandler);
+
+    expect(getAllByRole('checkbox')).toHaveLength(1);
+    expect(getAllByRole('checkbox')[0]).toBeChecked();
+
+    await userEvent.click(getAllByRole('checkbox')[0]);
+
+    expect(mockChangeHandler).toHaveBeenCalled();
+  });
+
+  it('renders null if action name is not execute', async () => {
+    const mockChangeHandler = jest.fn().mockReturnValue(true);
+    const { queryAllByRole } = renderComponent([{ ...proceduralTypeCapabilities[0], action: 'view' }], mockChangeHandler);
+
+    expect(queryAllByRole('checkbox')).toHaveLength(0);
   });
 });

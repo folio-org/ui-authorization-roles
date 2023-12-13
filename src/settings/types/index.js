@@ -8,10 +8,7 @@ export const capabilitiesPropType = PropTypes.arrayOf(
     resource: PropTypes.string.isRequired,
     action: PropTypes.string.isRequired,
     applicationId: PropTypes.string.isRequired,
-    permissions: PropTypes.arrayOf(PropTypes.string).isRequired,
     type: PropTypes.string.isRequired,
-    directParentIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-    allParentIds: PropTypes.arrayOf(PropTypes.string).isRequired,
     metadata: PropTypes.shape({
       createdDate: PropTypes.string.isRequired,
       modifiedDate: PropTypes.string.isRequired,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import { FormattedMessage } from 'react-intl';
 import { Pluggable, useOkapiKy } from '@folio/stripes/core';
@@ -22,6 +22,7 @@ import css from '../../style.css';
 import { CapabilitiesSection } from '../Capabilities/CapabilitiesSection';
 import { getKeyBasedArrayGroup } from '../../utils';
 import useCapabilities from '../../../hooks/useCapabilities';
+import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
 
 const CreateEditRole = ({ refetch, selectedRole }) => {
   const ky = useOkapiKy();
@@ -33,9 +34,28 @@ const CreateEditRole = ({ refetch, selectedRole }) => {
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');
 
-  const { data } = useCapabilities();
+  const { capabilitiesList } = useCapabilities();
+  const { initialRoleCapabilitiesSelectedMap, isSuccess: isRoleCapabilitiesFetched } = useRoleCapabilities(selectedRole?.id);
+  const [selectedCapabilitiesMap, setSelectedCapabilitiesMap] = useState({});
+
+  useEffect(() => {
+    if (isRoleCapabilitiesFetched && selectedRole) {
+      setSelectedCapabilitiesMap(initialRoleCapabilitiesSelectedMap);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isRoleCapabilitiesFetched, selectedRole]);
+
+  const onChangeCapabilityCheckbox = (event, id) => {
+    setSelectedCapabilitiesMap({ ...selectedCapabilitiesMap, [id]: event.target.checked });
+  };
+
+  const groupedCapabilitiesByType = useMemo(() => {
+    return getKeyBasedArrayGroup(capabilitiesList, 'type');
+  }, [capabilitiesList]);
 
   const defineCrudOperationTitleId = () => (selectedRole ? 'ui-authorization-roles.crud.editRole' : 'ui-authorization-roles.crud.createRole');
+
+  const isCapabilitySelected = (id) => selectedCapabilitiesMap[id];
 
   useEffect(() => {
     if (selectedRole) {
@@ -140,8 +160,10 @@ const CreateEditRole = ({ refetch, selectedRole }) => {
                 }
               >
                 <CapabilitiesSection
-                  readOnly
-                  capabilities={getKeyBasedArrayGroup(data, 'type')}
+                  readOnly={false}
+                  isCapabilitySelected={isCapabilitySelected}
+                  onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
+                  capabilities={groupedCapabilitiesByType}
                 />
               </Accordion>
             </AccordionSet>

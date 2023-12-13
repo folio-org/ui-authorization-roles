@@ -6,7 +6,7 @@ import { Checkbox } from '@folio/stripes/components';
 
 import css from './index.css';
 
-const CheckBoxWithAsterisk = ({ count, ...rest }) => {
+const CheckboxWithAsterisk = ({ count, ...rest }) => {
   return <div className={css['checkbox-wrapper']}>
     <Checkbox
       className={classNames({ [css['checkbox-with-asterisk']]: count && count > 1 })}
@@ -15,11 +15,11 @@ const CheckBoxWithAsterisk = ({ count, ...rest }) => {
   </div>;
 };
 
-CheckBoxWithAsterisk.propTypes = {
+CheckboxWithAsterisk.propTypes = {
   count: PropTypes.number,
   readOnly: PropTypes.bool,
   checked: PropTypes.bool,
   id: PropTypes.string
 };
 
-export { CheckBoxWithAsterisk };
+export { CheckboxWithAsterisk };

@@ -30,7 +30,7 @@ const SettingsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRow, setSelectedRow] = useState(null);
 
-  const { data: capabilitiesList } = useCapabilities();
+  const { capabilitiesList } = useCapabilities();
 
   const onRowClick = (_event, row) => setSelectedRow(row);
 
