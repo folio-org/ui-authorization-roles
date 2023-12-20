@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 
 import { MultiColumnList, Headline } from '@folio/stripes/components';
@@ -13,7 +13,8 @@ import { useCheckboxAriaStates } from './helpers';
 import css from '../../style.css';
 
 const CapabilitiesSettings = ({ content, readOnly, onChangeCapabilityCheckbox, isCapabilitySelected }) => {
-  const { getCheckBoxAriaLabel, formatMessage } = useCheckboxAriaStates();
+  const { formatMessage } = useIntl();
+  const { getCheckboxAriaLabel } = useCheckboxAriaStates();
 
   const columnMapping = {
     application: formatMessage(columnTranslations.application),
@@ -35,11 +36,11 @@ const CapabilitiesSettings = ({ content, readOnly, onChangeCapabilityCheckbox, i
    * If readOnly mode we should show the checkbox for all actions.
    */
 
-  const renderItemActionCheckBox = (item, action) => {
+  const renderItemActionCheckbox = (item, action) => {
     if (!readOnly && item.action !== action) return null;
     return <CheckboxWithAsterisk
       aria-describedby="asterisk-policy-desc"
-      aria-label={getCheckBoxAriaLabel(action, item.resource)}
+      aria-label={getCheckboxAriaLabel(action, item.resource)}
       onChange={event => onChangeCapabilityCheckbox?.(event, item.id)}
       readOnly={readOnly}
       checked={isCapabilitySelected(item.id) && action === item.action}
@@ -49,9 +50,9 @@ const CapabilitiesSettings = ({ content, readOnly, onChangeCapabilityCheckbox, i
   const resultsFormatter = {
     application: item => getApplicationName(item.applicationId),
     resource: item => item.resource,
-    view: item => renderItemActionCheckBox(item, 'view'),
-    edit: item => renderItemActionCheckBox(item, 'edit'),
-    manage: item => renderItemActionCheckBox(item, 'manage'),
+    view: item => renderItemActionCheckbox(item, 'view'),
+    edit: item => renderItemActionCheckbox(item, 'edit'),
+    manage: item => renderItemActionCheckbox(item, 'manage'),
     // policies: (item) => <Badge>{item.policiesCount}</Badge>
   };
 

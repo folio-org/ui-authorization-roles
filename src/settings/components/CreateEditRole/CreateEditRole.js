@@ -42,6 +42,7 @@ const CreateEditRole = ({ refetch, selectedRole }) => {
     if (isRoleCapabilitiesFetched && selectedRole) {
       setSelectedCapabilitiesMap(initialRoleCapabilitiesSelectedMap);
     }
+    /* isRoleCapabilitiesFetched is enough to know if initialCapabilitiesSelectedMap fetched and can be settled safely to local state */
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRoleCapabilitiesFetched, selectedRole]);
 

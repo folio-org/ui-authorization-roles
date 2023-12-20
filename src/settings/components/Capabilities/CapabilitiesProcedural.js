@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { MultiColumnList, Headline } from '@folio/stripes/components';
 import { getApplicationName } from '../../utils';
@@ -12,7 +12,8 @@ import { useCheckboxAriaStates } from './helpers';
 import css from '../../style.css';
 
 const CapabilitiesProcedural = ({ content, readOnly, onChangeCapabilityCheckbox, isCapabilitySelected }) => {
-  const { getCheckBoxAriaLabel, formatMessage } = useCheckboxAriaStates();
+  const { formatMessage } = useIntl();
+  const { getCheckboxAriaLabel } = useCheckboxAriaStates();
 
   const columnMapping = {
     application: formatMessage(columnTranslations.application),
@@ -28,7 +29,7 @@ const CapabilitiesProcedural = ({ content, readOnly, onChangeCapabilityCheckbox,
       if (!readOnly && item.action !== 'execute') return null;
       return <CheckboxWithAsterisk
         aria-describedby="asterisk-policy-desc"
-        aria-label={getCheckBoxAriaLabel('execute', item.resource)}
+        aria-label={getCheckboxAriaLabel('execute', item.resource)}
         onChange={event => onChangeCapabilityCheckbox?.(event, item.id)}
         readOnly={readOnly}
         checked={isCapabilitySelected(item.id) && item.action === 'execute'}

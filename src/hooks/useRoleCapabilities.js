@@ -7,9 +7,11 @@ const useRoleCapabilities = (roleId) => {
   const ky = useOkapiKy();
 
   const { data, isSuccess } = useQuery(['capabilities', roleId],
-    () => ky.get(`roles/${roleId}/capabilities`).json());
-
-  if (!roleId) return {};
+    () => ky.get(`roles/${roleId}/capabilities`).json(), { enabled: !!roleId,
+      initialData: {
+        capabilities: [],
+        totalRecords: 0
+      } });
 
   const initialRoleCapabilitiesSelectedMap = data?.capabilities.reduce((acc, capability) => {
     acc[capability.id] = true;
