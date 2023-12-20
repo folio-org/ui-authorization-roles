@@ -42,6 +42,13 @@ const CreateEditRole = ({ refetch, selectedRole }) => {
     if (isRoleCapabilitiesFetched && selectedRole) {
       setSelectedCapabilitiesMap(initialRoleCapabilitiesSelectedMap);
     }
+    /* if we add initialRoleCapabilitiesSelectedMap in deps it is running forever,
+    * With the next PR CreateRole and EditRole components is going to be separated,
+    * and it will fix this issue. In useRoleCapabilities we can't return memoized value,
+    * because it raises another eslint warning, that hooks should not be unreachable.()
+    * e.g. if(!role.id) return;
+    * return useMemo(()=>initialRoleCapabilitiesSelectedMap, [initialRoleCapabilitiesSelectedMap])
+    * */
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRoleCapabilitiesFetched, selectedRole]);
 
