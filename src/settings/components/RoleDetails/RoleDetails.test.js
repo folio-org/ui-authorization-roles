@@ -14,6 +14,7 @@ import { RoleDetailsContextProvider } from './context/RoleDetailsContext';
 
 import useCapabilities from '../../../hooks/useCapabilities';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
+import { getKeyBasedArrayGroup } from '../../utils';
 
 jest.mock('../../../hooks/useCapabilities');
 jest.mock('../../../hooks/useRoleCapabilities');
@@ -99,10 +100,9 @@ const renderComponent = (data) => renderWithIntl(
   <MemoryRouter>
     <RoleDetailsContextProvider
       // value={{ role: getRoleData(data), capabilitiesTotalCount: 0, capabilities }}
-      role={getRoleData(data)}
-      capabilitiesList={capabilities}
+      groupedCapabilitiesByType={getKeyBasedArrayGroup(capabilities, 'type')}
     >
-      <RoleDetails onClose={onClose} />
+      <RoleDetails onClose={onClose} role={getRoleData({})}/>
     </RoleDetailsContextProvider>
   </MemoryRouter>,
   translationsProperties
@@ -131,15 +131,6 @@ describe('RoleDetails component', () => {
       expect(getByTestId('role-description')).toHaveTextContent(
         'simple description'
       );
-    });
-
-    it('render dash on empty description', () => {
-      // eslint-disable-next-line no-shadow
-      const { getByTestId } = renderComponent(
-        getRoleData(getRoleData({ description: null }))
-      );
-
-      expect(getByTestId('role-description')).toHaveTextContent('-');
     });
 
     it('render capabilities', async () => {

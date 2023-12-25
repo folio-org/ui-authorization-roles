@@ -2,24 +2,17 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 import { RoleDetailsContext } from './RoleDetailsContext';
-import { getKeyBasedArrayGroup } from '../../../../utils';
-import { capabilitiesPropType } from '../../../../types';
-import useRoleCapabilities from '../../../../../hooks/useRoleCapabilities';
 
-const RoleDetailsContextProvider = ({ role, capabilitiesList, children }) => {
-  const { initialRoleCapabilitiesSelectedMap, capabilitiesTotalCount } = useRoleCapabilities(role?.id);
+
+const RoleDetailsContextProvider = ({ children, groupedCapabilitiesByType }) => {
   return <RoleDetailsContext.Provider
-    value={{ role,
-      capabilitiesTotalCount,
-      capabilities:  getKeyBasedArrayGroup(capabilitiesList, 'type'),
-      initialRoleCapabilitiesSelectedMap }}
+    value={{ groupedCapabilitiesByType }}
   >
     {children}
   </RoleDetailsContext.Provider>;
 };
 
-RoleDetailsContextProvider.propTypes = { role: PropTypes.object.isRequired,
-  capabilitiesList: capabilitiesPropType,
-  children: PropTypes.node.isRequired };
+RoleDetailsContextProvider.propTypes = { groupedCapabilitiesByType: PropTypes.object.isRequired,
+  children: PropTypes.node };
 
 export { RoleDetailsContextProvider };

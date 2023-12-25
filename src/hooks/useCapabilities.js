@@ -1,21 +1,32 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 
-import { useNamespace, useOkapiKy, useStripes } from '@folio/stripes/core';
+import { useOkapiKy, useStripes } from '@folio/stripes/core';
+import { getKeyBasedArrayGroup } from '../settings/utils';
 
 const useCapabilities = () => {
   const ky = useOkapiKy();
   const stripes = useStripes();
 
-  const [nameSpace] = useNamespace({ key: 'capabilities-list' });
-
   const { data, isSuccess } = useQuery(
-    [nameSpace],
+    'capabilities-list',
     () => ky.get(`capabilities?limit=${stripes.config.maxUnpagedResourceCount}&query=cql.allRecords=1 sortby resource`).json(),
-    { enabled: true }
+    {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
   );
 
-  return { capabilitiesList: data?.capabilities || [],
+  const memoizedCapabilitiesList = useMemo(() => {
+    return data?.capabilities || [];
+  }, [data]);
+
+  const groupedCapabilitiesByType = useMemo(()=>{
+    return getKeyBasedArrayGroup(data?.capabilities || [], 'type');
+  }, [data]);
+
+  return { capabilitiesList: memoizedCapabilitiesList || [],
+    groupedCapabilitiesByType,
     isSuccess };
 };
 

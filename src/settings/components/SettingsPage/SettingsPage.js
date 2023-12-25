@@ -20,6 +20,7 @@ import { SearchForm } from '../SearchForm';
 import { RoleDetails } from '../RoleDetails';
 import { RoleDetailsContextProvider } from '../RoleDetails/context/RoleDetailsContext';
 import { CreateEditRole } from '../CreateEditRole';
+import CreateRole from '../CreateEditRole/CreateRole';
 
 const SettingsPage = () => {
   const history = useHistory();
@@ -30,7 +31,7 @@ const SettingsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRow, setSelectedRow] = useState(null);
 
-  const { capabilitiesList } = useCapabilities();
+  const { groupedCapabilitiesByType } = useCapabilities();
 
   const onRowClick = (_event, row) => setSelectedRow(row);
 
@@ -60,7 +61,7 @@ const SettingsPage = () => {
   };
 
   if (queryParams.get('layout') === 'add') {
-    return <CreateEditRole refetch={refetch} />;
+    return <CreateRole />;
   }
 
   if (queryParams.get('layout') === 'edit' && queryParams.get('id') === selectedRow?.id) {
@@ -107,12 +108,11 @@ const SettingsPage = () => {
           onRowClick={onRowClick}
         />
       </Pane>
-
-      {selectedRow && (
-        <RoleDetailsContextProvider capabilitiesList={capabilitiesList} role={selectedRow}>
-          <RoleDetails onClose={() => setSelectedRow(null)} />
-        </RoleDetailsContextProvider>
-      )}
+      <RoleDetailsContextProvider
+        groupedCapabilitiesByType={groupedCapabilitiesByType}
+      >
+        {selectedRow && <RoleDetails role={selectedRow} onClose={() => setSelectedRow(null)} />}
+      </RoleDetailsContextProvider>
     </Paneset>
   );
 };

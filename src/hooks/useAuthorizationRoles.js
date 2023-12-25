@@ -1,18 +1,19 @@
 import { useQuery } from 'react-query';
 
-import { useNamespace, useOkapiKy } from '@folio/stripes/core';
+import { useOkapiKy } from '@folio/stripes/core';
 
 import { ROLES_ENDPOINT } from '../constants/endpoints';
 
-const useAuthorizationRoles = ({ searchTerm, options }) => {
+const useAuthorizationRoles = ({ searchTerm = '', options }) => {
   const ky = useOkapiKy();
 
-  const [nameSpace] = useNamespace({ key: 'ui-authorization-roles' });
-
   const { data, isLoading, refetch } = useQuery(
-    [nameSpace],
+    'ui-authorization-roles',
     () => ky.get(ROLES_ENDPOINT(searchTerm)).json(),
-    { enabled: true, ...options }
+    { enabled: true,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      ...options }
   );
 
   return {

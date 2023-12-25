@@ -17,10 +17,11 @@ import {
 
 import { useHistory, useLocation } from 'react-router';
 import css from '../../style.css';
-import { RoleDetailsCapabilities } from '../Capabilities';
 import { RoleDetailsContext } from './context/RoleDetailsContext';
+import { CapabilitiesSection } from '../Capabilities/CapabilitiesSection';
+import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
 
-const RoleDetails = ({ onClose }) => {
+const RoleDetails = ({ onClose, role }) => {
   const history = useHistory();
   const { pathname } = useLocation();
 
@@ -29,7 +30,10 @@ const RoleDetails = ({ onClose }) => {
    const ConnectedUserName = connect(UserName);
   */
 
-  const { capabilitiesTotalCount, role } = useContext(RoleDetailsContext);
+  const { groupedCapabilitiesByType } = useContext(RoleDetailsContext);
+  const { capabilitiesTotalCount, initialRoleCapabilitiesSelectedMap } = useRoleCapabilities(role.id);
+
+  const isCapabilitySelected = (capabilityId) => !!initialRoleCapabilitiesSelectedMap[capabilityId];
 
   const getActionMenu = () => (
     <>
@@ -99,7 +103,7 @@ const RoleDetails = ({ onClose }) => {
               </Badge>
             }
           >
-            <RoleDetailsCapabilities />
+            <CapabilitiesSection isCapabilitySelected={isCapabilitySelected} capabilities={groupedCapabilitiesByType} readOnly />
           </Accordion>
           <Accordion
             label={
@@ -122,6 +126,7 @@ const RoleDetails = ({ onClose }) => {
 
 RoleDetails.propTypes = {
   onClose: PropTypes.func.isRequired,
+  role: PropTypes.object.isRequired
 };
 
 export default RoleDetails;
