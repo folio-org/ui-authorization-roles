@@ -1,9 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useLocation } from 'react-router';
-import { useMutation, useQueryClient } from 'react-query';
-
-import { useOkapiKy } from '@folio/stripes/core';
 
 import useCapabilities from '../../../hooks/useCapabilities';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
@@ -11,10 +8,9 @@ import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
 import CreateEditRoleForm from './CreateEditRoleForm';
 
 import { getKeyBasedArrayGroup } from '../../utils';
+import { useEditRoleMutation } from '../../../hooks/useEditRoleMutation';
 
 const EditRole = ({ selectedRole }) => {
-  const ky = useOkapiKy();
-
   const history = useHistory();
   const { pathname } = useLocation();
 
@@ -52,19 +48,12 @@ const EditRole = ({ selectedRole }) => {
 
   const goBack = () => history.push(pathname);
 
-  const queryClient = useQueryClient();
-
-  const { mutate, isLoading } = useMutation({
-    mutationFn: (roleId) => ky.put(`roles/${roleId}`, { json: { name:roleName, description } }).json(),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries('ui-authorization-roles');
-      goBack();
-    }
-  });
+  const { mutateAsync, isLoading } = useEditRoleMutation({ name: roleName, description });
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    mutate(selectedRole.id);
+    await mutateAsync(selectedRole.id);
+    goBack();
   };
 
   return <CreateEditRoleForm

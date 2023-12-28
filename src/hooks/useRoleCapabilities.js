@@ -14,16 +14,14 @@ const useRoleCapabilities = (roleId) => {
       },
       refetchOnWindowFocus: false });
 
-  const initialRoleCapabilitiesSelectedMap = data?.capabilities.reduce((acc, capability) => {
-    acc[capability.id] = true;
-    return acc;
-  }, {}) || {};
+  const initialRoleCapabilitiesSelectedMap = useMemo(() => {
+    return data?.capabilities.reduce((acc, capability) => {
+      acc[capability.id] = true;
+      return acc;
+    }, {}) || {};
+  }, [data]);
 
-  const memoized = useMemo(() => {
-    return initialRoleCapabilitiesSelectedMap;
-  }, [initialRoleCapabilitiesSelectedMap]);
-
-  return { initialRoleCapabilitiesSelectedMap: memoized, isSuccess, capabilitiesTotalCount: data?.totalRecords || 0 };
+  return { initialRoleCapabilitiesSelectedMap, isSuccess, capabilitiesTotalCount: data?.totalRecords || 0 };
 };
 
 export default useRoleCapabilities;

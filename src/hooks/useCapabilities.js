@@ -21,7 +21,7 @@ const useCapabilities = () => {
     return data?.capabilities || [];
   }, [data]);
 
-  const groupedCapabilitiesByType = useMemo(()=>{
+  const groupedCapabilitiesByType = useMemo(() => {
     return getKeyBasedArrayGroup(data?.capabilities || [], 'type');
   }, [data]);
 

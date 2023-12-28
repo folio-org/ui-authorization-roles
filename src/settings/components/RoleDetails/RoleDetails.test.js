@@ -96,13 +96,12 @@ const capabilities = [{
 }
 ];
 
-const renderComponent = (data) => renderWithIntl(
+const renderComponent = () => renderWithIntl(
   <MemoryRouter>
     <RoleDetailsContextProvider
-      // value={{ role: getRoleData(data), capabilitiesTotalCount: 0, capabilities }}
       groupedCapabilitiesByType={getKeyBasedArrayGroup(capabilities, 'type')}
     >
-      <RoleDetails onClose={onClose} role={getRoleData({})}/>
+      <RoleDetails onClose={onClose} role={getRoleData({})} />
     </RoleDetailsContextProvider>
   </MemoryRouter>,
   translationsProperties

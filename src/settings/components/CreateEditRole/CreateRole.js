@@ -1,17 +1,12 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 
-import { useOkapiKy } from '@folio/stripes/core';
-
-import { useMutation, useQueryClient } from 'react-query';
 import { getKeyBasedArrayGroup } from '../../utils';
 import useCapabilities from '../../../hooks/useCapabilities';
 import CreateEditRoleForm from './CreateEditRoleForm';
+import { useCreateRoleMutation } from '../../../hooks/useCreateRoleMutation';
 
 const CreateRole = () => {
-  const ky = useOkapiKy();
-  const queryClient = useQueryClient();
-
   const history = useHistory();
   const { pathname } = useLocation();
 
@@ -29,34 +24,27 @@ const CreateRole = () => {
     return getKeyBasedArrayGroup(capabilitiesList, 'type');
   }, [capabilitiesList]);
 
-  const isCapabilitySelected = (id) => selectedCapabilitiesMap[id];
+  const isCapabilitySelected = (id) => !!selectedCapabilitiesMap[id];
 
   const roleCapabilitiesListIds = useMemo(() => {
     return Object.entries(selectedCapabilitiesMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
   }, [selectedCapabilitiesMap]);
 
-  const goBack = () => history.push(pathname);
+  const { mutateRole, isLoading } = useCreateRoleMutation(roleCapabilitiesListIds);
 
-  const mutation = useMutation({
-    mutationFn: (newRole) => ky.post('roles', { json: newRole }).json(),
-    onSuccess: async (newRole) => {
-      await queryClient.invalidateQueries('ui-authorization-roles');
-      if (roleCapabilitiesListIds.length > 0) {
-        await ky.post('roles/capabilities', { json: { roleId:newRole.id, capabilityIds: roleCapabilitiesListIds } }).json();
-      }
-      goBack();
-    }
-  });
+  const goBack = () => history.push(pathname);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    mutation.mutate({ name:roleName, description });
+    await mutateRole({ name:roleName, description });
+    goBack();
   };
 
   return <CreateEditRoleForm
     title="ui-authorization-roles.crud.createRole"
     roleName={roleName}
     description={description}
+    isLoading={isLoading}
     capabilities={groupedCapabilitiesByType}
     isCapabilitySelected={isCapabilitySelected}
     setRoleName={setRoleName}
