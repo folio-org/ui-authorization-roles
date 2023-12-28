@@ -114,4 +114,32 @@ describe('SettingsPage', () => {
     await userEvent.click(getAllByRole('gridcell')[0]);
     expect(queryByTestId('mock-role-details')).toBeInTheDocument();
   });
+
+  it('refetch after on search', async () => {
+    const mockRefetch = jest.fn();
+    useAuthorizationRoles.mockImplementation(() => ({
+      roles: [
+        {
+          id: 'id',
+          name: 'Test Role',
+          description: 'Test role description',
+          metadata: {},
+        },
+      ],
+      refetch: mockRefetch
+    }));
+    const { queryByTestId, getByRole } = renderWithIntl(
+      <MemoryRouter>
+        <SettingsPage />
+      </MemoryRouter>,
+      translationsProperties
+    );
+
+    const inputElement = queryByTestId('search-field');
+
+    await userEvent.type(inputElement, 'Test');
+    await userEvent.click(getByRole('button', { name: 'Search' }));
+
+    expect(mockRefetch).toHaveBeenCalled();
+  });
 });
