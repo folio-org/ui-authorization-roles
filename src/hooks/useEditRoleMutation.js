@@ -7,11 +7,9 @@ export const useEditRoleMutation = ({ id, name, description }, roleCapabilitiesL
   const { mutateAsync, isLoading } = useMutation({
     mutationFn: () => ky.put(`roles/${id}`, { json: { name, description } }).json(),
     onSuccess: async () => {
+      await ky.put(`roles/${id}/capabilities`, { json: { capabilityIds: roleCapabilitiesListIds } }).json();
       await queryClient.invalidateQueries('ui-authorization-roles');
       await queryClient.invalidateQueries(['role-data', id]);
-      if (roleCapabilitiesListIds.length > 0) {
-        await ky.post('roles/capabilities', { json: { roleId: id, capabilityIds: roleCapabilitiesListIds } }).json();
-      }
     }
   });
   return { mutateRole: mutateAsync, isLoading };
