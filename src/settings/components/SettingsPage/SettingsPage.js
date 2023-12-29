@@ -19,7 +19,7 @@ import useAuthorizationRoles from '../../../hooks/useAuthorizationRoles';
 import { SearchForm } from '../SearchForm';
 import { RoleDetails } from '../RoleDetails';
 import { RoleDetailsContextProvider } from '../RoleDetails/context/RoleDetailsContext';
-import { CreateEditRole } from '../CreateEditRole';
+import EditRole from '../CreateEditRole/EditRole';
 import CreateRole from '../CreateEditRole/CreateRole';
 
 const SettingsPage = () => {
@@ -65,7 +65,7 @@ const SettingsPage = () => {
   }
 
   if (queryParams.get('layout') === 'edit' && queryParams.get('id') === selectedRow?.id) {
-    return <CreateEditRole refetch={refetch} selectedRole={selectedRow} />;
+    return <EditRole roleId={selectedRow.id} />;
   }
 
   return (
@@ -111,7 +111,7 @@ const SettingsPage = () => {
       <RoleDetailsContextProvider
         groupedCapabilitiesByType={groupedCapabilitiesByType}
       >
-        {selectedRow && <RoleDetails role={selectedRow} onClose={() => setSelectedRow(null)} />}
+        {selectedRow && <RoleDetails roleId={selectedRow.id} onClose={() => setSelectedRow(null)} />}
       </RoleDetailsContextProvider>
     </Paneset>
   );

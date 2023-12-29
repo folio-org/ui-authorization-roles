@@ -20,10 +20,13 @@ import css from '../../style.css';
 import { RoleDetailsContext } from './context/RoleDetailsContext';
 import { CapabilitiesSection } from '../Capabilities/CapabilitiesSection';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
+import useRoleById from '../../../hooks/useRoleById';
 
-const RoleDetails = ({ onClose, role }) => {
+const RoleDetails = ({ onClose, roleId }) => {
   const history = useHistory();
   const { pathname } = useLocation();
+
+  const { roleDetails: role } = useRoleById(roleId);
 
   /*
     Use ConnectedUserName for updatedBy and createdBy fields after Poppy release
@@ -31,13 +34,13 @@ const RoleDetails = ({ onClose, role }) => {
   */
 
   const { groupedCapabilitiesByType } = useContext(RoleDetailsContext);
-  const { capabilitiesTotalCount, initialRoleCapabilitiesSelectedMap } = useRoleCapabilities(role.id);
+  const { capabilitiesTotalCount, initialRoleCapabilitiesSelectedMap } = useRoleCapabilities(roleId);
 
   const isCapabilitySelected = (capabilityId) => !!initialRoleCapabilitiesSelectedMap[capabilityId];
 
   const getActionMenu = () => (
     <>
-      <Button buttonStyle="dropdownItem" onClick={() => history.push(`${pathname}?layout=edit&id=${role.id}`)}>
+      <Button buttonStyle="dropdownItem" onClick={() => history.push(`${pathname}?layout=edit&id=${roleId}`)}>
         <Icon icon="edit">
           <FormattedMessage id="ui-authorization-roles.crud.edit" />
         </Icon>
@@ -53,7 +56,7 @@ const RoleDetails = ({ onClose, role }) => {
   return (
     <Pane
       defaultWidth="80%"
-      paneTitle={role.name}
+      paneTitle={role?.name}
       onClose={onClose}
       dismissible
       actionMenu={getActionMenu}
@@ -72,19 +75,19 @@ const RoleDetails = ({ onClose, role }) => {
               id="roleMetadataId"
               contentId="roleMetadata"
               headingLevel={4}
-              createdDate={role.metadata?.createdDate}
-              lastUpdatedDate={role.metadata?.modifiedDate}
+              createdDate={role?.metadata?.createdDate}
+              lastUpdatedDate={role?.metadata?.modifiedDate}
               lastUpdatedBy={
-                role.metadata?.modifiedBy || ''
+                role?.metadata?.modifiedBy || ''
               }
-              createdBy={role.metadata?.createdBy || ''}
+              createdBy={role?.metadata?.createdBy || ''}
             />
             <KeyValue
               data-testid="role-name"
               label={
                 <FormattedMessage id="ui-authorization-roles.columns.name" />
               }
-              value={role.name}
+              value={role?.name}
             />
             <KeyValue
               data-testid="role-description"
@@ -126,7 +129,7 @@ const RoleDetails = ({ onClose, role }) => {
 
 RoleDetails.propTypes = {
   onClose: PropTypes.func.isRequired,
-  role: PropTypes.object.isRequired
+  roleId: PropTypes.string.isRequired
 };
 
 export default RoleDetails;

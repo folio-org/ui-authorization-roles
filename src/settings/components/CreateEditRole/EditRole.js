@@ -9,25 +9,27 @@ import CreateEditRoleForm from './CreateEditRoleForm';
 
 import { getKeyBasedArrayGroup } from '../../utils';
 import { useEditRoleMutation } from '../../../hooks/useEditRoleMutation';
+import useRoleById from '../../../hooks/useRoleById';
 
-const EditRole = ({ selectedRole }) => {
+const EditRole = ({ roleId }) => {
   const history = useHistory();
   const { pathname } = useLocation();
+  const { roleDetails, isRoleDetailsLoaded } = useRoleById(roleId);
 
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');
 
   const { capabilitiesList } = useCapabilities();
-  const { initialRoleCapabilitiesSelectedMap, isSuccess: isRoleCapabilitiesFetched } = useRoleCapabilities(selectedRole?.id);
+  const { initialRoleCapabilitiesSelectedMap, isSuccess: isRoleCapabilitiesFetched } = useRoleCapabilities(roleId);
   const [selectedCapabilitiesMap, setSelectedCapabilitiesMap] = useState({});
 
   useEffect(() => {
     if (isRoleCapabilitiesFetched) {
       setSelectedCapabilitiesMap(initialRoleCapabilitiesSelectedMap);
     }
-    /* if add initialRoleCapabilitiesSelectedMap in deps re-renders happens running forever, */
+    /* isRoleCapabilitiesFetched is enough to know if initialCapabilitiesSelectedMap fetched and can be settled safely to local state */
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isRoleCapabilitiesFetched, selectedRole]);
+  }, [isRoleCapabilitiesFetched, roleId]);
 
   const onChangeCapabilityCheckbox = (event, id) => {
     setSelectedCapabilitiesMap({ ...selectedCapabilitiesMap, [id]: event.target.checked });
@@ -40,19 +42,23 @@ const EditRole = ({ selectedRole }) => {
   const isCapabilitySelected = (id) => !!selectedCapabilitiesMap[id];
 
   useEffect(() => {
-    if (selectedRole) {
-      setRoleName(selectedRole.name);
-      setDescription(selectedRole.description);
+    if (isRoleDetailsLoaded && roleDetails) {
+      setRoleName(roleDetails.name);
+      setDescription(roleDetails.description);
     }
-  }, [selectedRole]);
+  }, [isRoleDetailsLoaded, roleDetails]);
 
   const goBack = () => history.push(pathname);
 
-  const { mutateAsync, isLoading } = useEditRoleMutation({ name: roleName, description });
+  const roleCapabilitiesListIds = useMemo(() => {
+    return Object.entries(selectedCapabilitiesMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
+  }, [selectedCapabilitiesMap]);
+
+  const { mutateRole, isLoading } = useEditRoleMutation({ id: roleId, name: roleName, description }, roleCapabilitiesListIds);
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    await mutateAsync(selectedRole.id);
+    await mutateRole();
     goBack();
   };
 
@@ -72,7 +78,7 @@ const EditRole = ({ selectedRole }) => {
 };
 
 EditRole.propTypes = {
-  selectedRole: PropTypes.object
+  roleId: PropTypes.string
 };
 
 export default EditRole;

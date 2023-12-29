@@ -75,7 +75,7 @@ describe('EditRole component', () => {
   });
 
   beforeEach(() => {
-    useEditRoleMutation.mockReturnValue({ mutateAsync: mockMutateRole, isLoading: false });
+    useEditRoleMutation.mockReturnValue({ mutateRole: mockMutateRole, isLoading: false });
     useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
     useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
   });

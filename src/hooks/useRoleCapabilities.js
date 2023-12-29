@@ -9,7 +9,7 @@ const useRoleCapabilities = (roleId) => {
   const { data, isSuccess } = useQuery(['capabilities', roleId],
     () => ky.get(`roles/${roleId}/capabilities`).json(),
     { enabled: !!roleId,
-      initialData: {
+      placeholderData: {
         capabilities: [], totalRecords: 0
       },
       refetchOnWindowFocus: false });
