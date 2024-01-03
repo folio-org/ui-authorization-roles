@@ -116,7 +116,7 @@ describe('SettingsPage', () => {
   });
 
   it('refetch after on search', async () => {
-    const mockRefetch = jest.fn();
+    const mockFilterRoles = jest.fn();
     useAuthorizationRoles.mockImplementation(() => ({
       roles: [
         {
@@ -126,7 +126,7 @@ describe('SettingsPage', () => {
           metadata: {},
         },
       ],
-      refetch: mockRefetch
+      filterRoles: mockFilterRoles
     }));
     const { queryByTestId, getByRole } = renderWithIntl(
       <MemoryRouter>
@@ -140,6 +140,6 @@ describe('SettingsPage', () => {
     await userEvent.type(inputElement, 'Test');
     await userEvent.click(getByRole('button', { name: 'Search' }));
 
-    expect(mockRefetch).toHaveBeenCalled();
+    expect(mockFilterRoles).toHaveBeenCalled();
   });
 });
