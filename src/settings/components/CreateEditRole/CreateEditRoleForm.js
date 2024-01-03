@@ -9,7 +9,10 @@ import {
   Layer,
   Pane,
   PaneFooter,
-  Paneset, TextArea, TextField
+  PaneHeader,
+  Paneset,
+  TextArea,
+  TextField
 } from '@folio/stripes/components';
 import { Pluggable } from '@folio/stripes/core';
 
@@ -50,15 +53,13 @@ function CreateEditRoleForm({
     <Layer isOpen inRootSet contentLabel={<FormattedMessage id={title} />}>
       <Paneset isRoot>
         <Pane
-          onClose={onClose}
           centerContent
-          dismissible
-          paneTitle={<FormattedMessage id={title} />}
           defaultWidth="100%"
           footer={<PaneFooter
             renderStart={paneFooterRenderStart}
             renderEnd={paneFooterRenderEnd}
           />}
+          renderHeader={renderProps => <PaneHeader {...renderProps} paneTitle={<FormattedMessage id={title} />} dismissible onClose={onClose} />}
         >
           <AccordionStatus>
             <div className={css.alignRightWrapper}>

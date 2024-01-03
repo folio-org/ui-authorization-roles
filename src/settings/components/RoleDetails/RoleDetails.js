@@ -13,6 +13,7 @@ import {
   MetaSection,
   Badge,
   Icon,
+  PaneHeader,
 } from '@folio/stripes/components';
 
 import { useHistory, useLocation } from 'react-router';
@@ -56,10 +57,7 @@ const RoleDetails = ({ onClose, roleId }) => {
   return (
     <Pane
       defaultWidth="80%"
-      paneTitle={role?.name}
-      onClose={onClose}
-      dismissible
-      actionMenu={getActionMenu}
+      renderHeader={renderProps => <PaneHeader {...renderProps} dismissible actionMenu={getActionMenu} paneTitle={role?.name} onClose={onClose} />}
     >
       <AccordionStatus>
         <div className={css.alignRightWrapper}>
