@@ -1,14 +1,14 @@
 import React from 'react';
-import { useOkapiKy } from '@folio/stripes/core';
+import { useNamespace, useOkapiKy } from '@folio/stripes/core';
 import { useQuery } from 'react-query';
 
 function useRoleById(id) {
   const ky = useOkapiKy();
+  const [namespace] = useNamespace({ key: 'ui-authorization-roles:role-data' });
   const { data, isSuccess } = useQuery(
-    ['role-data', id],
+    [namespace, id],
     () => ky.get(`roles/${id}`).json(),
-    { enabled: !!id,
-      refetchOnMount: false }
+    { enabled: !!id }
   );
 
   return { roleDetails:data, isRoleDetailsLoaded: isSuccess };

@@ -1,20 +1,17 @@
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 
-import { useOkapiKy, useStripes } from '@folio/stripes/core';
+import { useNamespace, useOkapiKy, useStripes } from '@folio/stripes/core';
 import { getKeyBasedArrayGroup } from '../settings/utils';
 
 const useCapabilities = () => {
   const ky = useOkapiKy();
   const stripes = useStripes();
+  const [namespace] = useNamespace({ key: 'ui-authorization-roles:capabilities-list' });
 
   const { data, isSuccess } = useQuery(
-    'capabilities-list',
+    namespace,
     () => ky.get(`capabilities?limit=${stripes.config.maxUnpagedResourceCount}&query=cql.allRecords=1 sortby resource`).json(),
-    {
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    }
   );
 
   const memoizedCapabilitiesList = useMemo(() => {

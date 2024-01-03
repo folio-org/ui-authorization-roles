@@ -1,18 +1,18 @@
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 
-import { useOkapiKy } from '@folio/stripes/core';
+import { useNamespace, useOkapiKy } from '@folio/stripes/core';
 
 const useRoleCapabilities = (roleId) => {
   const ky = useOkapiKy();
+  const [namespace] = useNamespace({ key: 'ui-authorization-roles:role-capabilities-list' });
 
-  const { data, isSuccess } = useQuery(['capabilities', roleId],
+  const { data, isSuccess } = useQuery([namespace, roleId],
     () => ky.get(`roles/${roleId}/capabilities`).json(),
     { enabled: !!roleId,
       placeholderData: {
         capabilities: [], totalRecords: 0
-      },
-      refetchOnWindowFocus: false });
+      } });
 
   const initialRoleCapabilitiesSelectedMap = useMemo(() => {
     return data?.capabilities.reduce((acc, capability) => {
