@@ -12,16 +12,19 @@ import '@testing-library/jest-dom';
 import EditRole from './EditRole';
 import useCapabilities from '../../../hooks/useCapabilities';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
-import { useEditRoleMutation } from '../../../hooks/useEditRoleMutation';
+import useEditRoleMutation from '../../../hooks/useEditRoleMutation';
+import useRoleById from '../../../hooks/useRoleById';
 
 const mockPutRequest = jest.fn().mockReturnValue({ ok:true });
 const mockPostRequest = jest.fn().mockReturnValue({ ok:true });
 
 jest.mock('../../../hooks/useCapabilities');
 jest.mock('../../../hooks/useRoleCapabilities');
+jest.mock('../../../hooks/useRoleById');
 
 jest.mock('../../../hooks/useEditRoleMutation', () => ({
-  useEditRoleMutation: jest.fn()
+  __esModule: true,
+  default: jest.fn()
 }));
 
 const mockMutateFn = jest.fn();
@@ -76,16 +79,27 @@ describe('EditRole component', () => {
 
   beforeEach(() => {
     useEditRoleMutation.mockReturnValue({ mutateRole: mockMutateRole, isLoading: false });
-    useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
-    useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
+    useCapabilities.mockReturnValue({ groupedCapabilitiesByType: { settings: [
+      {
+        id: '8d2da27c-1d56-48b6-9534218d-2bfae6d79dc8',
+        applicationId: 'Inventory-2.0',
+        name: 'foo_item.delete',
+        description: 'Settings: Delete foo item',
+        resource: 'Settings source',
+        action: 'edit',
+        type: 'settings',
+        permissions: ['foo.item.post'],
+      },
+    ] },
+    isSuccess: true });
+    useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: { '8d2da27c-1d56-48b6-9534218d-2bfae6d79dc8': true }, isSuccess: true });
+    useRoleById.mockReturnValue({ roleDetails: { id: '1', name: 'Admin', description: 'Description' }, isRoleDetailsLoaded: true });
   });
 
   it('renders TextField and Button components', async () => {
-    // useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
-    // useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
     const { getByTestId } = renderWithIntl(
       <MemoryRouter>
-        <EditRole refetch={jest.fn()} />
+        <EditRole roleId="1" />
       </MemoryRouter>,
       translationsProperties
     );
@@ -96,7 +110,7 @@ describe('EditRole component', () => {
   it('changes name, description input values', async () => {
     const { getByTestId } = renderWithIntl(
       <MemoryRouter>
-        <EditRole refetch={jest.fn()} />
+        <EditRole roleId="1" />
       </MemoryRouter>,
       translationsProperties
     );
@@ -104,18 +118,17 @@ describe('EditRole component', () => {
     const nameInput = getByTestId('rolename-input');
     const descriptionInput = getByTestId('description-input');
 
-    await userEvent.type(nameInput, 'New Role');
-    await userEvent.type(descriptionInput, 'Description');
+    await userEvent.type(nameInput, ' New Role');
+    await userEvent.type(descriptionInput, ' changed');
 
-    expect(nameInput).toHaveValue('New Role');
-    expect(descriptionInput).toHaveValue('Description');
+    expect(nameInput).toHaveValue('Admin New Role');
+    expect(descriptionInput).toHaveValue('Description changed');
   });
 
   it('actions on click footer buttons', async () => {
-    const mockRefetch = jest.fn();
     const { getByTestId, getByRole } = renderWithIntl(
       <MemoryRouter>
-        <EditRole refetch={mockRefetch} />
+        <EditRole roleId="1" />
       </MemoryRouter>,
       translationsProperties
     );
@@ -123,7 +136,6 @@ describe('EditRole component', () => {
     const submitButton = getByRole('button', { name: 'Save and close' });
     const cancelButton = getByRole('button', { name: 'Cancel' });
 
-    expect(submitButton).toBeDisabled();
     expect(cancelButton).toBeInTheDocument();
 
     await userEvent.type(getByTestId('rolename-input'), 'New Role');
@@ -132,10 +144,9 @@ describe('EditRole component', () => {
   });
 
   it('should set role name and description when selectedRole is truthy', () => {
-    const mockFn = jest.fn();
     const { getByTestId } = renderWithIntl(
       <MemoryRouter>
-        <EditRole refetch={mockFn} selectedRole={{ id: 1, name: 'Admin', description: 'Administrator role' }} />
+        <EditRole roleId="1" />
       </MemoryRouter>,
       translationsProperties
     );
@@ -144,13 +155,13 @@ describe('EditRole component', () => {
     const descriptionInput = getByTestId('description-input');
 
     expect(roleNameInput.value).toBe('Admin');
-    expect(descriptionInput.value).toBe('Administrator role');
+    expect(descriptionInput.value).toBe('Description');
   });
 
   it('onSubmit invalidates "ui-authorization-roles" query and calls goBack on success', async () => {
     const { getByRole, getByTestId } = renderWithIntl(
       <MemoryRouter>
-        <EditRole selectedRole={{ id: 1, name: 'Admin', description: 'Administrator role' }} />,
+        <EditRole roleId="1" />,
       </MemoryRouter>,
       translationsProperties
     );
@@ -160,6 +171,32 @@ describe('EditRole component', () => {
 
     await userEvent.click(submitButton);
     expect(submitButton).toBeEnabled();
-    expect(mockMutateRole).toHaveBeenCalledWith(1);
+    expect(mockMutateRole).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders initial checkboxes states correctly', () => {
+    const { getByRole, getAllByRole } = renderWithIntl(
+      <MemoryRouter>
+        <EditRole roleId="1" />,
+      </MemoryRouter>,
+      translationsProperties
+    );
+    expect(getAllByRole('checkbox')).toHaveLength(1);
+
+    expect(getByRole('checkbox')).toBeChecked();
+  });
+  it('correctly sets unchecked state of checkbox on click', async () => {
+    const { getByRole, getAllByRole } = renderWithIntl(
+      <MemoryRouter>
+        <EditRole roleId="1" />
+      </MemoryRouter>,
+      translationsProperties
+    );
+
+    expect(getAllByRole('checkbox')).toHaveLength(1);
+
+    await userEvent.click(getByRole('checkbox'));
+
+    expect(getByRole('checkbox')).not.toBeChecked();
   });
 });

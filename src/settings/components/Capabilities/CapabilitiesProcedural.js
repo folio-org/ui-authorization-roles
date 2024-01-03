@@ -22,19 +22,21 @@ const CapabilitiesProcedural = ({ content, readOnly, onChangeCapabilityCheckbox,
     // policies: formatMessage(columnTranslations.policies)
   };
 
+  const renderItemActionCheckbox = (item, action) => {
+    if (!readOnly && item.action !== action) return null;
+    return <CheckboxWithAsterisk
+      aria-describedby="asterisk-policy-desc"
+      aria-label={getCheckboxAriaLabel(action, item.resource)}
+      onChange={event => onChangeCapabilityCheckbox?.(event, item.id)}
+      readOnly={readOnly}
+      checked={isCapabilitySelected(item.id) && action === item.action}
+    />;
+  };
+
   const resultsFormatter = {
     application: item => getApplicationName(item.applicationId),
     resource:item => item.resource,
-    execute: item => {
-      if (!readOnly && item.action !== 'execute') return null;
-      return <CheckboxWithAsterisk
-        aria-describedby="asterisk-policy-desc"
-        aria-label={getCheckboxAriaLabel('execute', item.resource)}
-        onChange={event => onChangeCapabilityCheckbox?.(event, item.id)}
-        readOnly={readOnly}
-        checked={isCapabilitySelected(item.id) && item.action === 'execute'}
-      />;
-    },
+    execute: item => renderItemActionCheckbox(item, 'execute'),
     // policies: (item) => <Badge>{item.policiesCount}</Badge>
   };
 

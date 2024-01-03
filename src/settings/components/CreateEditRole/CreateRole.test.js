@@ -12,14 +12,15 @@ import '@testing-library/jest-dom';
 import CreateRole from './CreateRole';
 import useCapabilities from '../../../hooks/useCapabilities';
 
-import { useCreateRoleMutation } from '../../../hooks/useCreateRoleMutation';
+import useCreateRoleMutation from '../../../hooks/useCreateRoleMutation';
 
 
 jest.mock('../../../hooks/useCapabilities');
 jest.mock('../../../hooks/useCreateRoleMutation', () => ({
-  useCreateRoleMutation: jest.fn()
+  __esModule: true,
+  default: jest.fn()
 }));
-function mockFunction() {
+function mockReactRouterDomFn() {
   const original = jest.requireActual('react-router-dom');
   return {
     ...original,
@@ -33,7 +34,7 @@ function mockFunction() {
   };
 }
 
-jest.mock('react-router-dom', () => mockFunction());
+jest.mock('react-router-dom', () => mockReactRouterDomFn());
 
 jest.mock('@folio/stripes/components', () => {
   const original = jest.requireActual('@folio/stripes/components');
@@ -55,11 +56,22 @@ describe('CreateRole component', () => {
 
   beforeEach(() => {
     useCreateRoleMutation.mockReturnValue({ mutateRole:mockMutateRole, isLoading: false });
-    useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
+    useCapabilities.mockReturnValue({ groupedCapabilitiesByType: { settings: [
+      {
+        id: '8d2da27c-1d56-48b6-9534218d-2bfae6d79dc8',
+        applicationId: 'Inventory-2.0',
+        name: 'foo_item.delete',
+        description: 'Settings: Delete foo item',
+        resource: 'Settings source',
+        action: 'edit',
+        type: 'settings',
+        permissions: ['foo.item.post'],
+      },
+    ] },
+    isSuccess: true });
   });
 
   it('renders TextField and Button components', async () => {
-    useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
     const { getByTestId } = renderWithIntl(
       <MemoryRouter>
         <CreateRole />
@@ -103,9 +115,23 @@ describe('CreateRole component', () => {
     expect(cancelButton).toBeInTheDocument();
 
     await userEvent.type(getByTestId('rolename-input'), 'New Role');
-
     await userEvent.click(submitButton);
 
     expect(mockMutateRole).toHaveBeenCalledWith({ name: 'New Role', description: '' });
+  });
+
+  it('correctly sets checked state of checkbox', async () => {
+    const { getByRole, getAllByRole } = renderWithIntl(
+      <MemoryRouter>
+        <CreateRole />
+      </MemoryRouter>,
+      translationsProperties
+    );
+
+    expect(getAllByRole('checkbox')).toHaveLength(1);
+
+    await userEvent.click(getByRole('checkbox'));
+
+    expect(getByRole('checkbox')).toBeChecked();
   });
 });

@@ -2,13 +2,10 @@ import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useLocation } from 'react-router';
 
+import CreateEditRoleForm from './CreateEditRoleForm';
 import useCapabilities from '../../../hooks/useCapabilities';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
-
-import CreateEditRoleForm from './CreateEditRoleForm';
-
-import { getKeyBasedArrayGroup } from '../../utils';
-import { useEditRoleMutation } from '../../../hooks/useEditRoleMutation';
+import useEditRoleMutation from '../../../hooks/useEditRoleMutation';
 import useRoleById from '../../../hooks/useRoleById';
 
 const EditRole = ({ roleId }) => {
@@ -19,7 +16,7 @@ const EditRole = ({ roleId }) => {
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');
 
-  const { capabilitiesList } = useCapabilities();
+  const { groupedCapabilitiesByType } = useCapabilities();
   const { initialRoleCapabilitiesSelectedMap, isSuccess: isRoleCapabilitiesFetched } = useRoleCapabilities(roleId);
   const [selectedCapabilitiesMap, setSelectedCapabilitiesMap] = useState({});
 
@@ -34,10 +31,6 @@ const EditRole = ({ roleId }) => {
   const onChangeCapabilityCheckbox = (event, id) => {
     setSelectedCapabilitiesMap({ ...selectedCapabilitiesMap, [id]: event.target.checked });
   };
-
-  const groupedCapabilitiesByType = useMemo(() => {
-    return getKeyBasedArrayGroup(capabilitiesList, 'type');
-  }, [capabilitiesList]);
 
   const isCapabilitySelected = (id) => !!selectedCapabilitiesMap[id];
 

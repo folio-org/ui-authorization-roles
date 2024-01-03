@@ -1,10 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 
-import { getKeyBasedArrayGroup } from '../../utils';
 import useCapabilities from '../../../hooks/useCapabilities';
 import CreateEditRoleForm from './CreateEditRoleForm';
-import { useCreateRoleMutation } from '../../../hooks/useCreateRoleMutation';
+import useCreateRoleMutation from '../../../hooks/useCreateRoleMutation';
 
 const CreateRole = () => {
   const history = useHistory();
@@ -13,16 +12,12 @@ const CreateRole = () => {
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');
 
-  const { capabilitiesList } = useCapabilities();
+  const { groupedCapabilitiesByType } = useCapabilities();
   const [selectedCapabilitiesMap, setSelectedCapabilitiesMap] = useState({});
 
   const onChangeCapabilityCheckbox = useCallback((event, id) => {
     setSelectedCapabilitiesMap({ ...selectedCapabilitiesMap, [id]: event.target.checked });
   }, [selectedCapabilitiesMap]);
-
-  const groupedCapabilitiesByType = useMemo(() => {
-    return getKeyBasedArrayGroup(capabilitiesList, 'type');
-  }, [capabilitiesList]);
 
   const isCapabilitySelected = (id) => !!selectedCapabilitiesMap[id];
 

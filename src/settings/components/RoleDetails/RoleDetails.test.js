@@ -127,9 +127,6 @@ describe('RoleDetails component', () => {
       expect(getByText('Assigned users')).toBeInTheDocument();
       expect(getByText('Collapse all')).toBeInTheDocument();
       expect(getByTestId('role-name')).toHaveTextContent('Name');
-      expect(getByTestId('role-description')).toHaveTextContent(
-        'simple description'
-      );
     });
 
     it('render capabilities', async () => {

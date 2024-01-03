@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { useOkapiKy } from '@folio/stripes/core';
 
-export const useCreateRoleMutation = (roleCapabilitiesListIds) => {
+const useCreateRoleMutation = (roleCapabilitiesListIds) => {
   const ky = useOkapiKy();
   const queryClient = useQueryClient();
   const { mutateAsync, isLoading } = useMutation({
@@ -16,5 +16,7 @@ export const useCreateRoleMutation = (roleCapabilitiesListIds) => {
 
   return { mutateRole: mutateAsync, isLoading };
 };
+
+export default useCreateRoleMutation;
 
 
