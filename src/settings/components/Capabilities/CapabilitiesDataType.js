@@ -3,15 +3,13 @@ import { MultiColumnList, Headline } from '@folio/stripes/components';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import PropTypes from 'prop-types';
-import { CheckboxWithAsterisk } from '../../../components/CheckboxWithAsterisk/CheckboxWithAsterisk';
 import { getApplicationName } from '../../utils';
 import { capabilitiesPropType } from '../../types';
 import { columnTranslations } from '../../../constants/translations';
-import { useCheckboxAriaStates } from './helpers';
+import ItemActionCheckbox from './ItemActionCheckbox';
 
 const CapabilitiesDataType = ({ content, readOnly, onChangeCapabilityCheckbox, isCapabilitySelected }) => {
   const { formatMessage } = useIntl();
-  const { getCheckboxAriaLabel } = useCheckboxAriaStates();
 
   const columnMapping = {
     application: (
@@ -38,13 +36,12 @@ const CapabilitiesDataType = ({ content, readOnly, onChangeCapabilityCheckbox, i
    * If readOnly mode we should show the checkbox for all actions.
    */
   const renderItemActionCheckbox = (item, action) => {
-    if (!readOnly && item.action !== action) return null;
-    return <CheckboxWithAsterisk
-      aria-describedby="asterisk-policy-desc"
-      aria-label={getCheckboxAriaLabel(action, item.resource)}
-      onChange={event => onChangeCapabilityCheckbox?.(event, item.id)}
+    return <ItemActionCheckbox
+      action={action}
       readOnly={readOnly}
-      checked={isCapabilitySelected(item.id) && action === item.action}
+      onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
+      item={item}
+      isCapabilitySelected={isCapabilitySelected}
     />;
   };
 
