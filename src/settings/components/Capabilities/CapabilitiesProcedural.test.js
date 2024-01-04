@@ -1,11 +1,7 @@
 import React from 'react';
-import { MemoryRouter } from 'react-router';
 import userEvent from '@testing-library/user-event';
 
-import {
-  translationsProperties,
-  renderWithIntl,
-} from '@folio/stripes-erm-testing';
+import { render } from '@folio/jest-config-stripes/testing-library/react';
 import { CapabilitiesProcedural } from './CapabilitiesProcedural';
 import '@testing-library/jest-dom';
 
@@ -22,11 +18,8 @@ const proceduralTypeCapabilities = [
   },
 ];
 
-const renderComponent = (data, onChange) => renderWithIntl(
-  <MemoryRouter>
-    <CapabilitiesProcedural content={data} isCapabilitySelected={jest.fn().mockReturnValue(true)} onChangeCapabilityCheckbox={onChange} />
-  </MemoryRouter>,
-  translationsProperties
+const renderComponent = (data, onChange) => render(
+  <CapabilitiesProcedural content={data} isCapabilitySelected={jest.fn().mockReturnValue(true)} onChangeCapabilityCheckbox={onChange} />
 );
 
 describe('Procedural capabilities type', () => {

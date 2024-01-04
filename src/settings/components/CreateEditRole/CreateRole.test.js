@@ -2,10 +2,9 @@ import React from 'react';
 
 import userEvent from '@testing-library/user-event';
 import { cleanup } from '@testing-library/react';
-import { renderWithIntl } from '@folio/stripes-erm-testing';
-import { MemoryRouter } from 'react-router';
 
-import translationsProperties from '../../../../test/helpers/translationsProperties';
+import { render } from '@folio/jest-config-stripes/testing-library/react';
+
 
 import '@testing-library/jest-dom';
 
@@ -13,6 +12,7 @@ import CreateRole from './CreateRole';
 import useCapabilities from '../../../hooks/useCapabilities';
 
 import useCreateRoleMutation from '../../../hooks/useCreateRoleMutation';
+import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 
 
 jest.mock('../../../hooks/useCapabilities');
@@ -20,21 +20,6 @@ jest.mock('../../../hooks/useCreateRoleMutation', () => ({
   __esModule: true,
   default: jest.fn()
 }));
-function mockReactRouterDomFn() {
-  const original = jest.requireActual('react-router-dom');
-  return {
-    ...original,
-    useLocation: jest.fn().mockReturnValue({
-      pathname: '/another-route',
-      search: '',
-      hash: '',
-      state: null,
-      key: '5nvxpbdafa',
-    }),
-  };
-}
-
-jest.mock('react-router-dom', () => mockReactRouterDomFn());
 
 jest.mock('@folio/stripes/components', () => {
   const original = jest.requireActual('@folio/stripes/components');
@@ -43,6 +28,8 @@ jest.mock('@folio/stripes/components', () => {
     Layer: jest.fn(({ children }) => <div data-testid="mock-layer">{children}</div>)
   };
 });
+
+const renderComponent = () => render(renderWithRouter(<CreateRole />));
 
 describe('CreateRole component', () => {
   const mockMutateRole = jest.fn();
@@ -72,23 +59,13 @@ describe('CreateRole component', () => {
   });
 
   it('renders TextField and Button components', async () => {
-    const { getByTestId } = renderWithIntl(
-      <MemoryRouter>
-        <CreateRole />
-      </MemoryRouter>,
-      translationsProperties
-    );
+    const { getByTestId } = renderComponent();
 
     expect(getByTestId('create-role-form')).toBeInTheDocument();
   });
 
   it('changes name, description input values', async () => {
-    const { getByTestId } = renderWithIntl(
-      <MemoryRouter>
-        <CreateRole />
-      </MemoryRouter>,
-      translationsProperties
-    );
+    const { getByTestId } = renderComponent();
 
     const descriptionInput = getByTestId('description-input');
     const nameInput = getByTestId('rolename-input');
@@ -101,15 +78,10 @@ describe('CreateRole component', () => {
   });
 
   it('actions on click footer buttons', async () => {
-    const { getByTestId, getByRole } = renderWithIntl(
-      <MemoryRouter>
-        <CreateRole />
-      </MemoryRouter>,
-      translationsProperties
-    );
+    const { getByTestId, getByRole } = renderComponent();
 
-    const submitButton = getByRole('button', { name: 'Save and close' });
-    const cancelButton = getByRole('button', { name: 'Cancel' });
+    const submitButton = getByRole('button', { name: 'ui-authorization-roles.crud.saveAndClose' });
+    const cancelButton = getByRole('button', { name: 'ui-authorization-roles.crud.cancel' });
 
     expect(submitButton).toBeDisabled();
     expect(cancelButton).toBeInTheDocument();
@@ -121,12 +93,7 @@ describe('CreateRole component', () => {
   });
 
   it('correctly sets checked state of checkbox', async () => {
-    const { getByRole, getAllByRole } = renderWithIntl(
-      <MemoryRouter>
-        <CreateRole />
-      </MemoryRouter>,
-      translationsProperties
-    );
+    const { getByRole, getAllByRole } = renderComponent();
 
     expect(getAllByRole('checkbox')).toHaveLength(1);
 

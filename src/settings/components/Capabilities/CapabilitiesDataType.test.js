@@ -1,14 +1,9 @@
 import React from 'react';
-import { MemoryRouter } from 'react-router';
 import userEvent from '@testing-library/user-event';
-
-import {
-  renderWithIntl,
-} from '@folio/stripes-erm-testing';
-
-import { translationsProperties } from '../../../../test/helpers';
-import { CapabilitiesDataType } from './CapabilitiesDataType';
+import { render } from '@folio/jest-config-stripes/testing-library/react';
 import '@testing-library/jest-dom';
+
+import { CapabilitiesDataType } from './CapabilitiesDataType';
 
 const dataTypeCapabilities = [
   {
@@ -23,11 +18,8 @@ const dataTypeCapabilities = [
   },
 ];
 
-const renderComponent = (data, onChange) => renderWithIntl(
-  <MemoryRouter>
-    <CapabilitiesDataType content={data} isCapabilitySelected={jest.fn().mockReturnValue(true)} onChangeCapabilityCheckbox={onChange} />
-  </MemoryRouter>,
-  translationsProperties
+const renderComponent = (data, onChange) => render(
+  <CapabilitiesDataType content={data} isCapabilitySelected={jest.fn().mockReturnValue(true)} onChangeCapabilityCheckbox={onChange} />
 );
 
 describe('Data capabilities type', () => {

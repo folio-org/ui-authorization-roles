@@ -12,6 +12,6 @@ export const capabilitiesPropType = PropTypes.arrayOf(
     metadata: PropTypes.shape({
       createdDate: PropTypes.string,
       modifiedDate: PropTypes.string,
-    }).isRequired,
+    }),
   })
 );

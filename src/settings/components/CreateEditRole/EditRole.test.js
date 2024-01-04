@@ -2,18 +2,16 @@ import React from 'react';
 
 import userEvent from '@testing-library/user-event';
 import { cleanup } from '@testing-library/react';
-import { renderWithIntl } from '@folio/stripes-erm-testing';
-import { MemoryRouter } from 'react-router';
-
-import translationsProperties from '../../../../test/helpers/translationsProperties';
 
 import '@testing-library/jest-dom';
+import { render } from '@folio/jest-config-stripes/testing-library/react';
 
 import EditRole from './EditRole';
 import useCapabilities from '../../../hooks/useCapabilities';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
 import useEditRoleMutation from '../../../hooks/useEditRoleMutation';
 import useRoleById from '../../../hooks/useRoleById';
+import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 
 const mockPutRequest = jest.fn().mockReturnValue({ ok:true });
 const mockPostRequest = jest.fn().mockReturnValue({ ok:true });
@@ -42,22 +40,6 @@ jest.mock('@folio/stripes/core', () => ({
   }),
   Pluggable: () => <div>Pluggable</div>
 }));
-
-function mockFunction() {
-  const original = jest.requireActual('react-router-dom');
-  return {
-    ...original,
-    useLocation: jest.fn().mockReturnValue({
-      pathname: '/another-route',
-      search: '',
-      hash: '',
-      state: null,
-      key: '5nvxpbdafa',
-    }),
-  };
-}
-
-jest.mock('react-router-dom', () => mockFunction());
 
 jest.mock('@folio/stripes/components', () => {
   const original = jest.requireActual('@folio/stripes/components');
@@ -97,23 +79,17 @@ describe('EditRole component', () => {
   });
 
   it('renders TextField and Button components', async () => {
-    const { getByTestId } = renderWithIntl(
-      <MemoryRouter>
-        <EditRole roleId="1" />
-      </MemoryRouter>,
-      translationsProperties
-    );
+    const { getByTestId } = render(renderWithRouter(
+      <EditRole roleId="1" />
+    ));
 
     expect(getByTestId('create-role-form')).toBeInTheDocument();
   });
 
   it('changes name, description input values', async () => {
-    const { getByTestId } = renderWithIntl(
-      <MemoryRouter>
-        <EditRole roleId="1" />
-      </MemoryRouter>,
-      translationsProperties
-    );
+    const { getByTestId } = render(renderWithRouter(
+      <EditRole roleId="1" />
+    ));
 
     const nameInput = getByTestId('rolename-input');
     const descriptionInput = getByTestId('description-input');
@@ -126,15 +102,12 @@ describe('EditRole component', () => {
   });
 
   it('actions on click footer buttons', async () => {
-    const { getByTestId, getByRole } = renderWithIntl(
-      <MemoryRouter>
-        <EditRole roleId="1" />
-      </MemoryRouter>,
-      translationsProperties
-    );
+    const { getByTestId, getByRole } = render(renderWithRouter(
+      <EditRole roleId="1" />
+    ));
 
-    const submitButton = getByRole('button', { name: 'Save and close' });
-    const cancelButton = getByRole('button', { name: 'Cancel' });
+    const submitButton = getByRole('button', { name: 'ui-authorization-roles.crud.saveAndClose' });
+    const cancelButton = getByRole('button', { name: 'ui-authorization-roles.crud.cancel' });
 
     expect(cancelButton).toBeInTheDocument();
 
@@ -144,12 +117,9 @@ describe('EditRole component', () => {
   });
 
   it('should set role name and description when selectedRole is truthy', () => {
-    const { getByTestId } = renderWithIntl(
-      <MemoryRouter>
-        <EditRole roleId="1" />
-      </MemoryRouter>,
-      translationsProperties
-    );
+    const { getByTestId } = render(renderWithRouter(
+      <EditRole roleId="1" />
+    ));
 
     const roleNameInput = getByTestId('rolename-input');
     const descriptionInput = getByTestId('description-input');
@@ -159,13 +129,10 @@ describe('EditRole component', () => {
   });
 
   it('onSubmit invalidates "ui-authorization-roles" query and calls goBack on success', async () => {
-    const { getByRole, getByTestId } = renderWithIntl(
-      <MemoryRouter>
-        <EditRole roleId="1" />,
-      </MemoryRouter>,
-      translationsProperties
-    );
-    const submitButton = getByRole('button', { name: 'Save and close' });
+    const { getByRole, getByTestId } = render(renderWithRouter(
+      <EditRole roleId="1" />
+    ));
+    const submitButton = getByRole('button', { name: 'ui-authorization-roles.crud.saveAndClose' });
 
     await userEvent.type(getByTestId('rolename-input'), 'Change role');
 
@@ -175,24 +142,17 @@ describe('EditRole component', () => {
   });
 
   it('renders initial checkboxes states correctly', () => {
-    const { getByRole, getAllByRole } = renderWithIntl(
-      <MemoryRouter>
-        <EditRole roleId="1" />,
-      </MemoryRouter>,
-      translationsProperties
-    );
+    const { getByRole, getAllByRole } = render(renderWithRouter(
+      <EditRole roleId="1" />
+    ));
     expect(getAllByRole('checkbox')).toHaveLength(1);
 
     expect(getByRole('checkbox')).toBeChecked();
   });
   it('correctly sets unchecked state of checkbox on click', async () => {
-    const { getByRole, getAllByRole } = renderWithIntl(
-      <MemoryRouter>
-        <EditRole roleId="1" />
-      </MemoryRouter>,
-      translationsProperties
-    );
-
+    const { getByRole, getAllByRole } = render(renderWithRouter(
+      <EditRole roleId="1" />
+    ));
     expect(getAllByRole('checkbox')).toHaveLength(1);
 
     await userEvent.click(getByRole('checkbox'));

@@ -4,20 +4,19 @@ import { cleanup, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 
-import { renderWithIntl } from '@folio/stripes-erm-testing';
-
-import { MemoryRouter } from 'react-router';
-import translationsProperties from '../../../../test/helpers/translationsProperties';
-
+import { render } from '@folio/jest-config-stripes/testing-library/react';
 import RoleDetails from './RoleDetails';
 import { RoleDetailsContextProvider } from './context/RoleDetailsContext';
 
 import useCapabilities from '../../../hooks/useCapabilities';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
+import useRoleById from '../../../hooks/useRoleById';
 import { getKeyBasedArrayGroup } from '../../utils';
+import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 
 jest.mock('../../../hooks/useCapabilities');
 jest.mock('../../../hooks/useRoleCapabilities');
+jest.mock('../../../hooks/useRoleById');
 
 const onClose = jest.fn();
 
@@ -96,19 +95,17 @@ const capabilities = [{
 }
 ];
 
-const renderComponent = () => renderWithIntl(
-  <MemoryRouter>
-    <RoleDetailsContextProvider
-      groupedCapabilitiesByType={getKeyBasedArrayGroup(capabilities, 'type')}
-    >
-      <RoleDetails onClose={onClose} role={getRoleData({})} />
-    </RoleDetailsContextProvider>
-  </MemoryRouter>,
-  translationsProperties
+const renderComponent = () => render(
+  renderWithRouter(<RoleDetailsContextProvider
+    groupedCapabilitiesByType={getKeyBasedArrayGroup(capabilities, 'type')}
+  >
+    <RoleDetails onClose={onClose} roleId="1" />
+  </RoleDetailsContextProvider>)
 );
 
 useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
 useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
+useRoleById.mockReturnValue({ roleDetails: getRoleData(), isRoleDetailsLoaded: true });
 
 describe('RoleDetails component', () => {
   afterEach(() => {
@@ -120,20 +117,20 @@ describe('RoleDetails component', () => {
   });
 
   describe('renders roles details pane with expanded information', () => {
-    const { getByText, getByTestId } = renderComponent(getRoleData());
+    const { getByText, getByTestId } = renderComponent();
 
     it('render expanded role info by default', () => {
-      expect(getByText('General Information')).toBeInTheDocument();
-      expect(getByText('Assigned users')).toBeInTheDocument();
-      expect(getByText('Collapse all')).toBeInTheDocument();
-      expect(getByTestId('role-name')).toHaveTextContent('Name');
+      expect(getByText('ui-authorization-roles.generalInformation')).toBeInTheDocument();
+      expect(getByText('ui-authorization-roles.assignedUsers')).toBeInTheDocument();
+      expect(getByText('stripes-components.collapseAll')).toBeInTheDocument();
+      expect(getByTestId('role-name')).toHaveTextContent('demo test role');
     });
 
     it('render capabilities', async () => {
       // eslint-disable-next-line no-shadow
-      const { getByRole, getByTestId } = renderComponent(getRoleData());
+      const { getByRole, getByTestId } = renderComponent();
 
-      await userEvent.click(getByRole('button', { name: 'Capabilities' }));
+      await userEvent.click(getByRole('button', { name: 'ui-authorization-roles.details.capabilities' }));
 
       await waitFor(() => {
         expect(getByTestId('capabilities-data-type')).toBeInTheDocument();
