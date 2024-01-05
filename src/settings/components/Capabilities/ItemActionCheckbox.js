@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { CheckboxWithAsterisk } from '../../../components/CheckboxWithAsterisk/CheckboxWithAsterisk';
 import { useCheckboxAriaStates } from './helpers';
-import { capabilitiesPropType } from '../../types';
 
 const ItemActionCheckbox = ({
   item,
@@ -24,7 +23,19 @@ const ItemActionCheckbox = ({
 };
 
 ItemActionCheckbox.propTypes = {
-  item: capabilitiesPropType.isRequired,
+  item: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    resource: PropTypes.string.isRequired,
+    action: PropTypes.string.isRequired,
+    applicationId: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    metadata: PropTypes.shape({
+      createdDate: PropTypes.string,
+      modifiedDate: PropTypes.string,
+    }),
+  }),
   action: PropTypes.string.isRequired,
   onChangeCapabilityCheckbox: PropTypes.func,
   readOnly: PropTypes.bool,
