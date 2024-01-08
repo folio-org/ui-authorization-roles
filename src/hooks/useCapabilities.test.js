@@ -14,12 +14,19 @@ const wrapper = ({ children }) => (
   </QueryClientProvider>
 );
 
-const data = { capabilities: [{ id: '1', type: 'settings' }, { id: '2', type: 'procedural' }, { id: '3', type: 'data' }] };
+const data = { capabilities: [{ id: '1', type: 'settings', action: 'manage', resource: 'Capability Roles', applicationId: 'application-01' },
+  { id: '2', type: 'settings', action: 'view', resource: 'Capability Roles', applicationId: 'application-01' },
+  { id: '3', type: 'settings', action: 'edit', resource: 'Capability Roles', applicationId: 'application-01' },
+  { id: '11', type: 'data', action: 'create', resource: 'Capability data', applicationId: 'application-01' },
+  { id: '22', type: 'data', action: 'delete', resource: 'Capability data', applicationId: 'application-01' },
+  { id: '33', type: 'data', action: 'manage', resource: 'Capability data', applicationId: 'application-01' },
+  { id: '111', type: 'procedural', action: 'execute', resource: 'Capability procedural', applicationId: 'application-01' },
+] };
 
 const expectedGroupedCapabilitiesByType = {
-  settings: [{ id: '1', type: 'settings' }],
-  procedural: [{ id: '2', type: 'procedural' }],
-  data: [{ id: '3', type: 'data' }],
+  settings: [{ id: '1', applicationId: 'application-01', resource: 'Capability Roles', actions: { manage: '1', view: '2', edit: '3' } }],
+  data: [{ id: '11', applicationId: 'application-01', resource: 'Capability data', actions: { create: '11', delete: '22', manage: '33' } }],
+  procedural: [{ id: '111', applicationId: 'application-01', resource: 'Capability procedural', actions: { execute: '111' } }],
 };
 describe('useRoleById', () => {
   const mockGet = jest.fn(() => ({

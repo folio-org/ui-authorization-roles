@@ -11,7 +11,7 @@ import { RoleDetailsContextProvider } from './context/RoleDetailsContext';
 import useCapabilities from '../../../hooks/useCapabilities';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
 import useRoleById from '../../../hooks/useRoleById';
-import { getKeyBasedArrayGroup } from '../../utils';
+import { getCapabilitiesGroupedByTypeAndResource } from '../../utils';
 import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 
 jest.mock('../../../hooks/useCapabilities');
@@ -46,8 +46,6 @@ const capabilities = [{
     'role-capabilities.collection.get',
   ],
   type: 'data',
-  directParentIds: [],
-  allParentIds: ['setting-capability-id'],
   metadata: {
     createdDate: '2023-07-14T15:32:15.560+00:00',
     modifiedDate: '2023-07-14T15:32:15.561+00:00',
@@ -66,8 +64,6 @@ const capabilities = [{
     'role-capabilities.collection.get',
   ],
   type: 'settings',
-  directParentIds: [],
-  allParentIds: [],
   metadata: {
     createdDate: '2023-07-14T15:32:15.560+00:00',
     modifiedDate: '2023-07-14T15:32:15.561+00:00',
@@ -86,8 +82,6 @@ const capabilities = [{
     'role-capabilities.collection.get',
   ],
   type: 'procedural',
-  directParentIds: [],
-  allParentIds: [],
   metadata: {
     createdDate: '2023-07-14T15:32:15.560+00:00',
     modifiedDate: '2023-07-14T15:32:15.561+00:00',
@@ -97,7 +91,7 @@ const capabilities = [{
 
 const renderComponent = () => render(
   renderWithRouter(<RoleDetailsContextProvider
-    groupedCapabilitiesByType={getKeyBasedArrayGroup(capabilities, 'type')}
+    groupedCapabilitiesByType={getCapabilitiesGroupedByTypeAndResource(capabilities)}
   >
     <RoleDetails onClose={onClose} roleId="1" />
   </RoleDetailsContextProvider>)

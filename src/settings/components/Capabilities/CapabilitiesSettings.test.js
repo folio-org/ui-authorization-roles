@@ -15,6 +15,7 @@ const settingsTypeCapabilities = [
     action: 'edit',
     type: 'settings',
     permissions: ['foo.item.post'],
+    actions: { view: 'view-id', edit: 'edit-id', manage: 'manage-id' },
   },
 ];
 
@@ -37,7 +38,7 @@ describe('Settings capabilities type', () => {
     const mockChangeHandler = jest.fn().mockReturnValue(true);
     const { getAllByRole } = renderComponent(settingsTypeCapabilities, mockChangeHandler);
 
-    expect(getAllByRole('checkbox')).toHaveLength(1);
+    expect(getAllByRole('checkbox')).toHaveLength(3);
     expect(getAllByRole('checkbox')[0]).toBeChecked();
 
     await userEvent.click(getAllByRole('checkbox')[0]);
@@ -45,9 +46,9 @@ describe('Settings capabilities type', () => {
     expect(mockChangeHandler).toHaveBeenCalled();
   });
 
-  it('renders null if action name is not execute', async () => {
+  it('renders null if action name is not compatible with view, edit, manage actions', async () => {
     const mockChangeHandler = jest.fn().mockReturnValue(true);
-    const { queryAllByRole } = renderComponent([{ ...settingsTypeCapabilities[0], action: 'execute' }], mockChangeHandler);
+    const { queryAllByRole } = renderComponent([{ ...settingsTypeCapabilities[0], actions: { create: 'create-id' } }], mockChangeHandler);
 
     expect(queryAllByRole('checkbox')).toHaveLength(0);
   });
