@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useLocation } from 'react-router';
+import { isEqual } from 'lodash';
 
 import CreateEditRoleForm from './CreateEditRoleForm';
 import useCapabilities from '../../../hooks/useCapabilities';
@@ -28,6 +29,8 @@ const EditRole = ({ roleId }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRoleCapabilitiesFetched, roleId]);
 
+  const shouldUpdateCapabilities = !isEqual(initialRoleCapabilitiesSelectedMap, selectedCapabilitiesMap);
+
   const onChangeCapabilityCheckbox = (event, id) => {
     setSelectedCapabilitiesMap({ ...selectedCapabilitiesMap, [id]: event.target.checked });
   };
@@ -47,7 +50,7 @@ const EditRole = ({ roleId }) => {
     return Object.entries(selectedCapabilitiesMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
   }, [selectedCapabilitiesMap]);
 
-  const { mutateRole, isLoading } = useEditRoleMutation({ id: roleId, name: roleName, description }, roleCapabilitiesListIds);
+  const { mutateRole, isLoading } = useEditRoleMutation({ id: roleId, name: roleName, description }, roleCapabilitiesListIds, shouldUpdateCapabilities);
 
   const onSubmit = async (event) => {
     event.preventDefault();
