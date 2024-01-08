@@ -33,7 +33,7 @@ describe('useRoleById', () => {
     const { result } = renderHook(() => useRoleById(23), { wrapper });
     await act(() => !result.current.isFetching);
 
-    expect(result.current.isRoleDetailsLoaded).toBe(true);
+    expect(result.current.isSuccess).toBe(true);
     expect(result.current.roleDetails).toEqual(data);
   });
 });

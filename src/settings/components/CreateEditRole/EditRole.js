@@ -11,7 +11,7 @@ import useRoleById from '../../../hooks/useRoleById';
 const EditRole = ({ roleId }) => {
   const history = useHistory();
   const { pathname } = useLocation();
-  const { roleDetails, isRoleDetailsLoaded } = useRoleById(roleId);
+  const { roleDetails, isSuccess: isRoleDetailsLoaded } = useRoleById(roleId);
 
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');

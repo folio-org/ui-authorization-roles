@@ -75,7 +75,7 @@ describe('EditRole component', () => {
     ] },
     isSuccess: true });
     useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: { '8d2da27c-1d56-48b6-9534218d-2bfae6d79dc8': true }, isSuccess: true });
-    useRoleById.mockReturnValue({ roleDetails: { id: '1', name: 'Admin', description: 'Description' }, isRoleDetailsLoaded: true });
+    useRoleById.mockReturnValue({ roleDetails: { id: '1', name: 'Admin', description: 'Description' }, isSuccess: true });
   });
 
   it('renders TextField and Button components', async () => {

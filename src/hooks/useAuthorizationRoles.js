@@ -7,30 +7,30 @@ import { ROLES_ENDPOINT } from '../constants/endpoints';
 
 const useAuthorizationRoles = () => {
   const ky = useOkapiKy();
-  const [namespace] = useNamespace({ key: 'ui-authorization-roles' });
+  const [namespace] = useNamespace();
   const stripes = useStripes();
+  const [searchTerm, setSearchTerm] = useState('');
   const [roles, setRoles] = useState([]);
 
-  const { data, isLoading, refetch, isSuccess } = useQuery(
+  const handleSubmitSearch = searchValue => setSearchTerm(searchValue);
+
+  const { data, isLoading, isSuccess } = useQuery(
     namespace,
     () => ky.get(ROLES_ENDPOINT(stripes.config.maxUnpagedResourceCount)).json()
   );
 
-  const filterRoles = (searchTerm) => {
-    setRoles(data.roles.filter(role => role.name.toLowerCase().includes(searchTerm.toLowerCase())));
-  };
-
   useEffect(() => {
-    if (isSuccess) {
-      setRoles(data?.roles || []);
+    if (isSuccess && data?.roles) {
+      setRoles(data.roles);
     }
   }, [data, isSuccess]);
 
+  const filteredRoles = roles.filter(role => role.name.toLowerCase().includes(searchTerm.toLowerCase()));
+
   return {
-    roles,
+    roles: filteredRoles,
     isLoading,
-    filterRoles,
-    refetch,
+    onSubmitSearch: handleSubmitSearch,
   };
 };
 

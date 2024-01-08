@@ -11,7 +11,7 @@ function useRoleById(id) {
     { enabled: !!id }
   );
 
-  return { roleDetails:data, isRoleDetailsLoaded: isSuccess };
+  return { roleDetails:data, isSuccess };
 }
 
 export default useRoleById;

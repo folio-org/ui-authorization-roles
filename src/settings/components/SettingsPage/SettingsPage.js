@@ -43,11 +43,11 @@ const SettingsPage = () => {
     </PaneMenu>
   );
 
-  const { roles, isLoading, filterRoles } = useAuthorizationRoles();
+  const { roles, isLoading, onSubmitSearch } = useAuthorizationRoles();
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    filterRoles(searchTerm);
+    onSubmitSearch(searchTerm);
   };
 
   const resultsFormatter = {

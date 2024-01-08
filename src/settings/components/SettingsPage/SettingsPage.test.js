@@ -101,7 +101,7 @@ describe('SettingsPage', () => {
     expect(queryByTestId('mock-role-details')).toBeInTheDocument();
   });
 
-  it('refetch after on search', async () => {
+  it('filter roles on search', async () => {
     const mockFilterRoles = jest.fn();
     useAuthorizationRoles.mockImplementation(() => ({
       roles: [
@@ -112,7 +112,7 @@ describe('SettingsPage', () => {
           metadata: {},
         },
       ],
-      filterRoles: mockFilterRoles
+      onSubmitSearch: mockFilterRoles
     }));
     const { queryByTestId, getByRole } = renderComponent();
 

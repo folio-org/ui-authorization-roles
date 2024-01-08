@@ -33,8 +33,8 @@ describe('useRoleById', () => {
     expect(result.current.roles).toEqual(data.roles);
     expect(result.current.isLoading).toBe(false);
 
-    const spy = jest.spyOn(result.current, 'filterRoles');
-    await act(async () => { result.current.filterRoles('role'); });
+    const spy = jest.spyOn(result.current, 'onSubmitSearch');
+    await act(async () => { result.current.onSubmitSearch('role'); });
 
     expect(spy).toHaveBeenCalled();
   });

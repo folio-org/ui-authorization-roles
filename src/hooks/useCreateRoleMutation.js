@@ -4,7 +4,7 @@ import { useNamespace, useOkapiKy } from '@folio/stripes/core';
 const useCreateRoleMutation = (roleCapabilitiesListIds) => {
   const ky = useOkapiKy();
   const queryClient = useQueryClient();
-  const [namespace] = useNamespace({ key: 'ui-authorization-roles' });
+  const [namespace] = useNamespace();
   const { mutateAsync, isLoading } = useMutation({
     mutationFn: (newRole) => ky.post('roles', { json: newRole }).json(),
     onSuccess: async (newRole) => {
