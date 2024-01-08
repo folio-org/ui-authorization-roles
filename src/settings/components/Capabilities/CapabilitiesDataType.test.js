@@ -15,6 +15,7 @@ const dataTypeCapabilities = [
     action: 'create',
     type: 'data',
     permissions: ['foo.item.post'],
+    actions: { view: 'view-id', create: 'create-id', edit: 'edit-id', delete: 'delete-id' },
   },
 ];
 
@@ -38,7 +39,7 @@ describe('Data capabilities type', () => {
     const mockChangeHandler = jest.fn();
     const { getAllByRole } = renderComponent(dataTypeCapabilities, mockChangeHandler);
 
-    expect(getAllByRole('checkbox')).toHaveLength(1);
+    expect(getAllByRole('checkbox')).toHaveLength(4);
     expect(getAllByRole('checkbox')[0]).toBeChecked();
 
     await userEvent.click(getAllByRole('checkbox')[0]);

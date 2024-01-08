@@ -1,4 +1,4 @@
-import { groupById, getKeyBasedArrayGroup } from './grouping';
+import { groupById, getKeyBasedArrayGroup, getCapabilitiesGroupedByTypeAndResource } from './grouping';
 
 describe('Test grouping functions', () => {
   it('test groupById', () => {
@@ -25,5 +25,29 @@ describe('Test grouping functions', () => {
         { id: 4, name: 'Rally', type: 'post' }],
       'put': [{ id: 5, name: 'Nolan', type: 'put' }]
     });
+  });
+
+  it('test getCapabilitiesGroupedByTypeAndResource', () => {
+    const capabilities = [
+      { id: 1, applicationId: 'app1', type: 'data', resource: 'resource1', action: 'edit' },
+      { id: 2, applicationId: 'app1', type: 'data', resource: 'resource1', action: 'create' },
+      { id: 3, applicationId: 'app1', type: 'data', resource: 'resource1', action: 'delete' },
+      { id: 4, applicationId: 'app1', type: 'data', resource: 'resource1', action: 'manage' },
+      { id: 5, applicationId: 'app1', type: 'settings', resource: 'resource2', action: 'edit' },
+      { id: 6, applicationId: 'app1', type: 'settings', resource: 'resource2', action: 'delete' },
+      { id: 7, applicationId: 'app1', type: 'procedural', resource: 'resource3', action: 'execute' },
+      { id: 8, applicationId: 'app1', type: 'procedural', resource: 'resource1', action: 'execute' },
+    ];
+
+    const expected = {
+      data: [{ id: 1, applicationId: 'app1', resource: 'resource1', actions: { edit: 1, create: 2, delete: 3, manage: 4 } }],
+      settings: [{ id: 5, applicationId: 'app1', resource: 'resource2', actions: { edit: 5, delete: 6 } }],
+      procedural: [
+        { id: 7, applicationId: 'app1', resource: 'resource3', actions: { execute: 7 } },
+        { id: 8, applicationId: 'app1', resource: 'resource1', actions: { execute: 8 } },
+      ]
+    };
+
+    expect(getCapabilitiesGroupedByTypeAndResource(capabilities)).toEqual(expected);
   });
 });

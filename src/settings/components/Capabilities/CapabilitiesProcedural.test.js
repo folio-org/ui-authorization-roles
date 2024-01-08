@@ -15,6 +15,7 @@ const proceduralTypeCapabilities = [
     action: 'execute',
     type: 'procedural',
     permissions: ['foo.item.post'],
+    actions: { execute: 'execute-id' },
   },
 ];
 
@@ -47,7 +48,7 @@ describe('Procedural capabilities type', () => {
 
   it('renders null if action name is not execute', async () => {
     const mockChangeHandler = jest.fn().mockReturnValue(true);
-    const { queryAllByRole } = renderComponent([{ ...proceduralTypeCapabilities[0], action: 'view' }], mockChangeHandler);
+    const { queryAllByRole } = renderComponent([{ ...proceduralTypeCapabilities[0], actions: { view:'view-id' } }], mockChangeHandler);
 
     expect(queryAllByRole('checkbox')).toHaveLength(0);
   });

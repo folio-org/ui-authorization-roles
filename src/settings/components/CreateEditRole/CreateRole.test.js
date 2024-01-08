@@ -53,6 +53,7 @@ describe('CreateRole component', () => {
         action: 'edit',
         type: 'settings',
         permissions: ['foo.item.post'],
+        actions: { view: 'foo.item.get', edit: 'foo.item.put', manage: 'foo.item.post' },
       },
     ] },
     isSuccess: true });
@@ -93,12 +94,12 @@ describe('CreateRole component', () => {
   });
 
   it('correctly sets checked state of checkbox', async () => {
-    const { getByRole, getAllByRole } = renderComponent();
+    const { getAllByRole } = renderComponent();
 
-    expect(getAllByRole('checkbox')).toHaveLength(1);
+    expect(getAllByRole('checkbox')).toHaveLength(3);
 
-    await userEvent.click(getByRole('checkbox'));
+    await userEvent.click(getAllByRole('checkbox')[0]);
 
-    expect(getByRole('checkbox')).toBeChecked();
+    expect(getAllByRole('checkbox')[0]).toBeChecked();
   });
 });
