@@ -1,11 +1,9 @@
 import React from 'react';
-
-import {
-  translationsProperties,
-  renderWithIntl,
-} from '@folio/stripes-erm-testing';
-import { CapabilitiesDataType } from './CapabilitiesDataType';
+import userEvent from '@testing-library/user-event';
+import { render } from '@folio/jest-config-stripes/testing-library/react';
 import '@testing-library/jest-dom';
+
+import { CapabilitiesDataType } from './CapabilitiesDataType';
 
 const dataTypeCapabilities = [
   {
@@ -17,26 +15,34 @@ const dataTypeCapabilities = [
     action: 'create',
     type: 'data',
     permissions: ['foo.item.post'],
-    actions: {
-      view: false,
-      edit: false,
-      create: false,
-      delete: false,
-      manage: false,
-    },
   },
 ];
 
-const renderComponent = () => renderWithIntl(
-  <CapabilitiesDataType content={dataTypeCapabilities} />,
-  translationsProperties
+const renderComponent = (data, onChange) => render(
+  <CapabilitiesDataType content={data} isCapabilitySelected={jest.fn().mockReturnValue(true)} onChangeCapabilityCheckbox={onChange} />
 );
 
 describe('Data capabilities type', () => {
-  const { getByText } = renderComponent();
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
 
   it('renders fields in the grid', () => {
+    const { getByText } = renderComponent(dataTypeCapabilities);
+
     expect(getByText('Foo Item')).toBeInTheDocument();
     expect(getByText('Circulation')).toBeInTheDocument();
+  });
+
+  it('renders checkboxes', async () => {
+    const mockChangeHandler = jest.fn();
+    const { getAllByRole } = renderComponent(dataTypeCapabilities, mockChangeHandler);
+
+    expect(getAllByRole('checkbox')).toHaveLength(1);
+    expect(getAllByRole('checkbox')[0]).toBeChecked();
+
+    await userEvent.click(getAllByRole('checkbox')[0]);
+
+    expect(mockChangeHandler).toHaveBeenCalled();
   });
 });

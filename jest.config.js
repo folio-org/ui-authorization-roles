@@ -1,8 +1,10 @@
-const jestConf = require('@folio/stripes-erm-testing/jest.config');
 const path = require('path');
+const config = require('@folio/jest-config-stripes');
 
 module.exports = {
-  ...jestConf,
-  testEnvironment: 'jsdom',
-  resolver: path.join(__dirname, './test/jest/resolver.js'),
+  ...config,
+  setupFiles: [
+    ...config.setupFiles,
+    path.join(__dirname, './test/jest/jest.setup.js'),
+  ],
 };

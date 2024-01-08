@@ -2,11 +2,9 @@ import React from 'react';
 
 import userEvent from '@testing-library/user-event';
 import { cleanup } from '@testing-library/react';
-import { renderWithIntl } from '@folio/stripes-erm-testing';
-
-import translationsProperties from '../../../../test/helpers/translationsProperties';
 
 import '@testing-library/jest-dom';
+import { render } from '@folio/jest-config-stripes/testing-library/react';
 import SearchForm from './SearchForm';
 
 const setSearchTerm = jest.fn();
@@ -18,22 +16,20 @@ describe('SearchForm component', () => {
   });
 
   it('renders SearchField and Button components', () => {
-    const { getByTestId } = renderWithIntl(
-      <SearchForm searchTerm="" setSearchTerm={setSearchTerm} onSubmit={onSubmit} />,
-      translationsProperties
+    const { getByTestId } = render(
+      <SearchForm searchTerm="" setSearchTerm={setSearchTerm} onSubmit={onSubmit} />
     );
     expect(getByTestId('search-field')).toBeInTheDocument();
     expect(getByTestId('search-button')).toBeInTheDocument();
   });
 
   it('calls setSearchTerm when the search field content changes', async () => {
-    const { getByTestId } = renderWithIntl(
+    const { getByTestId } = render(
       <SearchForm
         searchTerm=""
         setSearchTerm={setSearchTerm}
         onSubmit={onSubmit}
-      />,
-      translationsProperties
+      />
     );
 
     await userEvent.type(getByTestId('search-field'), 'New test search term');
@@ -42,13 +38,12 @@ describe('SearchForm component', () => {
   });
 
   it('calls onSubmit handler', async () => {
-    const { getByTestId } = renderWithIntl(
+    const { getByTestId } = render(
       <SearchForm
         searchTerm=""
         setSearchTerm={setSearchTerm}
         onSubmit={onSubmit}
-      />,
-      translationsProperties
+      />
     );
 
     userEvent.type(getByTestId('search-field'),

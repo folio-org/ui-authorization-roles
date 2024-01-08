@@ -1,1 +1,1 @@
-export { default as CreateEditRole } from './CreateEditRole';
+export { default as CreateEditRole } from './EditRole';

@@ -19,7 +19,8 @@ import useAuthorizationRoles from '../../../hooks/useAuthorizationRoles';
 import { SearchForm } from '../SearchForm';
 import { RoleDetails } from '../RoleDetails';
 import { RoleDetailsContextProvider } from '../RoleDetails/context/RoleDetailsContext';
-import { CreateEditRole } from '../CreateEditRole';
+import EditRole from '../CreateEditRole/EditRole';
+import CreateRole from '../CreateEditRole/CreateRole';
 
 const SettingsPage = () => {
   const history = useHistory();
@@ -30,7 +31,7 @@ const SettingsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRow, setSelectedRow] = useState(null);
 
-  const { data: capabilitiesList } = useCapabilities();
+  const { groupedCapabilitiesByType } = useCapabilities();
 
   const onRowClick = (_event, row) => setSelectedRow(row);
 
@@ -42,11 +43,11 @@ const SettingsPage = () => {
     </PaneMenu>
   );
 
-  const { roles, isLoading, refetch } = useAuthorizationRoles({ searchTerm });
+  const { roles, isLoading, onSubmitSearch } = useAuthorizationRoles();
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    refetch();
+    onSubmitSearch(searchTerm);
   };
 
   const resultsFormatter = {
@@ -60,11 +61,11 @@ const SettingsPage = () => {
   };
 
   if (queryParams.get('layout') === 'add') {
-    return <CreateEditRole refetch={refetch} />;
+    return <CreateRole />;
   }
 
   if (queryParams.get('layout') === 'edit' && queryParams.get('id') === selectedRow?.id) {
-    return <CreateEditRole refetch={refetch} selectedRole={selectedRow} />;
+    return <EditRole roleId={selectedRow.id} />;
   }
 
   return (
@@ -107,12 +108,11 @@ const SettingsPage = () => {
           onRowClick={onRowClick}
         />
       </Pane>
-
-      {selectedRow && (
-        <RoleDetailsContextProvider capabilitiesList={capabilitiesList} role={selectedRow}>
-          <RoleDetails onClose={() => setSelectedRow(null)} />
-        </RoleDetailsContextProvider>
-      )}
+      <RoleDetailsContextProvider
+        groupedCapabilitiesByType={groupedCapabilitiesByType}
+      >
+        {selectedRow && <RoleDetails roleId={selectedRow.id} onClose={() => setSelectedRow(null)} />}
+      </RoleDetailsContextProvider>
     </Paneset>
   );
 };
