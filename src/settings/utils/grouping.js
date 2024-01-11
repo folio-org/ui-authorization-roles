@@ -9,7 +9,49 @@ export const getKeyBasedArrayGroup = (array, key) => {
     return acc;
   }, {});
 };
-
+/**
+ * Group type by resource
+ *
+ * @param {Object} groupedTypeByResource
+ * returns capabilities object grouped by type, e.g.
+ * {data: [], settings: [], procedural: []}
+ *
+ * @returns {Object} - Returns grouped data by resource,
+ * {data: { Accounts Collection:[
+    {
+        "id": "09d65820-79ea-4ae4-8d01-e1b6eaf0dbd0",
+        "name": "accounts_collection.view",
+        "description": "Get a list of account records",
+        "resource": "Accounts Collection",
+        "action": "view",
+        "applicationId": "app-platform-complete-0.0.2",
+        "type": "data",
+    }
+],
+  procedural: {Accounts Cancel:[
+    {
+        "id": "1f7cb8c4-fc41-44c5-ac29-09a48e82eadf",
+        "name": "accounts_cancel.execute",
+        "description": "Cancels an account",
+        "resource": "Accounts Cancel",
+        "action": "execute",
+        "applicationId": "app-platform-complete-0.0.2",
+        "type": "procedural",
+    },
+    {
+        "id": "238c4-fc41-44c5-23-19348e8443",
+        "name": "accounts_cancel.execute",
+        "description": "Save an account",
+        "resource": "Accounts Cancel",
+        "action": "execute",
+        "applicationId": "app-platform-minimal-1.0.0",
+        "type": "procedural",
+    }
+  ]},
+   settings: {...},
+ *  }}
+ *
+ */
 const groupTypeCapabilityByResource = (data) => Object.entries(data).reduce((acc, [type, capabilities]) => {
   if (!acc[type]) {
     acc[type] = {};
@@ -26,37 +68,49 @@ const groupTypeCapabilityByResource = (data) => Object.entries(data).reduce((acc
   return acc;
 }, {});
 
+
+/**
+ * Groups the data by resource.
+ *
+ * @param {Object} groupedTypeByResource - return value of groupTypeCapabilityByResource
+ *
+ * There might be capabilities with the same resource and different actions, each of them represented by separate item.
+ * The function groups capabilities by resource, e.g. for the same resource and different actions returns single object.
+ *
+ * @returns {Object} - returns capabilities grouped by type -> application -> resource
+ *
+ */
 const groupCapabilitiesObjectByTypeAndResource = (groupedTypeByResource) => {
-  const dataType = [];
-  const proceduralType = [];
-  const settingsType = [];
+  const result = {
+    data: [],
+    procedural: [],
+    settings: []
+  };
 
   Object.entries(groupedTypeByResource).forEach(([type, capabilities]) => {
     Object.entries(capabilities).forEach(([resource, cap]) => {
-      const actionsObject = cap.reduce((acc, item) => {
-        acc[item.action] = item.id;
+      const capabilitiesByApplication = cap.reduce((acc, value) => {
+        if (!acc[value.applicationId]) {
+          acc[value.applicationId] = [value];
+        } else {
+          acc[value.applicationId] = [...acc[value.applicationId], value];
+        }
         return acc;
       }, {});
-      if (type === 'data') {
-        dataType.push({ id: cap[0].id, applicationId: cap[0].applicationId, resource, actions: actionsObject });
-      } else if (type === 'procedural') {
-        proceduralType.push({ id: cap[0].id, applicationId: cap[0].applicationId, resource, actions: actionsObject });
-      } else if (type === 'settings') {
-        settingsType.push({ id: cap[0].id, applicationId: cap[0].applicationId, resource, actions: actionsObject });
-      }
+
+      // Push to result[type] only single row with appropriate application and resource;
+      // example of pushed value - {applicationId: 111, resource: "resource 1", action: {view: "222", edit: "333", manage: "444"}}
+      Object.entries(capabilitiesByApplication).forEach(([application, resourceCapabilities]) => {
+        result[type].push({ id: resourceCapabilities[0].id,
+          applicationId: application,
+          resource,
+          actions: resourceCapabilities.reduce((acc, item) => {
+            acc[item.action] = item.id;
+            return acc;
+          }, {}) });
+      });
     });
   });
-  const result = {};
-
-  if (dataType.length) {
-    result.data = dataType;
-  }
-  if (proceduralType.length) {
-    result.procedural = proceduralType;
-  }
-  if (settingsType.length) {
-    result.settings = settingsType;
-  }
 
   return result;
 };

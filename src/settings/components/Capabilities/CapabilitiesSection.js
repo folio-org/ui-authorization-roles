@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { FormattedMessage } from 'react-intl';
 
+import { isEmpty } from 'lodash';
 import { CapabilitiesSettings } from './CapabilitiesSettings';
 import { CapabilitiesProcedural } from './CapabilitiesProcedural';
 import { CapabilitiesDataType } from './CapabilitiesDataType';
@@ -19,9 +20,9 @@ import { CapabilitiesDataType } from './CapabilitiesDataType';
 
 const CapabilitiesSection = ({ capabilities, readOnly, onChangeCapabilityCheckbox, isCapabilitySelected }) => {
   return <section>
-    {capabilities?.data && <CapabilitiesDataType isCapabilitySelected={isCapabilitySelected} onChangeCapabilityCheckbox={onChangeCapabilityCheckbox} readOnly={readOnly} content={capabilities.data} />}
-    {capabilities?.settings && <CapabilitiesSettings isCapabilitySelected={isCapabilitySelected} onChangeCapabilityCheckbox={onChangeCapabilityCheckbox} readOnly={readOnly} content={capabilities.settings} />}
-    {capabilities?.procedural && <CapabilitiesProcedural isCapabilitySelected={isCapabilitySelected} onChangeCapabilityCheckbox={onChangeCapabilityCheckbox} readOnly={readOnly} content={capabilities.procedural} />}
+    {!isEmpty(capabilities.data) && <CapabilitiesDataType isCapabilitySelected={isCapabilitySelected} onChangeCapabilityCheckbox={onChangeCapabilityCheckbox} readOnly={readOnly} content={capabilities.data} />}
+    {!isEmpty(capabilities.settings) && <CapabilitiesSettings isCapabilitySelected={isCapabilitySelected} onChangeCapabilityCheckbox={onChangeCapabilityCheckbox} readOnly={readOnly} content={capabilities.settings} />}
+    {!isEmpty(capabilities.procedural) && <CapabilitiesProcedural isCapabilitySelected={isCapabilitySelected} onChangeCapabilityCheckbox={onChangeCapabilityCheckbox} readOnly={readOnly} content={capabilities.procedural} />}
     <p id="asterisk-policy-desc"><FormattedMessage id="ui-authorization-roles.details.nonSinglePolicyText" /></p>
   </section>;
 };
