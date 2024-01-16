@@ -15,7 +15,7 @@
     "details.procedural": "Procedimentos",
     "details.nonSinglePolicyText": "* indica que uma ou mais políticas estão definidas para a ação.",
     "columns.application": "Aplicativo",
-    "columns.resource": "Conjuntos de recursos/recursos",
+    "columns.resource": "Recurso",
     "columns.view": "Visualizar",
     "columns.edit": "Editar",
     "columns.create": "Criar",
