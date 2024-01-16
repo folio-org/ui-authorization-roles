@@ -71,10 +71,11 @@ describe('EditRole component', () => {
         action: 'edit',
         type: 'settings',
         permissions: ['foo.item.post'],
+        actions: { view: '8d2da27c-1d56-48b6-9534218d-2bfae6d79dc8', edit: 'ddsfffc-gff-dsgf-9534218d-fdgfdgfdgdfgdfg' },
       },
     ] },
     isSuccess: true });
-    useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: { '8d2da27c-1d56-48b6-9534218d-2bfae6d79dc8': true }, isSuccess: true });
+    useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: { '8d2da27c-1d56-48b6-9534218d-2bfae6d79dc8': true, 'ddsfffc-gff-dsgf-9534218d-fdgfdgfdgdfgdfg': true }, isSuccess: true });
     useRoleById.mockReturnValue({ roleDetails: { id: '1', name: 'Admin', description: 'Description' }, isSuccess: true });
   });
 
@@ -142,21 +143,21 @@ describe('EditRole component', () => {
   });
 
   it('renders initial checkboxes states correctly', () => {
-    const { getByRole, getAllByRole } = render(renderWithRouter(
+    const { getAllByRole } = render(renderWithRouter(
       <EditRole roleId="1" />
     ));
-    expect(getAllByRole('checkbox')).toHaveLength(1);
+    expect(getAllByRole('checkbox')).toHaveLength(2);
 
-    expect(getByRole('checkbox')).toBeChecked();
+    expect(getAllByRole('checkbox')[0]).toBeChecked();
   });
   it('correctly sets unchecked state of checkbox on click', async () => {
-    const { getByRole, getAllByRole } = render(renderWithRouter(
+    const { getAllByRole } = render(renderWithRouter(
       <EditRole roleId="1" />
     ));
-    expect(getAllByRole('checkbox')).toHaveLength(1);
+    expect(getAllByRole('checkbox')).toHaveLength(2);
 
-    await userEvent.click(getByRole('checkbox'));
+    await userEvent.click(getAllByRole('checkbox')[0]);
 
-    expect(getByRole('checkbox')).not.toBeChecked();
+    expect(getAllByRole('checkbox')[0]).not.toBeChecked();
   });
 });

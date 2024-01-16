@@ -12,29 +12,26 @@ const ItemActionCheckbox = ({
 }) => {
   const { getCheckboxAriaLabel } = useCheckboxAriaStates();
 
-  if (!readOnly && item.action !== action) return null;
+  if (!readOnly && !item.actions[action]) return null;
+
   return <CheckboxWithAsterisk
     aria-describedby="asterisk-policy-desc"
     aria-label={getCheckboxAriaLabel(action, item.resource)}
-    onChange={event => onChangeCapabilityCheckbox?.(event, item.id)}
+    onChange={event => {
+      onChangeCapabilityCheckbox?.(event, item.actions[action]);
+    }}
     readOnly={readOnly}
-    checked={isCapabilitySelected(item.id) && action === item.action}
+    checked={isCapabilitySelected(item.actions[action])}
   />;
 };
 
 ItemActionCheckbox.propTypes = {
   item: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
     description: PropTypes.string,
     resource: PropTypes.string.isRequired,
-    action: PropTypes.string.isRequired,
     applicationId: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    metadata: PropTypes.shape({
-      createdDate: PropTypes.string,
-      modifiedDate: PropTypes.string,
-    }),
+    actions: PropTypes.object
   }),
   action: PropTypes.string.isRequired,
   onChangeCapabilityCheckbox: PropTypes.func,
