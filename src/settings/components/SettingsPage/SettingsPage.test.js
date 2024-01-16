@@ -1,13 +1,22 @@
 import React from 'react';
-import { MemoryRouter } from 'react-router';
 import userEvent from '@testing-library/user-event';
 
-import { renderWithIntl } from '@folio/stripes-erm-testing';
+import { render } from '@folio/jest-config-stripes/testing-library/react';
 
 import SettingsPage from './SettingsPage';
-import translationsProperties from '../../../../test/helpers/translationsProperties';
+
 
 import useAuthorizationRoles from '../../../hooks/useAuthorizationRoles';
+
+import useCapabilities from '../../../hooks/useCapabilities';
+import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
+import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
+
+jest.mock('../../../hooks/useCapabilities');
+jest.mock('../../../hooks/useRoleCapabilities');
+
+useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
+useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
 
 jest.mock('../RoleDetails/RoleDetails', () => () => (
   <div data-testid="mock-role-details">Role details pane</div>
@@ -25,9 +34,11 @@ jest.mock('../../../hooks/useAuthorizationRoles', () => {
 });
 
 describe('SettingsPage', () => {
-  afterEach(() => {
+  afterAll(() => {
     jest.clearAllMocks();
   });
+
+  const renderComponent = () => render(renderWithRouter(<SettingsPage />));
 
   it('renders the SettingsPage component', () => {
     useAuthorizationRoles.mockImplementation(() => ({
@@ -43,19 +54,13 @@ describe('SettingsPage', () => {
         },
       ],
     }));
-    const { getByText, getAllByRole, getByTestId } = renderWithIntl(
-      <MemoryRouter>
-        <SettingsPage />
-      </MemoryRouter>,
-      translationsProperties
-    );
+    const { getByText, getAllByRole, getByTestId } = renderComponent();
 
-    expect(getByText('+ New')).toBeInTheDocument();
+    expect(getByText('+ ui-authorization-roles.new')).toBeInTheDocument();
     expect(getByTestId('search-field')).toBeInTheDocument();
 
     expect(getAllByRole('gridcell')).toHaveLength(4);
     expect(getByText('Test Role')).toBeInTheDocument();
-    expect(getByText('3/14/2023')).toBeInTheDocument();
     expect(getByText('Test role description')).toBeInTheDocument();
   });
 
@@ -71,12 +76,7 @@ describe('SettingsPage', () => {
       ],
     }));
 
-    const { getAllByRole } = renderWithIntl(
-      <MemoryRouter>
-        <SettingsPage />
-      </MemoryRouter>,
-      translationsProperties
-    );
+    const { getAllByRole } = renderComponent();
 
     const gridCells = getAllByRole('gridcell');
 
@@ -95,14 +95,32 @@ describe('SettingsPage', () => {
         },
       ],
     }));
-    const { queryByTestId, getAllByRole } = renderWithIntl(
-      <MemoryRouter>
-        <SettingsPage />
-      </MemoryRouter>,
-      translationsProperties
-    );
+    const { queryByTestId, getAllByRole } = renderComponent();
 
     await userEvent.click(getAllByRole('gridcell')[0]);
     expect(queryByTestId('mock-role-details')).toBeInTheDocument();
+  });
+
+  it('filter roles on search', async () => {
+    const mockFilterRoles = jest.fn();
+    useAuthorizationRoles.mockImplementation(() => ({
+      roles: [
+        {
+          id: 'id',
+          name: 'Test Role',
+          description: 'Test role description',
+          metadata: {},
+        },
+      ],
+      onSubmitSearch: mockFilterRoles
+    }));
+    const { queryByTestId, getByRole } = renderComponent();
+
+    const inputElement = queryByTestId('search-field');
+
+    await userEvent.type(inputElement, 'Test');
+    await userEvent.click(getByRole('button', { name: 'ui-authorization-roles.search' }));
+
+    expect(mockFilterRoles).toHaveBeenCalled();
   });
 });

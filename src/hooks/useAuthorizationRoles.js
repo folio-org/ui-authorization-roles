@@ -1,24 +1,36 @@
 import { useQuery } from 'react-query';
 
-import { useNamespace, useOkapiKy } from '@folio/stripes/core';
+import { useOkapiKy, useNamespace, useStripes } from '@folio/stripes/core';
 
+import { useEffect, useState } from 'react';
 import { ROLES_ENDPOINT } from '../constants/endpoints';
 
-const useAuthorizationRoles = ({ searchTerm, options }) => {
+const useAuthorizationRoles = () => {
   const ky = useOkapiKy();
+  const [namespace] = useNamespace();
+  const stripes = useStripes();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [roles, setRoles] = useState([]);
 
-  const [nameSpace] = useNamespace({ key: 'ui-authorization-roles' });
+  const handleSubmitSearch = searchValue => setSearchTerm(searchValue);
 
-  const { data, isLoading, refetch } = useQuery(
-    [nameSpace],
-    () => ky.get(ROLES_ENDPOINT(searchTerm)).json(),
-    { enabled: true, ...options }
+  const { data, isLoading, isSuccess } = useQuery(
+    namespace,
+    () => ky.get(ROLES_ENDPOINT(stripes.config.maxUnpagedResourceCount)).json()
   );
 
+  useEffect(() => {
+    if (isSuccess && data?.roles) {
+      setRoles(data.roles);
+    }
+  }, [data, isSuccess]);
+
+  const filteredRoles = roles.filter(role => role.name.toLowerCase().includes(searchTerm.toLowerCase()));
+
   return {
-    roles: data?.roles || [],
+    roles: filteredRoles,
     isLoading,
-    refetch,
+    onSubmitSearch: handleSubmitSearch,
   };
 };
 

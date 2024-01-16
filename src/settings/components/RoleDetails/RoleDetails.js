@@ -13,27 +13,35 @@ import {
   MetaSection,
   Badge,
   Icon,
+  PaneHeader,
 } from '@folio/stripes/components';
 
 import { useHistory, useLocation } from 'react-router';
 import css from '../../style.css';
-import { Capabilities } from '../Capabilities';
 import { RoleDetailsContext } from './context/RoleDetailsContext';
+import { CapabilitiesSection } from '../Capabilities/CapabilitiesSection';
+import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
+import useRoleById from '../../../hooks/useRoleById';
 
-const RoleDetails = ({ onClose }) => {
+const RoleDetails = ({ onClose, roleId }) => {
   const history = useHistory();
   const { pathname } = useLocation();
+
+  const { roleDetails: role } = useRoleById(roleId);
 
   /*
     Use ConnectedUserName for updatedBy and createdBy fields after Poppy release
    const ConnectedUserName = connect(UserName);
   */
 
-  const { capabilitiesTotalCount, role } = useContext(RoleDetailsContext);
+  const { groupedCapabilitiesByType } = useContext(RoleDetailsContext);
+  const { capabilitiesTotalCount, initialRoleCapabilitiesSelectedMap } = useRoleCapabilities(roleId);
+
+  const isCapabilitySelected = (capabilityId) => !!initialRoleCapabilitiesSelectedMap[capabilityId];
 
   const getActionMenu = () => (
     <>
-      <Button buttonStyle="dropdownItem" onClick={() => history.push(`${pathname}?layout=edit&id=${role.id}`)}>
+      <Button buttonStyle="dropdownItem" onClick={() => history.push(`${pathname}?layout=edit&id=${roleId}`)}>
         <Icon icon="edit">
           <FormattedMessage id="ui-authorization-roles.crud.edit" />
         </Icon>
@@ -49,10 +57,7 @@ const RoleDetails = ({ onClose }) => {
   return (
     <Pane
       defaultWidth="80%"
-      paneTitle={role.name}
-      onClose={onClose}
-      dismissible
-      actionMenu={getActionMenu}
+      renderHeader={renderProps => <PaneHeader {...renderProps} dismissible actionMenu={getActionMenu} paneTitle={role?.name} onClose={onClose} />}
     >
       <AccordionStatus>
         <div className={css.alignRightWrapper}>
@@ -68,19 +73,19 @@ const RoleDetails = ({ onClose }) => {
               id="roleMetadataId"
               contentId="roleMetadata"
               headingLevel={4}
-              createdDate={role.metadata?.createdDate}
-              lastUpdatedDate={role.metadata?.modifiedDate}
+              createdDate={role?.metadata?.createdDate}
+              lastUpdatedDate={role?.metadata?.modifiedDate}
               lastUpdatedBy={
-                role.metadata?.modifiedBy || ''
+                role?.metadata?.modifiedBy || ''
               }
-              createdBy={role.metadata?.createdBy || ''}
+              createdBy={role?.metadata?.createdBy || ''}
             />
             <KeyValue
               data-testid="role-name"
               label={
                 <FormattedMessage id="ui-authorization-roles.columns.name" />
               }
-              value={role.name}
+              value={role?.name}
             />
             <KeyValue
               data-testid="role-description"
@@ -99,7 +104,7 @@ const RoleDetails = ({ onClose }) => {
               </Badge>
             }
           >
-            <Capabilities />
+            <CapabilitiesSection isCapabilitySelected={isCapabilitySelected} capabilities={groupedCapabilitiesByType} readOnly />
           </Accordion>
           <Accordion
             label={
@@ -122,6 +127,7 @@ const RoleDetails = ({ onClose }) => {
 
 RoleDetails.propTypes = {
   onClose: PropTypes.func.isRequired,
+  roleId: PropTypes.string.isRequired
 };
 
 export default RoleDetails;

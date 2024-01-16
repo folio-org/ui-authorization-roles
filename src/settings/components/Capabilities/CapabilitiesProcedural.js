@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { MultiColumnList, Headline } from '@folio/stripes/components';
 import { getApplicationName } from '../../utils';
-import { CheckBoxWithAsterisk } from '../../../components/CheckBoxWithAsterisk/CheckBoxWithAsterisk';
 import { capabilitiesPropType } from '../../types';
 import { columnTranslations } from '../../../constants/translations';
-import { useCheckboxAriaStates } from './helpers';
 
 import css from '../../style.css';
+import ItemActionCheckbox from './ItemActionCheckbox';
 
-const CapabilitiesProcedural = ({ content, readOnly, onChangeCapabilityCheckbox }) => {
-  const { getCheckBoxAriaLabel, formatMessage } = useCheckboxAriaStates();
+const CapabilitiesProcedural = ({ content, readOnly, onChangeCapabilityCheckbox, isCapabilitySelected }) => {
+  const { formatMessage } = useIntl();
 
   const columnMapping = {
     application: formatMessage(columnTranslations.application),
@@ -21,16 +20,20 @@ const CapabilitiesProcedural = ({ content, readOnly, onChangeCapabilityCheckbox 
     // policies: formatMessage(columnTranslations.policies)
   };
 
+  const renderItemActionCheckbox = (item, action) => {
+    return <ItemActionCheckbox
+      action={action}
+      readOnly={readOnly}
+      onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
+      item={item}
+      isCapabilitySelected={isCapabilitySelected}
+    />;
+  };
+
   const resultsFormatter = {
     application: item => getApplicationName(item.applicationId),
     resource:item => item.resource,
-    execute: item => <CheckBoxWithAsterisk
-      aria-describedby="asterisk-policy-desc"
-      aria-label={getCheckBoxAriaLabel('execute', item.resource)}
-      onChange={event => onChangeCapabilityCheckbox(event, item.id, 'execute')}
-      readOnly={readOnly}
-      checked={item.actions.execute}
-    />,
+    execute: item => renderItemActionCheckbox(item, 'execute'),
     // policies: (item) => <Badge>{item.policiesCount}</Badge>
   };
 
@@ -51,6 +54,7 @@ const CapabilitiesProcedural = ({ content, readOnly, onChangeCapabilityCheckbox 
 
 CapabilitiesProcedural.propTypes = { content: capabilitiesPropType,
   readOnly: PropTypes.bool,
-  onChangeCapabilityCheckbox: PropTypes.func };
+  onChangeCapabilityCheckbox: PropTypes.func,
+  isCapabilitySelected: PropTypes.func };
 
 export { CapabilitiesProcedural };
