@@ -112,6 +112,12 @@ const groupCapabilitiesObjectByTypeAndResource = (groupedTypeByResource) => {
     });
   });
 
+  for (const key in result) {
+    if (key in result) {
+      result[key].sort((a, b) => a.applicationId.localeCompare(b.applicationId));
+    }
+  }
+
   return result;
 };
 
