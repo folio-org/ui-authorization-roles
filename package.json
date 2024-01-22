@@ -29,11 +29,13 @@
     "home": "/autorization-roles",
     "hasSettings": true,
     "queryResource": "query",
-    "optionalOkapiInterfaces": {
-      "invoice": "7.0",
-      "erm": "5.0",
-      "organizations": "1.0",
-      "finance.exchange-rate": "1.0"
+    "okapiInterfaces": {
+      "roles": "1.1",
+      "roles-user": "1.0",
+      "capabilities": "1.0",
+      "capability-sets": "1.0",
+      "role-capabilities": "1.0",
+      "role-capability-sets": "1.1"
     },
     "stripesDeps": [
       "@folio/stripes-erm-components"
