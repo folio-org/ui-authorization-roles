@@ -1,6 +1,6 @@
 {
     "meta.title": "Authorization roles",
-    "search": "Search",
+    "search": "Szukaj",
     "new": "Nowy",
     "columns.name": "Nazwa",
     "columns.description": "Opis",
@@ -16,7 +16,7 @@
     "details.nonSinglePolicyText": "* indicates one or more policies are set for the action.",
     "columns.application": "Application",
     "columns.resource": "Resource",
-    "columns.view": "View",
+    "columns.view": "Wyświetl",
     "columns.edit": "Edit",
     "columns.create": "Create",
     "columns.delete": "Delete",
