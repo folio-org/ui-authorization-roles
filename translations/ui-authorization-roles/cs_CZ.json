@@ -15,7 +15,7 @@
     "details.procedural": "Procedurální",
     "details.nonSinglePolicyText": "* označuje, že pro akci je nastaveno jedno nebo více pravidel.",
     "columns.application": "Aplikace",
-    "columns.resource": "Zdroj/sady zdrojů",
+    "columns.resource": "Zdroj",
     "columns.view": "Zobrazit",
     "columns.edit": "Upravit",
     "columns.create": "Vytvořit",
