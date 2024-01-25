@@ -8,6 +8,7 @@ import useCapabilities from '../../../hooks/useCapabilities';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
 import useEditRoleMutation from '../../../hooks/useEditRoleMutation';
 import useRoleById from '../../../hooks/useRoleById';
+import useApplicationCapabilities from '../../../hooks/useApplicationCapabilties';
 
 const EditRole = ({ roleId }) => {
   const history = useHistory();
@@ -20,6 +21,7 @@ const EditRole = ({ roleId }) => {
   const { groupedCapabilitiesByType } = useCapabilities();
   const { initialRoleCapabilitiesSelectedMap, isSuccess: isRoleCapabilitiesFetched } = useRoleCapabilities(roleId);
   const [selectedCapabilitiesMap, setSelectedCapabilitiesMap] = useState({});
+  const { checkedAppIdsMap, onSubmitSelectApplications } = useApplicationCapabilities();
 
   useEffect(() => {
     if (isRoleCapabilitiesFetched) {
@@ -58,6 +60,8 @@ const EditRole = ({ roleId }) => {
     goBack();
   };
 
+  const onSaveSelectedApplications = (appIds, onClose) => onSubmitSelectApplications({ appIds, onClose, setSelectedCapabilitiesMap });
+
   return <CreateEditRoleForm
     title="ui-authorization-roles.crud.editRole"
     roleName={roleName}
@@ -70,6 +74,8 @@ const EditRole = ({ roleId }) => {
     onSubmit={onSubmit}
     onClose={goBack}
     onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
+    checkedAppIdsMap={checkedAppIdsMap}
+    onSaveSelectedApplications={onSaveSelectedApplications}
   />;
 };
 
