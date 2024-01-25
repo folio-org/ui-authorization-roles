@@ -70,7 +70,7 @@
     "@folio/stripes": "^9.0.0",
     "@folio/stripes-cli": "^3.0.0",
     "@folio/stripes-components": "^12.0.0",
-    "@folio/stripes-core": "^10.1.0",
+    "@folio/stripes-core": "^10.0.4",
     "@folio/stripes-erm-components": "^9.0.0",
     "@folio/stripes-erm-testing": "^2.0.0",
     "@folio/stripes-smart-components": "^9.0.0",
