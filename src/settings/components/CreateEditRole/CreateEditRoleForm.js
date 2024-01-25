@@ -34,7 +34,7 @@ function CreateEditRoleForm({
   onChangeCapabilityCheckbox,
   selectedCapabilitiesMap,
   onSaveSelectedApplications,
-  selectedApplicationIds
+  checkedAppIdsMap
 }) {
   const paneFooterRenderStart = <Button
     marginBottom0
@@ -88,7 +88,7 @@ function CreateEditRoleForm({
                 displayWhenOpen={
                   <Pluggable
                     type="select-application"
-                    checkedAppIdsMap={selectedApplicationIds}
+                    checkedAppIdsMap={checkedAppIdsMap}
                     onSave={onSaveSelectedApplications}
                     renderTrigger={props => <Button icon="plus-sign" {...props}><FormattedMessage id="ui-authorization-roles.crud.addApplication" /></Button>}
                   />
@@ -124,7 +124,7 @@ CreateEditRoleForm.propTypes = {
   isLoading: PropTypes.bool,
   selectedCapabilitiesMap : PropTypes.object,
   onSaveSelectedApplications: PropTypes.func,
-  selectedApplicationIds:PropTypes.object,
+  checkedAppIdsMap:PropTypes.object,
 };
 
 export default CreateEditRoleForm;

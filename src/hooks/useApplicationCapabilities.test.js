@@ -1,8 +1,7 @@
 import { renderHook } from '@folio/jest-config-stripes/testing-library/react';
 import { waitFor } from '@testing-library/dom';
 import { useOkapiKy } from '@folio/stripes/core';
-import useApplicationCapabilities from './useApplicationCapabilties'; // Replace with the correct path to your file
-
+import useApplicationCapabilities from './useApplicationCapabilties';
 
 jest.mock('@folio/stripes/core', () => ({
   ...jest.requireActual('@folio/stripes/core'),

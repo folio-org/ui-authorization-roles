@@ -53,7 +53,7 @@ const CreateRole = () => {
     onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
     selectedCapabilitiesMap={selectedCapabilitiesMap}
     onSaveSelectedApplications={onSaveSelectedApplications}
-    selectedApplicationIds={checkedAppIdsMap}
+    checkedAppIdsMap={checkedAppIdsMap}
   />;
 };
 

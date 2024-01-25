@@ -74,8 +74,8 @@ const EditRole = ({ roleId }) => {
     onSubmit={onSubmit}
     onClose={goBack}
     onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
-    checkedAppIdsMap={checkedAppIdsMap}
     onSaveSelectedApplications={onSaveSelectedApplications}
+    checkedAppIdsMap={checkedAppIdsMap}
   />;
 };
 
