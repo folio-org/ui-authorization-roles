@@ -4,6 +4,7 @@ import { useHistory, useLocation } from 'react-router';
 import useCapabilities from '../../../hooks/useCapabilities';
 import CreateEditRoleForm from './CreateEditRoleForm';
 import useCreateRoleMutation from '../../../hooks/useCreateRoleMutation';
+import useApplicationCapabilities from '../../../hooks/useApplicationCapabilties';
 
 const CreateRole = () => {
   const history = useHistory();
@@ -14,6 +15,7 @@ const CreateRole = () => {
 
   const { groupedCapabilitiesByType } = useCapabilities();
   const [selectedCapabilitiesMap, setSelectedCapabilitiesMap] = useState({});
+  const { checkedAppIdsMap, onSubmitSelectApplications } = useApplicationCapabilities();
 
   const onChangeCapabilityCheckbox = useCallback((event, id) => {
     setSelectedCapabilitiesMap({ ...selectedCapabilitiesMap, [id]: event.target.checked });
@@ -35,6 +37,8 @@ const CreateRole = () => {
     goBack();
   };
 
+  const onSaveSelectedApplications = (appIds, onClose) => onSubmitSelectApplications({ appIds, onClose, setSelectedCapabilitiesMap });
+
   return <CreateEditRoleForm
     title="ui-authorization-roles.crud.createRole"
     roleName={roleName}
@@ -48,6 +52,8 @@ const CreateRole = () => {
     onClose={goBack}
     onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
     selectedCapabilitiesMap={selectedCapabilitiesMap}
+    onSaveSelectedApplications={onSaveSelectedApplications}
+    checkedAppIdsMap={checkedAppIdsMap}
   />;
 };
 
