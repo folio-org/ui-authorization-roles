@@ -91,7 +91,9 @@ function CreateEditRoleForm({
                     checkedAppIdsMap={checkedAppIdsMap}
                     onSave={onSaveSelectedApplications}
                     renderTrigger={props => <Button icon="plus-sign" {...props}><FormattedMessage id="ui-authorization-roles.crud.addApplication" /></Button>}
-                  />
+                  >
+                    <FormattedMessage id="ui-authorization-roles.details.capabilities" />
+                  </Pluggable>
                 }
               >
                 <CapabilitiesSection
