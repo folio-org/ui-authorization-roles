@@ -9,7 +9,7 @@ const useRoleCapabilities = (roleId) => {
   const [namespace] = useNamespace({ key: 'ui-authorization-roles:role-capabilities-list' });
 
   const { data, isSuccess } = useQuery([namespace, roleId],
-    () => ky.get(`roles/${roleId}/capabilities?limit=${stripes.config.maxUnpagedResourceCount}}`).json(),
+    () => ky.get(`roles/${roleId}/capabilities?limit=${stripes.config.maxUnpagedResourceCount}`).json(),
     { enabled: !!roleId,
       placeholderData: {
         capabilities: [], totalRecords: 0
