@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useLocation } from 'react-router';
-import { isEqual } from 'lodash';
+import { isEqual, isEmpty } from 'lodash';
 
 import CreateEditRoleForm from './CreateEditRoleForm';
 import useCapabilities from '../../../hooks/useCapabilities';
@@ -18,18 +18,11 @@ const EditRole = ({ roleId }) => {
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');
 
-  const { groupedCapabilitiesByType } = useCapabilities();
-  const { initialRoleCapabilitiesSelectedMap, isSuccess: isRoleCapabilitiesFetched } = useRoleCapabilities(roleId);
+  const { capabilitiesList } = useCapabilities();
+  const { initialRoleCapabilitiesSelectedMap } = useRoleCapabilities(roleId);
   const [selectedCapabilitiesMap, setSelectedCapabilitiesMap] = useState({});
   const { checkedAppIdsMap, onSubmitSelectApplications } = useApplicationCapabilities();
-
-  useEffect(() => {
-    if (isRoleCapabilitiesFetched) {
-      setSelectedCapabilitiesMap(initialRoleCapabilitiesSelectedMap);
-    }
-    /* isRoleCapabilitiesFetched is enough to know if initialCapabilitiesSelectedMap fetched and can be settled safely to local state */
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isRoleCapabilitiesFetched, roleId]);
+  const [capabilities, setCapabilities] = useState({ data: [], procedural: [], settings: [] });
 
   const shouldUpdateCapabilities = !isEqual(initialRoleCapabilitiesSelectedMap, selectedCapabilitiesMap);
 
@@ -60,13 +53,45 @@ const EditRole = ({ roleId }) => {
     goBack();
   };
 
-  const onSaveSelectedApplications = (appIds, onClose) => onSubmitSelectApplications({ appIds, onClose, setSelectedCapabilitiesMap });
+  const handleSelectedCapabilitiesOnChangeSelectedApplication = (applicationCaps) => {
+    if (isEmpty(applicationCaps)) {
+      setSelectedCapabilitiesMap({});
+      return;
+    }
+
+    const intersectedCapabilityValues = applicationCaps.filter(cap => roleCapabilitiesListIds.includes(cap.id))
+      .reduce((acc, cap) => {
+        acc[cap.id] = true;
+        return acc;
+      }, {});
+
+    setSelectedCapabilitiesMap(intersectedCapabilityValues);
+  };
+
+  const onSaveSelectedApplications = (appIds, onClose) => onSubmitSelectApplications({ appIds, onClose, handleSelectedCapabilitiesOnChangeSelectedApplication, setCapabilities });
+
+  useEffect(() => {
+    if (!isEmpty(initialRoleCapabilitiesSelectedMap)) {
+      const appIds = capabilitiesList.filter(cap => Object.keys(initialRoleCapabilitiesSelectedMap).includes(cap.id))
+        .reduce((acc, cap) => {
+          if (!(cap.applicationId in acc)) {
+            acc[cap.applicationId] = true;
+          }
+          return acc;
+        }, {});
+      onSubmitSelectApplications({ appIds, setCapabilities });
+      setSelectedCapabilitiesMap(initialRoleCapabilitiesSelectedMap);
+    }
+    /* initialRoleCapabilitiesSelectedMap is enough to know if initialCapabilitiesSelectedMap fetched and can be settled safely to local state */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialRoleCapabilitiesSelectedMap]);
+
 
   return <CreateEditRoleForm
     title="ui-authorization-roles.crud.editRole"
     roleName={roleName}
     description={description}
-    capabilities={groupedCapabilitiesByType}
+    capabilities={capabilities}
     isCapabilitySelected={isCapabilitySelected}
     isLoading={isLoading}
     setRoleName={setRoleName}

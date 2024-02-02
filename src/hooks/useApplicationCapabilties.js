@@ -21,8 +21,8 @@ const useApplicationCapabilities = () => {
 
     if (isEmpty(listOfIds)) {
       setCapabilities({ data: [], settings: [], procedural: [] });
-      handleSelectedCapabilitiesOnChangeSelectedApplication([]);
-      onClose();
+      handleSelectedCapabilitiesOnChangeSelectedApplication?.([]);
+      onClose?.();
       return;
     }
 
@@ -30,9 +30,9 @@ const useApplicationCapabilities = () => {
       const queryByApplications = listOfIds.map(appId => `applicationId=${appId}`).join(' or ');
       const data = await ky.get(`capabilities?limit=${stripes.config.maxUnpagedResourceCount}&query=${queryByApplications} sortby resource`).json();
 
-      setCapabilities(getCapabilitiesGroupedByTypeAndResource(data.capabilities));
-      handleSelectedCapabilitiesOnChangeSelectedApplication(data.capabilities);
-      onClose();
+      setCapabilities(getCapabilitiesGroupedByTypeAndResource?.(data.capabilities));
+      handleSelectedCapabilitiesOnChangeSelectedApplication?.(data.capabilities);
+      onClose?.();
     } catch (error) {
       console.error(error); // eslint-disable-line no-console
     }
