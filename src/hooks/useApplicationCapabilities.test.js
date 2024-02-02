@@ -9,12 +9,15 @@ jest.mock('@folio/stripes/core', () => ({
 }));
 
 describe('useApplicationCapabilities', () => {
-  it('should set checkedAppIdsMap and call onSubmitSelectApplications', async () => {
+  it('should test if returning checkedAppIds and onSubmitSelectApplications are defined', () => {
     const { result } = renderHook(useApplicationCapabilities);
     expect(result.current.checkedAppIdsMap).toEqual({});
     expect(result.current.onSubmitSelectApplications).toBeDefined();
+  });
+  it('should set checkedAppIdsMap and call onSubmitSelectApplications', async () => {
+    const { result } = renderHook(useApplicationCapabilities);
 
-    const data = { capabilities: [{ id: 1, name: 'cap1' }, { id: 12, name: 'cap12' }] };
+    const data = { capabilities: [{ id: 1, applicationId: 'cap1', type: 'settings' }, { id: 12, applicationId: 'cap12', type: 'data' }] };
 
     const mockGet = jest.fn(() => ({
       json: () => Promise.resolve(data),
@@ -25,24 +28,28 @@ describe('useApplicationCapabilities', () => {
     });
 
     const appIds = { appId1: true, appId2: false, appId3: true };
-    const setSelectedCapabilitiesMap = jest.fn();
+    const setCapabilities = jest.fn();
+    const handleSelectedCapabilitiesOnChangeSelectedApplication = jest.fn();
     const onClose = jest.fn();
 
     await waitFor(async () => {
-      await result.current.onSubmitSelectApplications({ appIds, onClose, setSelectedCapabilitiesMap });
-      expect(setSelectedCapabilitiesMap).toHaveBeenCalledWith({ 1: true, 12: true });
+      await result.current.onSubmitSelectApplications({ appIds, onClose, setCapabilities, handleSelectedCapabilitiesOnChangeSelectedApplication });
+      expect(setCapabilities).toHaveBeenCalledTimes(1);
+      expect(handleSelectedCapabilitiesOnChangeSelectedApplication).toHaveBeenCalledTimes(1);
     });
   });
 
   it('it cleans up all selected capabilities on submit empty list of selected applications', async () => {
     const { result } = renderHook(useApplicationCapabilities);
-    const setSelectedCapabilitiesMap = jest.fn();
+    const setCapabilities = jest.fn();
+    const handleSelectedCapabilitiesOnChangeSelectedApplication = jest.fn();
     const onClose = jest.fn();
 
     await waitFor(async () => {
-      await result.current.onSubmitSelectApplications({ appIds: {}, onClose, setSelectedCapabilitiesMap });
+      await result.current.onSubmitSelectApplications({ appIds: {}, onClose, setCapabilities, handleSelectedCapabilitiesOnChangeSelectedApplication });
 
-      expect(setSelectedCapabilitiesMap).toHaveBeenCalledWith({});
+      expect(setCapabilities).toHaveBeenCalledWith({ data: [], procedural: [], settings: [] });
+      expect(handleSelectedCapabilitiesOnChangeSelectedApplication).toHaveBeenCalledWith([]);
     });
   });
 });

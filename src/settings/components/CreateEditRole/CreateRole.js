@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 
-import useCapabilities from '../../../hooks/useCapabilities';
+import { isEmpty } from 'lodash';
 import CreateEditRoleForm from './CreateEditRoleForm';
 import useCreateRoleMutation from '../../../hooks/useCreateRoleMutation';
 import useApplicationCapabilities from '../../../hooks/useApplicationCapabilties';
@@ -13,9 +13,9 @@ const CreateRole = () => {
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');
 
-  const { groupedCapabilitiesByType } = useCapabilities();
   const [selectedCapabilitiesMap, setSelectedCapabilitiesMap] = useState({});
   const { checkedAppIdsMap, onSubmitSelectApplications } = useApplicationCapabilities();
+  const [capabilities, setCapabilities] = useState({ data: [], settings: [], procedural: [] });
 
   const onChangeCapabilityCheckbox = useCallback((event, id) => {
     setSelectedCapabilitiesMap({ ...selectedCapabilitiesMap, [id]: event.target.checked });
@@ -37,14 +37,29 @@ const CreateRole = () => {
     goBack();
   };
 
-  const onSaveSelectedApplications = (appIds, onClose) => onSubmitSelectApplications({ appIds, onClose, setSelectedCapabilitiesMap });
+  const handleSelectedCapabilitiesOnChangeSelectedApplication = (applicationCaps) => {
+    if (isEmpty(applicationCaps)) {
+      setSelectedCapabilitiesMap({});
+      return;
+    }
+
+    const intersectedCapabilityValues = applicationCaps.filter(cap => roleCapabilitiesListIds.includes(cap.id))
+      .reduce((acc, cap) => {
+        acc[cap.id] = true;
+        return acc;
+      }, {});
+
+    setSelectedCapabilitiesMap(intersectedCapabilityValues);
+  };
+
+  const onSaveSelectedApplications = (appIds, onClose) => onSubmitSelectApplications({ appIds, onClose, setCapabilities, handleSelectedCapabilitiesOnChangeSelectedApplication });
 
   return <CreateEditRoleForm
     title="ui-authorization-roles.crud.createRole"
     roleName={roleName}
     description={description}
     isLoading={isLoading}
-    capabilities={groupedCapabilitiesByType}
+    capabilities={capabilities}
     isCapabilitySelected={isCapabilitySelected}
     setRoleName={setRoleName}
     setDescription={setDescription}

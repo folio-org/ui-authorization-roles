@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { useOkapiKy, useStripes } from '@folio/stripes/core';
 import { isEmpty } from 'lodash';
+import { getCapabilitiesGroupedByTypeAndResource } from '../settings/utils';
 
 /**
  * A hook for managing application capabilities.
@@ -14,12 +15,13 @@ const useApplicationCapabilities = () => {
   const ky = useOkapiKy();
   const stripes = useStripes();
 
-  const onSubmitSelectApplications = async ({ appIds, onClose, setSelectedCapabilitiesMap }) => {
+  const onSubmitSelectApplications = async ({ appIds, onClose, setCapabilities, handleSelectedCapabilitiesOnChangeSelectedApplication }) => {
     setCheckedAppIdsMap(appIds);
     const listOfIds = Object.entries(appIds).filter(([, isSelected]) => isSelected).map(([id]) => id);
 
     if (isEmpty(listOfIds)) {
-      setSelectedCapabilitiesMap({});
+      setCapabilities({ data: [], settings: [], procedural: [] });
+      handleSelectedCapabilitiesOnChangeSelectedApplication([]);
       onClose();
       return;
     }
@@ -28,12 +30,8 @@ const useApplicationCapabilities = () => {
       const queryByApplications = listOfIds.map(appId => `applicationId=${appId}`).join(' or ');
       const data = await ky.get(`capabilities?limit=${stripes.config.maxUnpagedResourceCount}&query=${queryByApplications} sortby resource`).json();
 
-      const capabilities = data.capabilities.reduce((acc, capability) => {
-        acc[capability.id] = true;
-        return acc;
-      }, {});
-
-      setSelectedCapabilitiesMap(capabilities);
+      setCapabilities(getCapabilitiesGroupedByTypeAndResource(data.capabilities));
+      handleSelectedCapabilitiesOnChangeSelectedApplication(data.capabilities);
       onClose();
     } catch (error) {
       console.error(error); // eslint-disable-line no-console
