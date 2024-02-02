@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 
 import { useNamespace, useOkapiKy, useStripes } from '@folio/stripes/core';
+import { getCapabilitiesGroupedByTypeAndResource } from '../settings/utils';
 
 const useRoleCapabilities = (roleId) => {
   const ky = useOkapiKy();
@@ -22,7 +23,12 @@ const useRoleCapabilities = (roleId) => {
     }, {}) || {};
   }, [data]);
 
-  return { initialRoleCapabilitiesSelectedMap, isSuccess, capabilitiesTotalCount: data?.totalRecords || 0 };
+
+  const groupedRoleCapabilitiesByType = useMemo(() => {
+    return getCapabilitiesGroupedByTypeAndResource(data?.capabilities || []);
+  }, [data]);
+
+  return { initialRoleCapabilitiesSelectedMap, isSuccess, capabilitiesTotalCount: data?.totalRecords || 0, groupedRoleCapabilitiesByType: groupedRoleCapabilitiesByType || { data: [], settings: [], procedural: [] } };
 };
 
 export default useRoleCapabilities;
