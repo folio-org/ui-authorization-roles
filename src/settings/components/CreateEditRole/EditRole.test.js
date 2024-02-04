@@ -1,7 +1,7 @@
 import React from 'react';
 
 import userEvent from '@testing-library/user-event';
-import { cleanup } from '@testing-library/react';
+import { cleanup, waitFor } from '@testing-library/react';
 
 import '@testing-library/jest-dom';
 import { render } from '@folio/jest-config-stripes/testing-library/react';
@@ -31,6 +31,11 @@ jest.mock('react-query', () => ({
   useMutation: () => ({ mutate: mockMutateFn, isLoading: false }),
 }));
 
+const mockPluggableOnClose = jest.fn();
+
+const mockSubmitPluginImplementation = jest.fn().mockImplementation((onSave, checkedAppIdsMap) => {
+  return () => onSave(checkedAppIdsMap, mockPluggableOnClose);
+});
 
 jest.mock('@folio/stripes/core', () => ({
   ...jest.requireActual('@folio/stripes/core'),
@@ -38,7 +43,11 @@ jest.mock('@folio/stripes/core', () => ({
     put: mockPutRequest,
     post: mockPostRequest
   }),
-  Pluggable: () => <div>Pluggable</div>
+  Pluggable: ({ checkedAppIdsMap, onSave }) => {
+    return <div data-testid="pluggable-select-application">
+      <button data-testid="pluggable-submit-button" type="button" onClick={mockSubmitPluginImplementation(onSave, checkedAppIdsMap)}>Select application</button>
+    </div>;
+  }
 }));
 
 jest.mock('@folio/stripes/components', () => {
@@ -51,6 +60,7 @@ jest.mock('@folio/stripes/components', () => {
 
 describe('EditRole component', () => {
   const mockMutateRole = jest.fn();
+
   afterEach(() => {
     cleanup();
   });
@@ -61,7 +71,7 @@ describe('EditRole component', () => {
 
   beforeEach(() => {
     useEditRoleMutation.mockReturnValue({ mutateRole: mockMutateRole, isLoading: false });
-    useCapabilities.mockReturnValue({ groupedCapabilitiesByType: { settings: [
+    useCapabilities.mockReturnValue({ capabilitiesList: [
       {
         id: '8d2da27c-1d56-48b6-9534218d-2bfae6d79dc8',
         applicationId: 'Inventory-2.0',
@@ -71,10 +81,8 @@ describe('EditRole component', () => {
         action: 'edit',
         type: 'settings',
         permissions: ['foo.item.post'],
-        actions: { view: '8d2da27c-1d56-48b6-9534218d-2bfae6d79dc8', edit: 'ddsfffc-gff-dsgf-9534218d-fdgfdgfdgdfgdfg' },
-      },
-    ] },
-    capabilitiesList: [],
+      }
+    ],
     isSuccess: true });
     useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: { '8d2da27c-1d56-48b6-9534218d-2bfae6d79dc8': true, 'ddsfffc-gff-dsgf-9534218d-fdgfdgfdgdfgdfg': true }, isSuccess: true });
     useRoleById.mockReturnValue({ roleDetails: { id: '1', name: 'Admin', description: 'Description' }, isSuccess: true });
@@ -118,6 +126,19 @@ describe('EditRole component', () => {
     expect(submitButton).toBeEnabled();
   });
 
+  it('onSubmit invalidates "ui-authorization-roles" query and calls goBack on success', async () => {
+    const { getByRole, getByTestId } = render(renderWithRouter(
+      <EditRole roleId="1" />
+    ));
+    const submitButton = getByRole('button', { name: 'ui-authorization-roles.crud.saveAndClose' });
+
+    await userEvent.type(getByTestId('rolename-input'), 'Change role');
+
+    await userEvent.click(submitButton);
+    expect(submitButton).toBeEnabled();
+    expect(mockMutateRole).toHaveBeenCalledTimes(1);
+  });
+
   it('should set role name and description when selectedRole is truthy', () => {
     const { getByTestId } = render(renderWithRouter(
       <EditRole roleId="1" />
@@ -128,37 +149,17 @@ describe('EditRole component', () => {
 
     expect(roleNameInput.value).toBe('Admin');
     expect(descriptionInput.value).toBe('Description');
+    expect(getByTestId('pluggable-select-application')).toBeInTheDocument();
   });
 
-  // it('onSubmit invalidates "ui-authorization-roles" query and calls goBack on success', async () => {
-  //   const { getByRole, getByTestId } = render(renderWithRouter(
-  //     <EditRole roleId="1" />
-  //   ));
-  //   const submitButton = getByRole('button', { name: 'ui-authorization-roles.crud.saveAndClose' });
+  it('should call on submit action on pluggable application with checked application ids', async () => {
+    const { getByTestId, getAllByRole } = render(renderWithRouter(
+      <EditRole roleId="1" />
+    ));
+    await userEvent.click(getByTestId('pluggable-submit-button'));
 
-  //   await userEvent.type(getByTestId('rolename-input'), 'Change role');
-
-  //   await userEvent.click(submitButton);
-  //   expect(submitButton).toBeEnabled();
-  //   expect(mockMutateRole).toHaveBeenCalledTimes(1);
-  // });
-
-  // it('renders initial checkboxes states correctly', () => {
-  //   const { getAllByRole } = render(renderWithRouter(
-  //     <EditRole roleId="1" />
-  //   ));
-  //   expect(getAllByRole('checkbox')).toHaveLength(2);
-
-  //   expect(getAllByRole('checkbox')[0]).toBeChecked();
-  // });
-  // it('correctly sets unchecked state of checkbox on click', async () => {
-  //   const { getAllByRole } = render(renderWithRouter(
-  //     <EditRole roleId="1" />
-  //   ));
-  //   expect(getAllByRole('checkbox')).toHaveLength(2);
-
-  //   await userEvent.click(getAllByRole('checkbox')[0]);
-
-  //   expect(getAllByRole('checkbox')[0]).not.toBeChecked();
-  // });
+    waitFor(() => {
+      expect(getAllByRole('checkbox')).toHaveLength(1);
+    });
+  });
 });

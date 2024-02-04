@@ -1,10 +1,9 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router';
 
-import { isEmpty } from 'lodash';
 import CreateEditRoleForm from './CreateEditRoleForm';
 import useCreateRoleMutation from '../../../hooks/useCreateRoleMutation';
-import useApplicationCapabilities from '../../../hooks/useApplicationCapabilties';
+import useApplicationCapabilities from '../../../hooks/useApplicationCapabilities';
 
 const CreateRole = () => {
   const history = useHistory();
@@ -13,19 +12,15 @@ const CreateRole = () => {
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');
 
-  const [selectedCapabilitiesMap, setSelectedCapabilitiesMap] = useState({});
-  const { checkedAppIdsMap, onSubmitSelectApplications } = useApplicationCapabilities();
-  const [capabilities, setCapabilities] = useState({ data: [], settings: [], procedural: [] });
+  const { checkedAppIdsMap,
+    onSubmitSelectApplications,
+    capabilities,
+    selectedCapabilitiesMap,
+    setSelectedCapabilitiesMap, roleCapabilitiesListIds } = useApplicationCapabilities();
 
-  const onChangeCapabilityCheckbox = useCallback((event, id) => {
-    setSelectedCapabilitiesMap({ ...selectedCapabilitiesMap, [id]: event.target.checked });
-  }, [selectedCapabilitiesMap]);
+  const onChangeCapabilityCheckbox = (event, id) => setSelectedCapabilitiesMap({ ...selectedCapabilitiesMap, [id]: event.target.checked });
 
   const isCapabilitySelected = (id) => !!selectedCapabilitiesMap[id];
-
-  const roleCapabilitiesListIds = useMemo(() => {
-    return Object.entries(selectedCapabilitiesMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
-  }, [selectedCapabilitiesMap]);
 
   const { mutateRole, isLoading } = useCreateRoleMutation(roleCapabilitiesListIds);
 
@@ -36,23 +31,6 @@ const CreateRole = () => {
     await mutateRole({ name:roleName, description });
     goBack();
   };
-
-  const handleSelectedCapabilitiesOnChangeSelectedApplication = (applicationCaps) => {
-    if (isEmpty(applicationCaps)) {
-      setSelectedCapabilitiesMap({});
-      return;
-    }
-
-    const intersectedCapabilityValues = applicationCaps.filter(cap => roleCapabilitiesListIds.includes(cap.id))
-      .reduce((acc, cap) => {
-        acc[cap.id] = true;
-        return acc;
-      }, {});
-
-    setSelectedCapabilitiesMap(intersectedCapabilityValues);
-  };
-
-  const onSaveSelectedApplications = (appIds, onClose) => onSubmitSelectApplications({ appIds, onClose, setCapabilities, handleSelectedCapabilitiesOnChangeSelectedApplication });
 
   return <CreateEditRoleForm
     title="ui-authorization-roles.crud.createRole"
@@ -67,7 +45,7 @@ const CreateRole = () => {
     onClose={goBack}
     onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
     selectedCapabilitiesMap={selectedCapabilitiesMap}
-    onSaveSelectedApplications={onSaveSelectedApplications}
+    onSaveSelectedApplications={onSubmitSelectApplications}
     checkedAppIdsMap={checkedAppIdsMap}
   />;
 };

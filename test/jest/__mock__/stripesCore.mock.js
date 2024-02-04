@@ -86,7 +86,7 @@ const mockStripesCore = {
   },
 
   // eslint-disable-next-line react/prop-types
-  Pluggable: props => <>{props.children}</>,
+  Pluggable: jest.fn(({ children }) => [children]),
 
   // eslint-disable-next-line react/prop-types
   IfPermission: jest.fn(props => <>{props.children}</>),
@@ -94,7 +94,7 @@ const mockStripesCore = {
   // eslint-disable-next-line react/prop-types
   IfInterface: jest.fn(props => <>{props.children}</>),
 
-  useNamespace: () => ['@folio/inventory'],
+  useNamespace: () => ['@folio/authorization-roles'],
 
   TitleManager: ({ children }) => <>{children}</>,
 
