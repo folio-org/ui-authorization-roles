@@ -1,21 +1,16 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-
 import { render } from '@folio/jest-config-stripes/testing-library/react';
 
 import SettingsPage from './SettingsPage';
 
-
 import useAuthorizationRoles from '../../../hooks/useAuthorizationRoles';
-
-import useCapabilities from '../../../hooks/useCapabilities';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
 import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 
 jest.mock('../../../hooks/useCapabilities');
 jest.mock('../../../hooks/useRoleCapabilities');
 
-useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
 useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
 
 jest.mock('../RoleDetails/RoleDetails', () => () => (

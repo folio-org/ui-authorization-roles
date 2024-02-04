@@ -16,25 +16,99 @@ const data = {
   'totalRecords': 2,
   'capabilities': [
     {
-      'id': 'c11e07f4-8bb0-45d1-a396-aaa72ae3121b',
-      'metadata': {
-        'createdBy': 'a7189e80-0d88-4b65-9ad6-fceb4318107e',
-        'createdDate': '2023-09-04T12:00:00.000+00:00'
-      }
+      id: 'data-capability-id',
+      name: 'capability_roles.manage',
+      description: 'Manage Roles',
+      resource: 'Capability Roles',
+      action: 'manage',
+      applicationId: 'app-platform-minimal-0.0.4',
+      permissions: [
+        'ui-role-capabilities.manage',
+        'role-capabilities.collection.post',
+        'role-capabilities.collection.get',
+      ],
+      type: 'data',
+      metadata: {
+        createdDate: '2023-07-14T15:32:15.56000:00',
+        modifiedDate: '2023-07-14T15:32:15.561+00:00',
+      },
     },
     {
-      'id': 'd928eab1-1d3a-4d67-949e-a0305ced5b6a',
-      'metadata': {
-        'createdBy': 'a7189e80-0d88-4b65-9ad6-fceb4318107e',
-        'createdDate': '2023-09-04T12:00:00.000+00:00'
-      }
+      id: 'settings-capability-id',
+      name: 'capability_roles.manage',
+      description: 'Manage Roles',
+      resource: 'Capability Roles',
+      action: 'manage',
+      applicationId: 'app-platform-minimal-0.0.4',
+      permissions: [
+        'ui-role-capabilities.manage',
+        'role-capabilities.collection.post',
+        'role-capabilities.collection.get',
+      ],
+      type: 'settings',
+      metadata: {
+        createdDate: '2023-07-14T15:32:15.560+00:00',
+        modifiedDate: '2023-07-14T15:32:15.561+00:00',
+      },
+    },
+    {
+      id: 'procedural-capability-id',
+      name: 'capability_roles.manage',
+      description: 'Manage Roles',
+      resource: 'Capability Roles',
+      action: 'manage',
+      applicationId: 'app-platform-minimal-0.0.4',
+      permissions: [
+        'ui-role-capabilities.manage',
+        'role-capabilities.collection.post',
+        'role-capabilities.collection.get',
+      ],
+      type: 'procedural',
+      metadata: {
+        createdDate: '2023-07-14T15:32:15.560+00:00',
+        modifiedDate: '2023-07-14T15:32:15.561+00:00',
+      },
     }
   ]
 };
 
 const expectedInitialRoleCapabilitiesSelectedMap = {
-  'c11e07f4-8bb0-45d1-a396-aaa72ae3121b': true,
-  'd928eab1-1d3a-4d67-949e-a0305ced5b6a': true
+  'data-capability-id': true,
+  'settings-capability-id': true,
+  'procedural-capability-id': true
+};
+
+const expectedGroupedRoleCapabilitiesByType = {
+  'data':  [
+    {
+      'actions':  {
+        'manage': 'data-capability-id',
+      },
+      'applicationId': 'app-platform-minimal-0.0.4',
+      'id': 'data-capability-id',
+      'resource': 'Capability Roles',
+    },
+  ],
+  'procedural':  [
+    {
+      'actions':  {
+        'manage': 'procedural-capability-id',
+      },
+      'applicationId': 'app-platform-minimal-0.0.4',
+      'id': 'procedural-capability-id',
+      'resource': 'Capability Roles',
+    },
+  ],
+  'settings':  [
+    {
+      'actions':  {
+        'manage': 'settings-capability-id',
+      },
+      'applicationId': 'app-platform-minimal-0.0.4',
+      'id': 'settings-capability-id',
+      'resource': 'Capability Roles',
+    },
+  ],
 };
 describe('useRoleById', () => {
   const mockGet = jest.fn(() => ({
@@ -56,5 +130,6 @@ describe('useRoleById', () => {
     expect(result.current.isSuccess).toBe(true);
     expect(result.current.initialRoleCapabilitiesSelectedMap).toEqual(expectedInitialRoleCapabilitiesSelectedMap);
     expect(result.current.capabilitiesTotalCount).toEqual(2);
+    expect(result.current.groupedRoleCapabilitiesByType).toEqual(expectedGroupedRoleCapabilitiesByType);
   });
 });

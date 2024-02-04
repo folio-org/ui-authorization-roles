@@ -28,7 +28,7 @@ const useRoleCapabilities = (roleId) => {
     return getCapabilitiesGroupedByTypeAndResource(data?.capabilities || []);
   }, [data]);
 
-  return { initialRoleCapabilitiesSelectedMap, isSuccess, capabilitiesTotalCount: data?.totalRecords || 0, groupedRoleCapabilitiesByType: groupedRoleCapabilitiesByType || { data: [], settings: [], procedural: [] } };
+  return { initialRoleCapabilitiesSelectedMap, isSuccess, capabilitiesTotalCount: data?.totalRecords || 0, groupedRoleCapabilitiesByType };
 };
 
 export default useRoleCapabilities;
