@@ -7,7 +7,7 @@ import { getCapabilitiesGroupedByTypeAndResource } from '../settings/utils';
 /**
  * A hook for managing application capabilities.
  *
- * checkedAppIdsMap - to store applicaiton ids that have been checked. Helpful on the cases when user close applications modal and open it again.
+ * checkedAppIdsMap -checkedAppIdsMap - store application IDs that have been checked. Helpful when user closes and re-opens applications modal.
  * @returns {Object} An object containing the checkedAppIdsMap and onSubmitSelectApplications function.
  */
 const useApplicationCapabilities = () => {
