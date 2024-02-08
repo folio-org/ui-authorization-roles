@@ -1,3 +1,5 @@
+import { isEmpty } from 'lodash';
+
 export const getKeyBasedArrayGroup = (array, key) => {
   return array.reduce((acc, currentObject) => {
     const keyValue = currentObject[key];
@@ -128,6 +130,8 @@ const groupCapabilitiesObjectByTypeAndResource = (groupedTypeByResource) => {
  * @returns {Object} - The grouped data.
  */
 export const getCapabilitiesGroupedByTypeAndResource = (data) => {
+  if (isEmpty(data)) return { data: [], procedural: [], settings: [] };
+
   const typeBasedGroupCapabilities = getKeyBasedArrayGroup(data, 'type');
   const typesGroupedByResource = groupTypeCapabilityByResource(typeBasedGroupCapabilities);
 

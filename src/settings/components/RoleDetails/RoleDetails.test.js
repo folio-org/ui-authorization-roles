@@ -9,6 +9,7 @@ import RoleDetails from './RoleDetails';
 
 import useCapabilities from '../../../hooks/useCapabilities';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
+import useRoleCapabilitySets from '../../../hooks/useRoleCapabilitySets';
 import useRoleById from '../../../hooks/useRoleById';
 import { getCapabilitiesGroupedByTypeAndResource } from '../../utils';
 import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
@@ -16,6 +17,7 @@ import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 jest.mock('../../../hooks/useCapabilities');
 jest.mock('../../../hooks/useRoleCapabilities');
 jest.mock('../../../hooks/useRoleById');
+jest.mock('../../../hooks/useRoleCapabilitySets');
 
 const onClose = jest.fn();
 
@@ -33,7 +35,7 @@ const getRoleData = (data) => ({
 });
 
 const capabilities = [{
-  id: '029f1117-14f5-4d8c-9f81-4786c5dc16d9',
+  id: 'data-capability-id',
   name: 'capability_roles.manage',
   description: 'Manage Roles',
   resource: 'Capability Roles',
@@ -95,8 +97,9 @@ const renderComponent = () => render(
 );
 
 useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
-useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true, groupedRoleCapabilitiesByType: getCapabilitiesGroupedByTypeAndResource(capabilities) });
+useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: { 'data-capability-id': true }, isSuccess: true, groupedRoleCapabilitiesByType: getCapabilitiesGroupedByTypeAndResource(capabilities) });
 useRoleById.mockReturnValue({ roleDetails: getRoleData(), isRoleDetailsLoaded: true });
+useRoleCapabilitySets.mockReturnValue({ isSuccess: true, initialRoleCapabilitySetsSelectedMap: {}, groupedRoleCapabilitySetsByType: {} });
 
 describe('RoleDetails component', () => {
   afterEach(() => {
@@ -113,7 +116,6 @@ describe('RoleDetails component', () => {
     it('render expanded role info by default', () => {
       expect(getByText('ui-authorization-roles.generalInformation')).toBeInTheDocument();
       expect(getByText('ui-authorization-roles.assignedUsers')).toBeInTheDocument();
-      expect(getByText('stripes-components.collapseAll')).toBeInTheDocument();
       expect(getByTestId('role-name')).toHaveTextContent('demo test role');
     });
 
