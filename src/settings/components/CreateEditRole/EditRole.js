@@ -1,14 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useLocation } from 'react-router';
-import { isEqual } from 'lodash';
+import { isEqual, isEmpty } from 'lodash';
 
 import CreateEditRoleForm from './CreateEditRoleForm';
 import useCapabilities from '../../../hooks/useCapabilities';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
 import useEditRoleMutation from '../../../hooks/useEditRoleMutation';
 import useRoleById from '../../../hooks/useRoleById';
-import useApplicationCapabilities from '../../../hooks/useApplicationCapabilties';
+import useApplicationCapabilities from '../../../hooks/useApplicationCapabilities';
 
 const EditRole = ({ roleId }) => {
   const history = useHistory();
@@ -18,18 +18,13 @@ const EditRole = ({ roleId }) => {
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');
 
-  const { groupedCapabilitiesByType } = useCapabilities();
-  const { initialRoleCapabilitiesSelectedMap, isSuccess: isRoleCapabilitiesFetched } = useRoleCapabilities(roleId);
-  const [selectedCapabilitiesMap, setSelectedCapabilitiesMap] = useState({});
-  const { checkedAppIdsMap, onSubmitSelectApplications } = useApplicationCapabilities();
-
-  useEffect(() => {
-    if (isRoleCapabilitiesFetched) {
-      setSelectedCapabilitiesMap(initialRoleCapabilitiesSelectedMap);
-    }
-    /* isRoleCapabilitiesFetched is enough to know if initialCapabilitiesSelectedMap fetched and can be settled safely to local state */
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isRoleCapabilitiesFetched, roleId]);
+  const { capabilitiesList, isSuccess: isCapabilitiesLoaded } = useCapabilities();
+  const { initialRoleCapabilitiesSelectedMap } = useRoleCapabilities(roleId);
+  const { checkedAppIdsMap,
+    onSubmitSelectApplications,
+    capabilities,
+    selectedCapabilitiesMap,
+    setSelectedCapabilitiesMap, roleCapabilitiesListIds, onInitialLoad } = useApplicationCapabilities();
 
   const shouldUpdateCapabilities = !isEqual(initialRoleCapabilitiesSelectedMap, selectedCapabilitiesMap);
 
@@ -48,10 +43,6 @@ const EditRole = ({ roleId }) => {
 
   const goBack = () => history.push(pathname);
 
-  const roleCapabilitiesListIds = useMemo(() => {
-    return Object.entries(selectedCapabilitiesMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
-  }, [selectedCapabilitiesMap]);
-
   const { mutateRole, isLoading } = useEditRoleMutation({ id: roleId, name: roleName, description }, roleCapabilitiesListIds, shouldUpdateCapabilities);
 
   const onSubmit = async (event) => {
@@ -60,13 +51,28 @@ const EditRole = ({ roleId }) => {
     goBack();
   };
 
-  const onSaveSelectedApplications = (appIds, onClose) => onSubmitSelectApplications({ appIds, onClose, setSelectedCapabilitiesMap });
+  useEffect(() => {
+    if (!isEmpty(initialRoleCapabilitiesSelectedMap) && isCapabilitiesLoaded) {
+      const appIds = capabilitiesList.filter(cap => Object.keys(initialRoleCapabilitiesSelectedMap).includes(cap.id))
+        .reduce((acc, cap) => {
+          if (!(cap.applicationId in acc)) {
+            acc[cap.applicationId] = true;
+          }
+          return acc;
+        }, {});
+      onInitialLoad(appIds);
+      setSelectedCapabilitiesMap(initialRoleCapabilitiesSelectedMap);
+    }
+
+    /* initialRoleCapabilitiesSelectedMap and isCapabilitiesLoaded is enough to know if initialCapabilitiesSelectedMap fetched and can be settled safely to local state */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialRoleCapabilitiesSelectedMap, isCapabilitiesLoaded]);
 
   return <CreateEditRoleForm
     title="ui-authorization-roles.crud.editRole"
     roleName={roleName}
     description={description}
-    capabilities={groupedCapabilitiesByType}
+    capabilities={capabilities}
     isCapabilitySelected={isCapabilitySelected}
     isLoading={isLoading}
     setRoleName={setRoleName}
@@ -74,7 +80,7 @@ const EditRole = ({ roleId }) => {
     onSubmit={onSubmit}
     onClose={goBack}
     onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
-    onSaveSelectedApplications={onSaveSelectedApplications}
+    onSaveSelectedApplications={onSubmitSelectApplications}
     checkedAppIdsMap={checkedAppIdsMap}
   />;
 };

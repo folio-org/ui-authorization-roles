@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
@@ -14,11 +14,11 @@ import {
   Badge,
   Icon,
   PaneHeader,
+  Loading,
 } from '@folio/stripes/components';
 
 import { useHistory, useLocation } from 'react-router';
 import css from '../../style.css';
-import { RoleDetailsContext } from './context/RoleDetailsContext';
 import { CapabilitiesSection } from '../Capabilities/CapabilitiesSection';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
 import useRoleById from '../../../hooks/useRoleById';
@@ -34,8 +34,7 @@ const RoleDetails = ({ onClose, roleId }) => {
    const ConnectedUserName = connect(UserName);
   */
 
-  const { groupedCapabilitiesByType } = useContext(RoleDetailsContext);
-  const { capabilitiesTotalCount, initialRoleCapabilitiesSelectedMap } = useRoleCapabilities(roleId);
+  const { capabilitiesTotalCount, initialRoleCapabilitiesSelectedMap, groupedRoleCapabilitiesByType } = useRoleCapabilities(roleId);
 
   const isCapabilitySelected = (capabilityId) => !!initialRoleCapabilitiesSelectedMap[capabilityId];
 
@@ -57,7 +56,7 @@ const RoleDetails = ({ onClose, roleId }) => {
   return (
     <Pane
       defaultWidth="80%"
-      renderHeader={renderProps => <PaneHeader {...renderProps} dismissible actionMenu={getActionMenu} paneTitle={role?.name} onClose={onClose} />}
+      renderHeader={renderProps => <PaneHeader {...renderProps} dismissible actionMenu={getActionMenu} paneTitle={role?.name || <Loading />} onClose={onClose} />}
     >
       <AccordionStatus>
         <div className={css.alignRightWrapper}>
@@ -104,7 +103,7 @@ const RoleDetails = ({ onClose, roleId }) => {
               </Badge>
             }
           >
-            <CapabilitiesSection isCapabilitySelected={isCapabilitySelected} capabilities={groupedCapabilitiesByType} readOnly />
+            <CapabilitiesSection isCapabilitySelected={isCapabilitySelected} capabilities={groupedRoleCapabilitiesByType} readOnly />
           </Accordion>
           <Accordion
             label={

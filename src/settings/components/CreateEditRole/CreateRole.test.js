@@ -92,14 +92,4 @@ describe('CreateRole component', () => {
 
     expect(mockMutateRole).toHaveBeenCalledWith({ name: 'New Role', description: '' });
   });
-
-  it('correctly sets checked state of checkbox', async () => {
-    const { getAllByRole } = renderComponent();
-
-    expect(getAllByRole('checkbox')).toHaveLength(3);
-
-    await userEvent.click(getAllByRole('checkbox')[0]);
-
-    expect(getAllByRole('checkbox')[0]).toBeChecked();
-  });
 });

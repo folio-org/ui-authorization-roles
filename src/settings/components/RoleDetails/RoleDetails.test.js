@@ -6,7 +6,6 @@ import '@testing-library/jest-dom';
 
 import { render } from '@folio/jest-config-stripes/testing-library/react';
 import RoleDetails from './RoleDetails';
-import { RoleDetailsContextProvider } from './context/RoleDetailsContext';
 
 import useCapabilities from '../../../hooks/useCapabilities';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
@@ -90,15 +89,13 @@ const capabilities = [{
 ];
 
 const renderComponent = () => render(
-  renderWithRouter(<RoleDetailsContextProvider
-    groupedCapabilitiesByType={getCapabilitiesGroupedByTypeAndResource(capabilities)}
-  >
+  renderWithRouter(
     <RoleDetails onClose={onClose} roleId="1" />
-  </RoleDetailsContextProvider>)
+  )
 );
 
 useCapabilities.mockReturnValue({ capabilitiesList: [], isSuccess: true });
-useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
+useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true, groupedRoleCapabilitiesByType: getCapabilitiesGroupedByTypeAndResource(capabilities) });
 useRoleById.mockReturnValue({ roleDetails: getRoleData(), isRoleDetailsLoaded: true });
 
 describe('RoleDetails component', () => {

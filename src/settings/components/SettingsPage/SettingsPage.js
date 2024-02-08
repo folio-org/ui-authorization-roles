@@ -14,11 +14,9 @@ import {
   TextLink,
 } from '@folio/stripes/components';
 
-import useCapabilities from '../../../hooks/useCapabilities';
 import useAuthorizationRoles from '../../../hooks/useAuthorizationRoles';
 import { SearchForm } from '../SearchForm';
 import { RoleDetails } from '../RoleDetails';
-import { RoleDetailsContextProvider } from '../RoleDetails/context/RoleDetailsContext';
 import EditRole from '../CreateEditRole/EditRole';
 import CreateRole from '../CreateEditRole/CreateRole';
 
@@ -30,8 +28,6 @@ const SettingsPage = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRow, setSelectedRow] = useState(null);
-
-  const { groupedCapabilitiesByType } = useCapabilities();
 
   const onRowClick = (_event, row) => setSelectedRow(row);
 
@@ -108,11 +104,7 @@ const SettingsPage = () => {
           onRowClick={onRowClick}
         />
       </Pane>
-      <RoleDetailsContextProvider
-        groupedCapabilitiesByType={groupedCapabilitiesByType}
-      >
-        {selectedRow && <RoleDetails roleId={selectedRow.id} onClose={() => setSelectedRow(null)} />}
-      </RoleDetailsContextProvider>
+      {selectedRow && <RoleDetails roleId={selectedRow.id} onClose={() => setSelectedRow(null)} />}
     </Paneset>
   );
 };

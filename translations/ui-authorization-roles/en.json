@@ -29,7 +29,7 @@
   "crud.editRole": "Edit role",
   "crud.saveAndClose": "Save and close",
   "crud.cancel": "Cancel",
-  "crud.addApplication": "Add application",
+  "crud.selectApplication": "Select application",
   "crud.edit": "Edit",
   "crud.delete": "Delete",
   "form.labels.name": "Name",

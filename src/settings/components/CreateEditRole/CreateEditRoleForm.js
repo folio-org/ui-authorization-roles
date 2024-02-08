@@ -90,7 +90,7 @@ function CreateEditRoleForm({
                     type="select-application"
                     checkedAppIdsMap={checkedAppIdsMap}
                     onSave={onSaveSelectedApplications}
-                    renderTrigger={props => <Button icon="plus-sign" {...props}><FormattedMessage id="ui-authorization-roles.crud.addApplication" /></Button>}
+                    renderTrigger={props => <Button icon="plus-sign" {...props}><FormattedMessage id="ui-authorization-roles.crud.selectApplication" /></Button>}
                   />
                 }
               >
