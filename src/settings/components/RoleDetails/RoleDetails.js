@@ -101,7 +101,7 @@ const RoleDetails = ({ onClose, roleId }) => {
           </Accordion>
           <Accordion
             closedByDefault
-            label="Capability sets"
+            label={<FormattedMessage id="ui-authorization-roles.details.capabilitySets" />}
             displayWhenClosed={
               <Badge>
                 {capabilitySetsTotalCount}

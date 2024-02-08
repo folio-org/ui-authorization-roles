@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 
 function useRoleById(id) {
   const ky = useOkapiKy();
-  const [namespace] = useNamespace({ key: 'ui-authorization-roles:role-data' });
+  const [namespace] = useNamespace({ key: 'role-data' });
   const { data, isSuccess } = useQuery(
     [namespace, id],
     () => ky.get(`roles/${id}`).json(),

@@ -7,7 +7,7 @@ import { getCapabilitiesGroupedByTypeAndResource } from '../settings/utils';
 const useRoleCapabilitySets = (roleId) => {
   const ky = useOkapiKy();
   const stripes = useStripes();
-  const [namespace] = useNamespace({ key: 'ui-authorization-roles:role-capability-sets' });
+  const [namespace] = useNamespace({ key: 'role-capability-sets' });
 
   const { data, isSuccess } = useQuery([namespace, roleId],
     () => ky.get(`roles/${roleId}/capability-sets?limit=${stripes.config.maxUnpagedResourceCount}`).json(),
