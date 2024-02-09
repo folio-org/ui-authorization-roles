@@ -29,7 +29,6 @@
     "crud.editRole": "Upravit roli",
     "crud.saveAndClose": "Uložit a zavřít",
     "crud.cancel": "Zrušit",
-    "crud.addApplication": "Přidat aplikaci",
     "crud.edit": "Upravit",
     "crud.delete": "Smazat",
     "form.labels.name": "Jméno",
@@ -38,5 +37,6 @@
     "applications.select": "Vybrat aplikaci",
     "applications.found": "{count} nalezených aplikací",
     "applications.totalSelected": "Celkem vybráno: {count}",
-    "applications": "Aplikace"
+    "applications": "Aplikace",
+    "crud.selectApplication": "Select application"
 }

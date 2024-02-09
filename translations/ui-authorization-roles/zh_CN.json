@@ -15,7 +15,7 @@
     "details.procedural": "程序",
     "details.nonSinglePolicyText": "* 表示为该操作设置了一项或多项策略。",
     "columns.application": "选择",
-    "columns.resource": "资源/资源集",
+    "columns.resource": "资源",
     "columns.view": "查看",
     "columns.edit": "编辑",
     "columns.create": "创建",
@@ -29,7 +29,6 @@
     "crud.editRole": "编辑角色",
     "crud.saveAndClose": "保存并关闭",
     "crud.cancel": "取消",
-    "crud.addApplication": "添加应用",
     "crud.edit": "编辑",
     "crud.delete": "删除",
     "form.labels.name": "名称",
@@ -38,5 +37,6 @@
     "applications.select": "选择应用",
     "applications.found": "找到{count}个应用",
     "applications.totalSelected": "已选总数： {count}",
-    "applications": "应用"
+    "applications": "应用",
+    "crud.selectApplication": "Select application"
 }
