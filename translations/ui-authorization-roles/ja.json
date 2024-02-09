@@ -29,7 +29,6 @@
     "crud.editRole": "Edit role",
     "crud.saveAndClose": "Save and close",
     "crud.cancel": "Cancel",
-    "crud.addApplication": "Add application",
     "crud.edit": "Edit",
     "crud.delete": "Delete",
     "form.labels.name": "Name",
@@ -38,5 +37,6 @@
     "applications.select": "Select application",
     "applications.found": "{count} applications found",
     "applications.totalSelected": "Total selected: {count}",
-    "applications": "Applications"
+    "applications": "Applications",
+    "crud.selectApplication": "Select application"
 }

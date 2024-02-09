@@ -29,7 +29,6 @@
     "crud.editRole": "Editar função",
     "crud.saveAndClose": "Salvar e fechar",
     "crud.cancel": "Cancelar",
-    "crud.addApplication": "Adicionar aplicativo",
     "crud.edit": "Editar",
     "crud.delete": "Excluir",
     "form.labels.name": "Nome",
@@ -38,5 +37,6 @@
     "applications.select": "Selecione o aplicativo",
     "applications.found": "{count} aplicativos encontrados",
     "applications.totalSelected": "Total selecionado: {count}",
-    "applications": "Aplicativos"
+    "applications": "Aplicativos",
+    "crud.selectApplication": "Selecione o aplicativo"
 }
