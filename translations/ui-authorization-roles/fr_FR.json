@@ -38,5 +38,6 @@
     "applications.found": "{count} applications found",
     "applications.totalSelected": "Total selected: {count}",
     "applications": "Applications",
-    "crud.selectApplication": "Select application"
+    "crud.selectApplication": "Select application",
+    "details.capabilitySets": "Capability sets"
 }

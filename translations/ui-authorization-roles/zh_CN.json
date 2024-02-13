@@ -38,5 +38,6 @@
     "applications.found": "找到{count}个应用",
     "applications.totalSelected": "已选总数： {count}",
     "applications": "应用",
-    "crud.selectApplication": "Select application"
+    "crud.selectApplication": "Select application",
+    "details.capabilitySets": "Capability sets"
 }
