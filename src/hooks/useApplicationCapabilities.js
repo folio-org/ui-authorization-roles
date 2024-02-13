@@ -61,6 +61,7 @@ const useApplicationCapabilities = () => {
   const onInitialLoad = async (appIds) => {
     try {
       const data = await requestApplicationCapabilitiesList(Object.keys(appIds));
+      setCheckedAppIdsMap(appIds);
       setCapabilities(getCapabilitiesGroupedByTypeAndResource(data.capabilities));
     } catch (error) {
       console.error(error); // eslint-disable-line no-console
