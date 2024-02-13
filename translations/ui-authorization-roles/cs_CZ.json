@@ -38,5 +38,6 @@
     "applications.found": "{count} nalezených aplikací",
     "applications.totalSelected": "Celkem vybráno: {count}",
     "applications": "Aplikace",
-    "crud.selectApplication": "Select application"
+    "crud.selectApplication": "Vybrat aplikaci",
+    "details.capabilitySets": "Capability sets"
 }

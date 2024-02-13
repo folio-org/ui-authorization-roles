@@ -38,5 +38,6 @@
     "applications.found": "{count} aplicativos encontrados",
     "applications.totalSelected": "Total selecionado: {count}",
     "applications": "Aplicativos",
-    "crud.selectApplication": "Selecione o aplicativo"
+    "crud.selectApplication": "Selecione o aplicativo",
+    "details.capabilitySets": "Conjuntos de recursos"
 }
