@@ -7,7 +7,7 @@ import { getCapabilitiesGroupedByTypeAndResource } from '../settings/utils';
 const useCapabilities = () => {
   const ky = useOkapiKy();
   const stripes = useStripes();
-  const [namespace] = useNamespace({ key: 'ui-authorization-roles:capabilities-list' });
+  const [namespace] = useNamespace({ key: 'capabilities-list' });
 
   const { data, isSuccess } = useQuery(
     namespace,

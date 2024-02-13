@@ -22,6 +22,7 @@ import css from '../../style.css';
 import { CapabilitiesSection } from '../Capabilities/CapabilitiesSection';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
 import useRoleById from '../../../hooks/useRoleById';
+import useRoleCapabilitySets from '../../../hooks/useRoleCapabilitySets';
 
 const RoleDetails = ({ onClose, roleId }) => {
   const history = useHistory();
@@ -29,10 +30,14 @@ const RoleDetails = ({ onClose, roleId }) => {
 
   const { roleDetails: role } = useRoleById(roleId);
 
+  const { groupedRoleCapabilitySetsByType, capabilitySetsTotalCount, initialRoleCapabilitySetsSelectedMap } = useRoleCapabilitySets(roleId);
+
   /*
     Use ConnectedUserName for updatedBy and createdBy fields after Poppy release
    const ConnectedUserName = connect(UserName);
   */
+
+  const isCapabilitySetSelected = (capabilitySetId) => !!initialRoleCapabilitySetsSelectedMap[capabilitySetId];
 
   const { capabilitiesTotalCount, initialRoleCapabilitiesSelectedMap, groupedRoleCapabilitiesByType } = useRoleCapabilities(roleId);
 
@@ -93,6 +98,17 @@ const RoleDetails = ({ onClose, roleId }) => {
               }
               value={role?.description ?? '-'}
             />
+          </Accordion>
+          <Accordion
+            closedByDefault
+            label={<FormattedMessage id="ui-authorization-roles.details.capabilitySets" />}
+            displayWhenClosed={
+              <Badge>
+                {capabilitySetsTotalCount}
+              </Badge>
+            }
+          >
+            <CapabilitiesSection isCapabilitySelected={isCapabilitySetSelected} capabilities={groupedRoleCapabilitySetsByType} readOnly />
           </Accordion>
           <Accordion
             closedByDefault

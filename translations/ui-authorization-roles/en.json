@@ -10,6 +10,7 @@
   "assignUnassign": "Assign/Unassign",
   "generalInformation": "General Information",
   "details.capabilities": "Capabilities",
+  "details.capabilitySets": "Capability sets",
   "details.data": "Data",
   "details.settings": "Settings",
   "details.procedural": "Procedural",
