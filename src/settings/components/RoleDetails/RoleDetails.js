@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
@@ -11,37 +10,26 @@ import {
   Button,
   KeyValue,
   MetaSection,
-  Badge,
   Icon,
   PaneHeader,
   Loading,
+  NoValue
 } from '@folio/stripes/components';
+
 
 import { useHistory, useLocation } from 'react-router';
 import css from '../../style.css';
-import { CapabilitiesSection } from '../Capabilities/CapabilitiesSection';
-import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
 import useRoleById from '../../../hooks/useRoleById';
-import useRoleCapabilitySets from '../../../hooks/useRoleCapabilitySets';
+import AccordionUsers from './AccordionUsers';
+import AccordionCapabilities from './AccordionCapabilities';
+import AccordionCapabilitySets from './AccordionCapabilitySets';
+
 
 const RoleDetails = ({ onClose, roleId }) => {
   const history = useHistory();
   const { pathname } = useLocation();
 
   const { roleDetails: role } = useRoleById(roleId);
-
-  const { groupedRoleCapabilitySetsByType, capabilitySetsTotalCount, initialRoleCapabilitySetsSelectedMap } = useRoleCapabilitySets(roleId);
-
-  /*
-    Use ConnectedUserName for updatedBy and createdBy fields after Poppy release
-   const ConnectedUserName = connect(UserName);
-  */
-
-  const isCapabilitySetSelected = (capabilitySetId) => !!initialRoleCapabilitySetsSelectedMap[capabilitySetId];
-
-  const { capabilitiesTotalCount, initialRoleCapabilitiesSelectedMap, groupedRoleCapabilitiesByType } = useRoleCapabilities(roleId);
-
-  const isCapabilitySelected = (capabilityId) => !!initialRoleCapabilitiesSelectedMap[capabilityId];
 
   const getActionMenu = () => (
     <>
@@ -96,44 +84,12 @@ const RoleDetails = ({ onClose, roleId }) => {
               label={
                 <FormattedMessage id="ui-authorization-roles.columns.description" />
               }
-              value={role?.description ?? '-'}
+              value={role?.description ?? <NoValue />}
             />
           </Accordion>
-          <Accordion
-            closedByDefault
-            label={<FormattedMessage id="ui-authorization-roles.details.capabilitySets" />}
-            displayWhenClosed={
-              <Badge>
-                {capabilitySetsTotalCount}
-              </Badge>
-            }
-          >
-            <CapabilitiesSection isCapabilitySelected={isCapabilitySetSelected} capabilities={groupedRoleCapabilitySetsByType} readOnly />
-          </Accordion>
-          <Accordion
-            closedByDefault
-            label={<FormattedMessage id="ui-authorization-roles.details.capabilities" />}
-            displayWhenClosed={
-              <Badge>
-                {capabilitiesTotalCount}
-              </Badge>
-            }
-          >
-            <CapabilitiesSection isCapabilitySelected={isCapabilitySelected} capabilities={groupedRoleCapabilitiesByType} readOnly />
-          </Accordion>
-          <Accordion
-            label={
-              <FormattedMessage id="ui-authorization-roles.assignedUsers" />
-            }
-            displayWhenOpen={
-              <Button icon="plus-sign">
-                <FormattedMessage id="ui-authorization-roles.assignUnassign" />
-              </Button>
-            }
-          >
-            {/* To prevent empty children prop console errors */}
-            <></>
-          </Accordion>
+          <AccordionCapabilitySets roleId={roleId} />
+          <AccordionCapabilities roleId={roleId} />
+          <AccordionUsers roleId={roleId} />
         </AccordionSet>
       </AccordionStatus>
     </Pane>
