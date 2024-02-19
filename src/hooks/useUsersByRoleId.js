@@ -3,6 +3,24 @@ import { useChunkedCQLFetch, useNamespace, useOkapiKy } from '@folio/stripes/cor
 import { useQuery } from 'react-query';
 
 /**
+ * chunkedUsersReducer
+ * reducer for useChunkedCQLFetch. Given input
+ *   [
+ *     { data: { users: [1, 2, 3] } },
+ *     { data: { users: [4, 5, 6] } },
+ *   ]
+ * return
+ *   [1, 2, 3, 4, 5, 6]
+ *
+ * @param {Array} list of chunks, each item shaped like { data: { users: [] }}
+ * @returns Array flattened array of user data
+ */
+export const chunkedUsersReducer = (list) => (
+  list.reduce((acc, cur) => {
+    return [...acc, ...(cur?.data?.users ?? [])];
+  }, []));
+
+/**
  * useUsersByRoleId
  * Given a role ID, retrieve assigned users. Ugh, client-side join, 🤢.
  * @param {string} id role ID
@@ -31,11 +49,7 @@ function useUsersByRoleId(id) {
     endpoint: 'users',
     ids,
     queryEnabled: isSuccess,
-    reduceFunction: (list) => (
-      list.reduce((acc, cur) => {
-        return [...acc, ...(cur?.data?.users ?? [])];
-      }, [])
-    ),
+    reduceFunction: chunkedUsersReducer,
   });
 
   return {

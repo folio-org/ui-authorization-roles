@@ -1,11 +1,12 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { act, renderHook } from '@folio/jest-config-stripes/testing-library/react';
 
-// import '../../test/jest/__mock__';
+import {
+  useChunkedCQLFetch,
+  useOkapiKy,
+} from '@folio/stripes/core';
 
-import { useOkapiKy } from '@folio/stripes/core';
-
-import useUsersByRoleId from './useUsersByRoleId';
+import useUsersByRoleId, { chunkedUsersReducer } from './useUsersByRoleId';
 
 const queryClient = new QueryClient();
 const wrapper = ({ children }) => (
@@ -14,26 +15,90 @@ const wrapper = ({ children }) => (
   </QueryClientProvider>
 );
 
-const data = { id: 'role-1', name: 'role-1' };
+const roleData = {
+  'userRoles': [
+    {
+      'userId': 'a1',
+      'roleId': 'roleId',
+    },
+    {
+      'userId': 'b2',
+      'roleId': 'roleId',
+    }
+  ],
+  'totalRecords': 2
+};
+
+const userData = {
+  'users': [
+    {
+      'username': 'aapple',
+      'id': 'a1',
+      'active': true,
+      'type': 'staff',
+      'personal': {
+        'lastName': 'Andrea',
+        'firstName': 'Apple',
+        'middleName': 'A'
+      },
+    },
+    {
+      'username': 'bblick',
+      'id': 'b2',
+      'active': true,
+      'type': 'staff',
+      'personal': {
+        'lastName': 'Bethany',
+        'firstName': 'Blick',
+        'middleName': 'B'
+      }
+    }
+  ],
+  'totalRecords': 2,
+  'resultInfo': {
+    'totalRecords': 2
+  }
+};
 
 describe('useUsersByRoleId', () => {
-  const mockGet = jest.fn(() => ({
-    json: () => Promise.resolve(data),
+  const mockUsersByRoleGet = jest.fn(() => ({
+    json: () => Promise.resolve(roleData),
+  }));
+  const mockUsersGet = jest.fn(() => ({
+    items: userData,
+    isLoading: false,
   }));
 
   beforeEach(() => {
     queryClient.clear();
-    mockGet.mockClear();
+    mockUsersByRoleGet.mockClear();
+    mockUsersGet.mockClear();
     useOkapiKy.mockClear().mockReturnValue({
-      get: mockGet,
+      get: mockUsersByRoleGet,
+    });
+    useChunkedCQLFetch.mockClear().mockReturnValue({
+      items: userData,
+      isLoading: false,
     });
   });
 
   it('fetches users assigned to a role', async () => {
-    const { result } = renderHook(() => useUsersByRoleId(23), { wrapper });
+    const { result } = renderHook(() => useUsersByRoleId('roleId'), { wrapper });
     await act(() => !result.current.isFetching);
 
-    expect(result.current.isSuccess).toBe(true);
-    expect(result.current.roleDetails).toEqual(data);
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.users).toEqual(userData);
+  });
+});
+
+describe('chunkedUsersReducer', () => {
+  it('assembles chunks', () => {
+    const list = [
+      { data: { users: [1, 2, 3] } },
+      { data: { users: [4, 5, 6] } },
+    ];
+
+    const result = chunkedUsersReducer(list);
+    expect(result.length).toBe(6);
   });
 });
