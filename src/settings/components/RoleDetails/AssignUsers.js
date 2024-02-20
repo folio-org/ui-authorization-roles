@@ -1,15 +1,18 @@
+import { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
+import { keyBy } from 'lodash';
 
 import { useStripes, Pluggable } from '@folio/stripes/core';
 
-const AssignUsers = ({ roleId }) => {
+const AssignUsers = ({ selectedUsers }) => {
   const stripes = useStripes();
-  const assignUsers = (users) => {
-    console.log(users);
-  };
 
-  let initialSelectedUsers = [];
+  const initialSelectedUsers = useMemo(() => keyBy(selectedUsers, 'id'), [selectedUsers]);
+
+  const assignUsers = (newSelectedUsers) => {
+    console.log(newSelectedUsers);
+  };
 
   return (
     <Pluggable
@@ -29,7 +32,7 @@ const AssignUsers = ({ roleId }) => {
 };
 
 AssignUsers.propTypes = {
-  roleId: PropTypes.string.isRequired
+  selectedUsers: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default AssignUsers;
