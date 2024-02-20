@@ -76,6 +76,7 @@ const mockStripesCore = {
   },
 
   useOkapiKy: jest.fn(),
+  useChunkedCQLFetch: jest.fn(),
 
   useStripes: () => STRIPES,
 
