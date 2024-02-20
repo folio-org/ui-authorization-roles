@@ -3,7 +3,6 @@ import { FormattedMessage } from 'react-intl';
 
 import {
   Accordion,
-  Button,
   Badge,
   List,
   Loading,
@@ -13,6 +12,7 @@ import {
 import { getFullName } from '@folio/stripes/util';
 
 import useUsersByRoleId from '../../../hooks/useUsersByRoleId';
+import AssignUsers from './AssignUsers';
 
 const userFormatter = (i) => (
   <li key={i.id}>
@@ -42,11 +42,10 @@ const AccordionUsers = ({ roleId }) => {
           {users?.length || 0}
         </Badge>
       }
-      displayWhenOpen={
-        <Button icon="plus-sign">
-          <FormattedMessage id="ui-authorization-roles.assignUnassign" />
-        </Button>
-      }
+      displayWhenOpen={<AssignUsers
+        selectedUsers={users}
+
+      />}
     >
       <List
         items={users}
