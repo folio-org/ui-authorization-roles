@@ -1,8 +1,14 @@
 import { useState } from 'react';
 
-import { useOkapiKy, useStripes } from '@folio/stripes/core';
+import { useOkapiKy } from '@folio/stripes/core';
 import { isEmpty } from 'lodash';
 import { getCapabilitiesGroupedByTypeAndResource } from '../settings/utils';
+
+// how many capabilites to retrieve in one swell foop.
+// the default stripes limit is too small but it doesn't feel like
+// raising that value application-wide is appropriate.
+// see also useCapabilites which implements an identical constant
+const LIMIT = 5000;
 
 /**
  * A hook for managing application capabilities.
@@ -16,7 +22,6 @@ const useApplicationCapabilities = () => {
   const [selectedCapabilitiesMap, setSelectedCapabilitiesMap] = useState({});
 
   const ky = useOkapiKy();
-  const stripes = useStripes();
 
   const roleCapabilitiesListIds = Object.entries(selectedCapabilitiesMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
 
@@ -32,7 +37,7 @@ const useApplicationCapabilities = () => {
 
   const requestApplicationCapabilitiesList = (listOfIds) => {
     const queryByApplications = listOfIds.map(appId => `applicationId=${appId}`).join(' or ');
-    return ky.get(`capabilities?limit=${stripes.config.maxUnpagedResourceCount}&query=${queryByApplications} sortby resource`).json();
+    return ky.get(`capabilities?limit=${LIMIT}&query=${queryByApplications} sortby resource`).json();
   };
 
   const onSubmitSelectApplications = async (appIds, onClose) => {
