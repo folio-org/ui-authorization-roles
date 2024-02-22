@@ -11,7 +11,7 @@ import { columnTranslations } from '../../../constants/translations';
 import css from '../../style.css';
 import ItemActionCheckbox from './ItemActionCheckbox';
 
-const CapabilitiesSettings = ({ content, readOnly, onChangeCapabilityCheckbox, isCapabilitySelected }) => {
+const CapabilitiesSettings = ({ content, readOnly, onChangeCapabilityCheckbox, onChangeCapabilitySetCheckBox, isCapabilitySelected, isCapabilityDisabled }) => {
   const { formatMessage } = useIntl();
 
   const columnMapping = {
@@ -39,8 +39,10 @@ const CapabilitiesSettings = ({ content, readOnly, onChangeCapabilityCheckbox, i
       action={action}
       readOnly={readOnly}
       onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
+      onChangeCapabilitySetCheckBox={onChangeCapabilitySetCheckBox}
       item={item}
       isCapabilitySelected={isCapabilitySelected}
+      isCapabilityDisabled={isCapabilityDisabled}
     />;
   };
 
@@ -71,6 +73,8 @@ const CapabilitiesSettings = ({ content, readOnly, onChangeCapabilityCheckbox, i
 CapabilitiesSettings.propTypes = { content: capabilitiesPropType,
   readOnly: PropTypes.bool,
   onChangeCapabilityCheckbox: PropTypes.func,
-  isCapabilitySelected: PropTypes.func };
+  onChangeCapabilitySetCheckBox: PropTypes.func,
+  isCapabilitySelected: PropTypes.func,
+  isCapabilityDisabled: PropTypes.func };
 
 export { CapabilitiesSettings };

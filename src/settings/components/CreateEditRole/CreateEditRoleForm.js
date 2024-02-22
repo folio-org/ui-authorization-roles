@@ -34,7 +34,11 @@ function CreateEditRoleForm({
   onChangeCapabilityCheckbox,
   selectedCapabilitiesMap,
   onSaveSelectedApplications,
-  checkedAppIdsMap
+  checkedAppIdsMap,
+  capabilitySets,
+  isCapabilitySetSelected,
+  onChangeCapabilitySetCheckbox,
+  isCapabilityDisabled
 }) {
   const paneFooterRenderStart = <Button
     marginBottom0
@@ -83,6 +87,18 @@ function CreateEditRoleForm({
                   data-testid="description-input"
                 />
               </Accordion>
+
+              <Accordion
+                label={<FormattedMessage id="ui-authorization-roles.details.capabilitySets" />}
+              >
+                <CapabilitiesSection
+                  readOnly={false}
+                  isCapabilitySelected={isCapabilitySetSelected}
+                  onChangeCapabilityCheckbox={onChangeCapabilitySetCheckbox}
+                  capabilities={capabilitySets}
+                  roleCapabilitiesListIds={selectedCapabilitiesMap}
+                />
+              </Accordion>
               <Accordion
                 label={<FormattedMessage id="ui-authorization-roles.details.capabilities" />}
                 displayWhenOpen={
@@ -100,7 +116,9 @@ function CreateEditRoleForm({
                   onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
                   capabilities={capabilities}
                   roleCapabilitiesListIds={selectedCapabilitiesMap}
+                  isCapabilityDisabled={isCapabilityDisabled}
                 />
+                <p id="asterisk-policy-desc"><FormattedMessage id="ui-authorization-roles.details.nonSinglePolicyText" /></p>
               </Accordion>
             </AccordionSet>
           </AccordionStatus>
@@ -119,11 +137,15 @@ CreateEditRoleForm.propTypes = {
   description: PropTypes.string,
   setDescription: PropTypes.func,
   isCapabilitySelected: PropTypes.func,
+  isCapabilitySetSelected: PropTypes.func,
   onChangeCapabilityCheckbox: PropTypes.func,
   capabilities: PropTypes.object,
+  capabilitySets: PropTypes.object,
   isLoading: PropTypes.bool,
   selectedCapabilitiesMap : PropTypes.object,
   onSaveSelectedApplications: PropTypes.func,
+  onChangeCapabilitySetCheckbox: PropTypes.func,
+  isCapabilityDisabled:PropTypes.func,
   checkedAppIdsMap:PropTypes.object,
 };
 

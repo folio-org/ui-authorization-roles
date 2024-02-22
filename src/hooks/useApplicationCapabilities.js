@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { useOkapiKy } from '@folio/stripes/core';
 import { isEmpty } from 'lodash';
+import { useStripes } from '@folio/stripes-core';
 import { getCapabilitiesGroupedByTypeAndResource } from '../settings/utils';
 
 // how many capabilites to retrieve in one swell foop.
@@ -17,9 +18,14 @@ const LIMIT = 5000;
  * @returns {Object} An object containing the checkedAppIdsMap and onSubmitSelectApplications function.
  */
 const useApplicationCapabilities = () => {
+  const stripes = useStripes();
   const [checkedAppIdsMap, setCheckedAppIdsMap] = useState({});
   const [capabilities, setCapabilities] = useState({ data: [], procedural: [], settings: [] });
+  const [capabilitySets, setCapabilitySets] = useState({ data: [], procedural: [], settings: [] });
+  const [capabilitySetsList, setCapabilitySetsList] = useState([]);
+  const [disabledCapabilities, setDisabledCapabilities] = useState({});
   const [selectedCapabilitiesMap, setSelectedCapabilitiesMap] = useState({});
+  const [selectedCapabilitySetsMap, setSelectedCapabilitySetsMap] = useState({});
 
   const ky = useOkapiKy();
 
@@ -40,6 +46,11 @@ const useApplicationCapabilities = () => {
     return ky.get(`capabilities?limit=${LIMIT}&query=${queryByApplications} sortby resource`).json();
   };
 
+  const requestApplicationCapabilitySets = (listOfIds) => {
+    const queryByApplications = listOfIds.map(appId => `applicationId=${appId}`).join(' or ');
+    return ky.get(`capability-sets?limit=${stripes.config.maxUnpagedResourceCount}&query=${queryByApplications} sortby resource`).json();
+  };
+
   const onSubmitSelectApplications = async (appIds, onClose) => {
     setCheckedAppIdsMap(appIds);
     const listOfIds = Object.entries(appIds).filter(([, isSelected]) => isSelected).map(([id]) => id);
@@ -52,11 +63,16 @@ const useApplicationCapabilities = () => {
     }
 
     try {
-      const data = await requestApplicationCapabilitiesList(listOfIds);
+      const capabilitiesData = await requestApplicationCapabilitiesList(listOfIds);
+      const capabilitySetsData = await requestApplicationCapabilitySets(listOfIds);
 
-      setCapabilities(getCapabilitiesGroupedByTypeAndResource(data.capabilities));
-      const updatedSelectedCapabilitiesMap = getOnlyIntersectedWithApplicationsCapabilities(data.capabilities);
+      setCapabilitySetsList(capabilitySetsData.capabilitySets);
+      setCapabilities(getCapabilitiesGroupedByTypeAndResource(capabilitiesData.capabilities));
+      setCapabilitySets(getCapabilitiesGroupedByTypeAndResource(capabilitySetsData.capabilitySets));
+      const updatedSelectedCapabilitiesMap = getOnlyIntersectedWithApplicationsCapabilities(capabilitiesData.capabilities);
+      const updatedSelectedCapabilitySetsMap = getOnlyIntersectedWithApplicationsCapabilities(capabilitySetsData.capabilitySets);
       setSelectedCapabilitiesMap(updatedSelectedCapabilitiesMap);
+      setSelectedCapabilitySetsMap(updatedSelectedCapabilitySetsMap);
       onClose?.();
     } catch (error) {
       console.error(error); // eslint-disable-line no-console
@@ -66,7 +82,12 @@ const useApplicationCapabilities = () => {
   const onInitialLoad = async (appIds) => {
     try {
       const data = await requestApplicationCapabilitiesList(Object.keys(appIds));
+      const capabilitySetsData = await requestApplicationCapabilitySets(Object.keys(appIds));
+
       setCheckedAppIdsMap(appIds);
+
+      setCapabilitySetsList(capabilitySetsData.capabilitySets);
+      setCapabilitySets(getCapabilitiesGroupedByTypeAndResource(capabilitySetsData.capabilitySets));
       setCapabilities(getCapabilitiesGroupedByTypeAndResource(data.capabilities));
     } catch (error) {
       console.error(error); // eslint-disable-line no-console
@@ -79,7 +100,13 @@ const useApplicationCapabilities = () => {
     roleCapabilitiesListIds,
     onSubmitSelectApplications,
     setSelectedCapabilitiesMap,
-    onInitialLoad };
+    onInitialLoad,
+    capabilitySets,
+    selectedCapabilitySetsMap,
+    setSelectedCapabilitySetsMap,
+    disabledCapabilities,
+    setDisabledCapabilities,
+    capabilitySetsList };
 };
 
 export default useApplicationCapabilities;

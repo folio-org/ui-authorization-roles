@@ -10,7 +10,7 @@ import { columnTranslations } from '../../../constants/translations';
 import css from '../../style.css';
 import ItemActionCheckbox from './ItemActionCheckbox';
 
-const CapabilitiesProcedural = ({ content, readOnly, onChangeCapabilityCheckbox, isCapabilitySelected }) => {
+const CapabilitiesProcedural = ({ content, readOnly, onChangeCapabilityCheckbox, isCapabilitySelected, isCapabilityDisabled }) => {
   const { formatMessage } = useIntl();
 
   const columnMapping = {
@@ -27,6 +27,7 @@ const CapabilitiesProcedural = ({ content, readOnly, onChangeCapabilityCheckbox,
       onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
       item={item}
       isCapabilitySelected={isCapabilitySelected}
+      isCapabilityDisabled={isCapabilityDisabled}
     />;
   };
 
@@ -55,6 +56,7 @@ const CapabilitiesProcedural = ({ content, readOnly, onChangeCapabilityCheckbox,
 CapabilitiesProcedural.propTypes = { content: capabilitiesPropType,
   readOnly: PropTypes.bool,
   onChangeCapabilityCheckbox: PropTypes.func,
-  isCapabilitySelected: PropTypes.func };
+  isCapabilitySelected: PropTypes.func,
+  isCapabilityDisabled: PropTypes.func };
 
 export { CapabilitiesProcedural };
