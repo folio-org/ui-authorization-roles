@@ -10,6 +10,8 @@ import EditRole from './EditRole';
 import useCapabilities from '../../../hooks/useCapabilities';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
 import useEditRoleMutation from '../../../hooks/useEditRoleMutation';
+import useRoleCapabilitySets from '../../../hooks/useRoleCapabilitySets';
+import useCapabilitySets from '../../../hooks/useCapabilitySets';
 import useRoleById from '../../../hooks/useRoleById';
 import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 
@@ -19,6 +21,8 @@ const mockPostRequest = jest.fn().mockReturnValue({ ok:true });
 jest.mock('../../../hooks/useCapabilities');
 jest.mock('../../../hooks/useRoleCapabilities');
 jest.mock('../../../hooks/useRoleById');
+jest.mock('../../../hooks/useRoleCapabilitySets');
+jest.mock('../../../hooks/useCapabilitySets');
 
 jest.mock('../../../hooks/useEditRoleMutation', () => ({
   __esModule: true,
@@ -86,6 +90,8 @@ describe('EditRole component', () => {
     isSuccess: true });
     useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: { '8d2da27c-1d56-48b6-9534218d-2bfae6d79dc8': true, 'ddsfffc-gff-dsgf-9534218d-fdgfdgfdgdfgdfg': true }, isSuccess: true });
     useRoleById.mockReturnValue({ roleDetails: { id: '1', name: 'Admin', description: 'Description' }, isSuccess: true });
+    useRoleCapabilitySets.mockReturnValue({ initialRoleCapabilitySetsSelectedMap: {}, isSuccess: true });
+    useCapabilitySets.mockReturnValue({ data: [], isSuccess: true });
   });
 
   it('renders TextField and Button components', async () => {

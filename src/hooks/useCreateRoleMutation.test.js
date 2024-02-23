@@ -23,7 +23,7 @@ describe('useCreateRoleMutation', () => {
     });
 
     const { result } = renderHook(
-      () => useCreateRoleMutation(['1', '2', '3']),
+      () => useCreateRoleMutation(['1', '2', '3'], []),
       { wrapper },
     );
 
