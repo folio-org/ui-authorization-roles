@@ -30,6 +30,7 @@ const useApplicationCapabilities = () => {
   const ky = useOkapiKy();
 
   const roleCapabilitiesListIds = Object.entries(selectedCapabilitiesMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
+  const roleCapabilitySetsListIds = Object.entries(selectedCapabilitiesMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
 
   const getOnlyIntersectedWithApplicationsCapabilities = (applicationCaps) => {
     if (isEmpty(applicationCaps)) return {};
@@ -106,7 +107,8 @@ const useApplicationCapabilities = () => {
     setSelectedCapabilitySetsMap,
     disabledCapabilities,
     setDisabledCapabilities,
-    capabilitySetsList };
+    capabilitySetsList,
+    roleCapabilitySetsListIds };
 };
 
 export default useApplicationCapabilities;

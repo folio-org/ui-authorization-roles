@@ -22,7 +22,7 @@ const CreateRole = () => {
     disabledCapabilities,
     setDisabledCapabilities,
     capabilitySets,
-    capabilitySetsList } = useApplicationCapabilities();
+    capabilitySetsList, roleCapabilitySetsListIds } = useApplicationCapabilities();
 
   const onChangeCapabilityCheckbox = (event, id) => setSelectedCapabilitiesMap({ ...selectedCapabilitiesMap, [id]: event.target.checked });
   const onChangeCapabilitySetCheckbox = (event, capabilitySetId) => {
@@ -41,7 +41,7 @@ const CreateRole = () => {
   const isCapabilitySetSelected = id => !!selectedCapabilitySetsMap[id];
   const isCapabilityDisabled = id => !!disabledCapabilities[id];
 
-  const { mutateRole, isLoading } = useCreateRoleMutation(roleCapabilitiesListIds);
+  const { mutateRole, isLoading } = useCreateRoleMutation(roleCapabilitiesListIds, roleCapabilitySetsListIds);
 
   const goBack = () => history.push(pathname);
 

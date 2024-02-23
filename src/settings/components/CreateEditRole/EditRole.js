@@ -36,9 +36,12 @@ const EditRole = ({ roleId }) => {
     selectedCapabilitySetsMap,
     setSelectedCapabilitySetsMap,
     disabledCapabilities,
-    setDisabledCapabilities, capabilitySets } = useApplicationCapabilities();
+    setDisabledCapabilities,
+    capabilitySets,
+    roleCapabilitySetsListIds } = useApplicationCapabilities();
 
   const shouldUpdateCapabilities = !isEqual(initialRoleCapabilitiesSelectedMap, selectedCapabilitiesMap);
+  const shouldUpdateCapabilitySets = !isEqual(initialRoleCapabilitySetsSelectedMap, selectedCapabilitiesMap);
 
   const onChangeCapabilityCheckbox = (event, id) => {
     setSelectedCapabilitiesMap({ ...selectedCapabilitiesMap, [id]: event.target.checked });
@@ -70,7 +73,7 @@ const EditRole = ({ roleId }) => {
 
   const goBack = () => history.push(pathname);
 
-  const { mutateRole, isLoading } = useEditRoleMutation({ id: roleId, name: roleName, description }, roleCapabilitiesListIds, shouldUpdateCapabilities);
+  const { mutateRole, isLoading } = useEditRoleMutation({ id: roleId, name: roleName, description }, { roleCapabilitiesListIds, shouldUpdateCapabilities, roleCapabilitySetsListIds, shouldUpdateCapabilitySets });
 
   const onSubmit = async (event) => {
     event.preventDefault();
