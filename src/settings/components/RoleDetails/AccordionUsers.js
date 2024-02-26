@@ -18,7 +18,7 @@ import useUsergroups from '../../../hooks/useUsergroups';
 import AssignUsers from './AssignUsers';
 
 const AccordionUsers = ({ roleId }) => {
-  const { users, isLoading: usersIsLoading } = useUsersByRoleId(roleId, true);
+  const { users, isLoading: usersIsLoading, refetch } = useUsersByRoleId(roleId, true);
   const { usergroups, isLoading: usergroupsIsLoading } = useUsergroups();
 
   if (usersIsLoading || usergroupsIsLoading) {
@@ -53,6 +53,7 @@ const AccordionUsers = ({ roleId }) => {
       displayWhenOpen={<AssignUsers
         selectedUsers={users}
         roleId={roleId}
+        refetch={refetch}
       />}
     >
       <MultiColumnList

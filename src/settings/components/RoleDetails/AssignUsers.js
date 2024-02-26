@@ -11,7 +11,7 @@ import useUpdateUserRolesMutation from '../../../hooks/useUpdateUserRolesMutatio
 import useAssignRolesToUserMutation from '../../../hooks/useAssignRolesToUserMutation';
 import useDeleteUserRolesMutation from '../../../hooks/useDeleteUserRolesMutation';
 
-const AssignUsers = ({ selectedUsers, roleId }) => {
+const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
   const stripes = useStripes();
   const { mutateUpdateUserRoles } = useUpdateUserRolesMutation();
   const { mutateAssignRolesToUser } = useAssignRolesToUserMutation();
@@ -54,13 +54,16 @@ const AssignUsers = ({ selectedUsers, roleId }) => {
 
             if ((added.includes(userId) || removed.includes(userId)) && roleIds.length) {
               await mutateUpdateUserRoles({ userId, roleIds });
+              refetch();
             } else if (!roleIds.length) {
               // If no more capabilities, DELETE
               await mutateDeleteUserRoles({ userId });
+              refetch();
             }
           } else { // if no matches, POST
             roleIds.push(roleId);
             await mutateAssignRolesToUser({ userId, roleIds });
+            refetch();
           }
         }
       }
