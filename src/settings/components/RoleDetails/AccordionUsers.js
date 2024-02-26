@@ -44,7 +44,7 @@ const AccordionUsers = ({ roleId }) => {
       }
       displayWhenOpen={<AssignUsers
         selectedUsers={users}
-
+        roleId={roleId}
       />}
     >
       <List
