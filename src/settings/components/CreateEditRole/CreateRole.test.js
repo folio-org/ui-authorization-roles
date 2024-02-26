@@ -36,13 +36,14 @@ const renderComponent = () => render(renderWithRouter(<CreateRole />));
 
 describe('CreateRole component', () => {
   const mockMutateRole = jest.fn();
+
   afterEach(() => {
     cleanup();
   });
 
   afterAll(() => {
-    jest.clearAllMocks();
     cleanup();
+    jest.clearAllMocks();
   });
 
   beforeEach(() => {
@@ -50,9 +51,13 @@ describe('CreateRole component', () => {
     useApplicationCapabilities.mockReturnValue({ capabilities: { data:[{ id:'6e59c367-888a-4561-a3f3-3ca677de437f',
       applicationId:'app-platform-complete-0.0.5',
       resource:'Erm Agreements Collection',
-      actions:{ view:'6e59c367-888a-4561-a3f3-3ca677de437f' } }],
+      actions:{ view:'6e59c367-888a-4561-a3f3-3ca677de437f' } },
+    ],
     procedural:[],
-    settings:[] },
+    settings:[{ id:'DDD-888a-4561-a3f3-3ca677de437f',
+      applicationId:'app-platform-complete-0.0.5',
+      resource:'Erm Agreements Collection',
+      actions:{ view:'DDD-888a-4561-a3f3-3ca677de437f' } }] },
     checkedAppIdsMap: { 'app-platform-complete-0.0.5': true },
     roleCapabilitiesListIds: ['5c5198f9-de27-4349-9537-dc0b2b41c8c3'],
     capabilitySets: { data: [{ id:'d2e91897-c10d-46f6-92df-dad77c1e8862',
@@ -116,10 +121,10 @@ describe('CreateRole component', () => {
     expect(mockMutateRole).toHaveBeenCalledWith({ name: 'New Role', description: '' });
   });
 
-  it('test checkbox states', async () => {
+  it('should call capability sets handler actions on click', async () => {
     const { getAllByRole } = renderComponent();
 
-    expect(getAllByRole('checkbox')).toHaveLength(2);
+    expect(getAllByRole('checkbox')).toHaveLength(3);
 
     await userEvent.click(getAllByRole('checkbox')[0]);
 
@@ -127,5 +132,16 @@ describe('CreateRole component', () => {
       expect(mockSetSelectedCapabilitiesMap).toHaveBeenCalledWith({ '6e59c367-888a-4561-a3f3-3ca677de437f': true });
       expect(mockSetSelectedCapabilitiesMap).toHaveBeenCalledTimes(1);
     });
+  });
+
+  it('should call capability checkbox handler actions on click', async () => {
+    const { getAllByRole } = renderComponent();
+
+    await waitFor(() => {
+      expect(getAllByRole('checkbox')).toHaveLength(3);
+    });
+
+    await userEvent.click(getAllByRole('checkbox')[2]);
+    expect(mockSetSelectedCapabilitiesMap).toHaveBeenCalledWith({ 'DDD-888a-4561-a3f3-3ca677de437f': true });
   });
 });

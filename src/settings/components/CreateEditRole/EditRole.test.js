@@ -75,15 +75,16 @@ describe('EditRole component', () => {
   });
 
   afterAll(() => {
+    cleanup();
     jest.clearAllMocks();
   });
 
-  beforeAll(() => {
+  beforeEach(() => {
     useEditRoleMutation.mockReturnValue({ mutateRole: mockMutateRole, isLoading: false });
     useCapabilities.mockReturnValue({ capabilitiesList: [
       {
-        id: '8d2da27c-1d56-48b6-9534218d-2bfae6d79dc8',
-        applicationId: 'Inventory-2.0',
+        id: '6e59c367-888a-4561-a3f3-3ca677de437f',
+        applicationId: 'app-platform-complete-0.0.5',
         name: 'foo_item.delete',
         description: 'Settings: Delete foo item',
         resource: 'Settings source',
@@ -211,7 +212,7 @@ describe('EditRole component', () => {
     expect(getByTestId('pluggable-select-application')).toBeInTheDocument();
   });
 
-  it('should call actions on select capabilities', async () => {
+  it('should call capabilities checkbox handlers', async () => {
     const { getAllByRole } = render(renderWithRouter(
       <EditRole roleId="1" />
     ));
@@ -223,5 +224,12 @@ describe('EditRole component', () => {
 
     await userEvent.click(getAllByRole('checkbox')[0]);
     expect(mockSetSelectedCapabilitiesMap).toHaveBeenCalledWith({ '6e59c367-888a-4561-a3f3-3ca677de437f': true });
+  });
+
+  it('should call initial load function from useApplicationCapabilities hook', async () => {
+    render(renderWithRouter(
+      <EditRole roleId="1" />
+    ));
+    expect(mockOnInitialLoad).toHaveBeenCalledWith({ 'app-platform-complete-0.0.5': true });
   });
 });
