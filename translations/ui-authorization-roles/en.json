@@ -39,5 +39,10 @@
   "applications.select": "Select application",
   "applications.found": "{count} applications found",
   "applications.totalSelected": "Total selected: {count}",
-  "applications": "Applications"
+  "applications": "Applications",
+
+  "role-details.accordion-users.columns.fullName": "Name",
+  "role-details.accordion-users.columns.patronGroup": "Patron group"
+
+
 }
