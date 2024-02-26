@@ -1,16 +1,17 @@
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 
-import { useNamespace, useOkapiKy, useStripes } from '@folio/stripes/core';
+import { useNamespace, useOkapiKy } from '@folio/stripes/core';
+
+import { CAPABILITES_LIMIT } from './constants';
 import { getCapabilitiesGroupedByTypeAndResource } from '../settings/utils';
 
 const useRoleCapabilities = (roleId) => {
   const ky = useOkapiKy();
-  const stripes = useStripes();
   const [namespace] = useNamespace({ key: 'role-capabilities-list' });
 
   const { data, isSuccess } = useQuery([namespace, roleId],
-    () => ky.get(`roles/${roleId}/capabilities?limit=${stripes.config.maxUnpagedResourceCount}`).json(),
+    () => ky.get(`roles/${roleId}/capabilities?limit=${CAPABILITES_LIMIT}`).json(),
     { enabled: !!roleId,
       placeholderData: {
         capabilities: [], totalRecords: 0
