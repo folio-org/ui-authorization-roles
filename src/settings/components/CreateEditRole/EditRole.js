@@ -49,6 +49,7 @@ const EditRole = ({ roleId }) => {
 
   const onChangeCapabilitySetCheckbox = (event, capabilitySetId) => {
     const selectedCapabilitySet = capabilitySetsData.capabilitySets.find(cap => cap.id === capabilitySetId);
+    if (!selectedCapabilitySet) return;
 
     const capabilitySetsCap = selectedCapabilitySet.capabilities.reduce((obj, item) => {
       obj[item] = event.target.checked;

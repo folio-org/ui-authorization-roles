@@ -27,6 +27,8 @@ const CreateRole = () => {
   const onChangeCapabilityCheckbox = (event, id) => setSelectedCapabilitiesMap({ ...selectedCapabilitiesMap, [id]: event.target.checked });
   const onChangeCapabilitySetCheckbox = (event, capabilitySetId) => {
     const selectedCapabilitySet = capabilitySetsList.find(cap => cap.id === capabilitySetId);
+    if (!selectedCapabilitySet) return;
+
     const capabilitySetsCap = selectedCapabilitySet.capabilities.reduce((obj, item) => {
       obj[item] = event.target.checked;
       return obj;
