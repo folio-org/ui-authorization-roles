@@ -14,11 +14,11 @@ import {
   TextArea,
   TextField
 } from '@folio/stripes/components';
-import { Pluggable } from '@folio/stripes/core';
 
 import PropTypes from 'prop-types';
-import { CapabilitiesSection } from '../Capabilities/CapabilitiesSection';
 import css from '../../style.css';
+import CapabilitiesAccordion from './CapabilitiesAccordion';
+import CapabilitySetAccordion from './CapabilitySetAccordion';
 
 function CreateEditRoleForm({
   title,
@@ -34,7 +34,11 @@ function CreateEditRoleForm({
   onChangeCapabilityCheckbox,
   selectedCapabilitiesMap,
   onSaveSelectedApplications,
-  checkedAppIdsMap
+  checkedAppIdsMap,
+  capabilitySets,
+  isCapabilitySetSelected,
+  onChangeCapabilitySetCheckbox,
+  isCapabilityDisabled
 }) {
   const paneFooterRenderStart = <Button
     marginBottom0
@@ -83,25 +87,21 @@ function CreateEditRoleForm({
                   data-testid="description-input"
                 />
               </Accordion>
-              <Accordion
-                label={<FormattedMessage id="ui-authorization-roles.details.capabilities" />}
-                displayWhenOpen={
-                  <Pluggable
-                    type="select-application"
-                    checkedAppIdsMap={checkedAppIdsMap}
-                    onSave={onSaveSelectedApplications}
-                    renderTrigger={props => <Button icon="plus-sign" {...props}><FormattedMessage id="ui-authorization-roles.crud.selectApplication" /></Button>}
-                  />
-                }
-              >
-                <CapabilitiesSection
-                  readOnly={false}
-                  isCapabilitySelected={isCapabilitySelected}
-                  onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
-                  capabilities={capabilities}
-                  roleCapabilitiesListIds={selectedCapabilitiesMap}
-                />
-              </Accordion>
+
+              <CapabilitySetAccordion
+                isCapabilitySetSelected={isCapabilitySetSelected}
+                onChangeCapabilitySetCheckbox={onChangeCapabilitySetCheckbox}
+                capabilitySets={capabilitySets}
+              />
+              <CapabilitiesAccordion
+                checkedAppIdsMap={checkedAppIdsMap}
+                onSaveSelectedApplications={onSaveSelectedApplications}
+                isCapabilitySelected={isCapabilitySelected}
+                onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
+                selectedCapabilitiesMap={selectedCapabilitiesMap}
+                isCapabilityDisabled={isCapabilityDisabled}
+                capabilities={capabilities}
+              />
             </AccordionSet>
           </AccordionStatus>
         </Pane>
@@ -119,11 +119,15 @@ CreateEditRoleForm.propTypes = {
   description: PropTypes.string,
   setDescription: PropTypes.func,
   isCapabilitySelected: PropTypes.func,
+  isCapabilitySetSelected: PropTypes.func,
   onChangeCapabilityCheckbox: PropTypes.func,
   capabilities: PropTypes.object,
+  capabilitySets: PropTypes.object,
   isLoading: PropTypes.bool,
   selectedCapabilitiesMap : PropTypes.object,
   onSaveSelectedApplications: PropTypes.func,
+  onChangeCapabilitySetCheckbox: PropTypes.func,
+  isCapabilityDisabled:PropTypes.func,
   checkedAppIdsMap:PropTypes.object,
 };
 

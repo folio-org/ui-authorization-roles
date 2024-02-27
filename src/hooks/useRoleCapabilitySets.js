@@ -25,7 +25,12 @@ const useRoleCapabilitySets = (roleId) => {
     return getCapabilitiesGroupedByTypeAndResource(data?.capabilitySets || []);
   }, [data]);
 
-  return { initialRoleCapabilitySetsSelectedMap, isSuccess, capabilitySetsTotalCount: data?.totalRecords || 0, groupedRoleCapabilitySetsByType };
+  const capabilitySetsCapabilities = data?.capabilitySets.flatMap(capSet => capSet.capabilities).reduce((obj, item) => {
+    obj[item] = true;
+    return obj;
+  }, {});
+
+  return { initialRoleCapabilitySetsSelectedMap, isSuccess, capabilitySetsTotalCount: data?.totalRecords || 0, groupedRoleCapabilitySetsByType, capabilitySetsCapabilities };
 };
 
 export default useRoleCapabilitySets;
