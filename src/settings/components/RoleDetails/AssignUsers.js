@@ -5,7 +5,7 @@ import { keyBy } from 'lodash';
 
 import { useStripes, Pluggable } from '@folio/stripes/core';
 
-import { getUpdatedUserRoles, combineUserIds } from './utils';
+import { apiVerbs, createUserRolesRequests, combineIds } from './utils';
 import useRoleByUserIds from '../../../hooks/useRoleByUserIds';
 import useUpdateUserRolesMutation from '../../../hooks/useUpdateUserRolesMutation';
 import useAssignRolesToUserMutation from '../../../hooks/useAssignRolesToUserMutation';
@@ -20,7 +20,7 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
   const [isAssignUsers, setIsAssignUsers] = useState(false);
 
   const initialSelectedUsers = useMemo(() => keyBy(selectedUsers, 'id'), [selectedUsers]);
-  const combinedUserIds = combineUserIds(Object.values(initialSelectedUsers).map(x => x.id), users.map(x => x.id));
+  const combinedUserIds = combineIds(Object.values(initialSelectedUsers).map(x => x.id), users.map(x => x.id));
   const { roleDetails, isSuccess } = useRoleByUserIds(combinedUserIds);
 
   const assignUsers = (newSelectedUsers) => {
@@ -31,36 +31,28 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
   useEffect(() => {
     (async () => {
       if (isAssignUsers && isSuccess) {
-        const { added, removed } = getUpdatedUserRoles(Object.values(initialSelectedUsers).map(x => x.id), users.map(x => x.id));
+        const requests = createUserRolesRequests(Object.values(initialSelectedUsers), users, roleId, roleDetails);
+        const promises = [];
 
-        for (const userId of combinedUserIds) {
-          const roleIds = [];
-
-          roleDetails?.userRoles?.forEach(x => {
-            if (x.userId === userId) {
-              roleIds.push(x.roleId);
-            }
-          });
-
-          if (roleIds?.length) {
-            if (added?.includes(userId)) {
-              roleIds.push(roleId);
-            } else if (removed?.includes(userId)) {
-              roleIds.splice(roleIds.indexOf(userId), 1);
-            }
-            // If modified, then PUT
-            if ((added.includes(userId) || removed.includes(userId)) && roleIds.length) {
-              await mutateUpdateUserRoles({ userId, roleIds });
-              refetch();
-            } else if (!roleIds.length) { // If no more capabilities, DELETE
-              await mutateDeleteUserRoles({ userId });
-              refetch();
-            }
-          } else { // if no matches, POST
-            roleIds.push(roleId);
-            await mutateAssignRolesToUser({ userId, roleIds });
-            refetch();
+        for (const request of requests) {
+          const { apiVerb, userId, roleIds } = request;
+          switch (apiVerb) {
+            case apiVerbs.PUT:
+              promises.push(mutateUpdateUserRoles({ userId, roleIds }));
+              break;
+            case apiVerbs.POST:
+              promises.push(mutateAssignRolesToUser({ userId, roleIds }));
+              break;
+            case apiVerbs.DELETE:
+              promises.push(mutateDeleteUserRoles({ userId }));
+              break;
+            default:
+              break;
           }
+        }
+        if (promises.length) {
+          await Promise.all(promises);
+          await refetch();
         }
       }
     })();
