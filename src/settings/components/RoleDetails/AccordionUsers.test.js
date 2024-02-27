@@ -1,4 +1,5 @@
 import { cleanup } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import '@testing-library/jest-dom';
 
 import { render } from '@folio/jest-config-stripes/testing-library/react';
@@ -10,6 +11,8 @@ import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 
 jest.mock('../../../hooks/useUsersByRoleId');
 jest.mock('../../../hooks/useUsergroups');
+
+const queryClient = new QueryClient();
 
 const users = [
   {
@@ -45,7 +48,9 @@ const usergroups = [
 
 const renderComponent = () => render(
   renderWithRouter(
-    <AccordionUsers roleId="1" />
+    <QueryClientProvider client={queryClient}>
+      <AccordionUsers roleId="1" />
+    </QueryClientProvider>
   )
 );
 

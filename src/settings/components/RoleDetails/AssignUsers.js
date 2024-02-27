@@ -29,10 +29,9 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
   };
 
   useEffect(() => {
-    const updateUserRoles = async () => {
+    (async () => {
       if (isAssignUsers && isSuccess) {
 
-        // if matches, PUT. If not, no action.
         const { added, removed } = getUpdatedUserRoles(Object.values(initialSelectedUsers).map(x => x.id), users.map(x => x.id));
 
         for (let userId of combinedUserIds) {
@@ -44,19 +43,17 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
             }
           });
 
-          //const userRoles = roleDetails?.filter(i => { return i.userId === userId; });
-          if (roleIds?.length) { // If modified, then PUT
+          if (roleIds?.length) {
             if (added?.includes(userId)) {
               roleIds.push(roleId);
             } else if (removed?.includes(userId)) {
               roleIds.splice(roleIds.indexOf(userId), 1);
             }
-
+            // If modified, then PUT
             if ((added.includes(userId) || removed.includes(userId)) && roleIds.length) {
               await mutateUpdateUserRoles({ userId, roleIds });
               refetch();
-            } else if (!roleIds.length) {
-              // If no more capabilities, DELETE
+            } else if (!roleIds.length) { // If no more capabilities, DELETE
               await mutateDeleteUserRoles({ userId });
               refetch();
             }
@@ -67,8 +64,7 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
           }
         }
       }
-    }
-    updateUserRoles();
+    })();
   
   }, [isSuccess, roleDetails, isAssignUsers]);
 
