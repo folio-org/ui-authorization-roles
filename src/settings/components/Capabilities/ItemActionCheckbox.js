@@ -8,7 +8,8 @@ const ItemActionCheckbox = ({
   action,
   onChangeCapabilityCheckbox,
   readOnly,
-  isCapabilitySelected
+  isCapabilitySelected,
+  isCapabilityDisabled
 }) => {
   const { getCheckboxAriaLabel } = useCheckboxAriaStates();
 
@@ -20,7 +21,7 @@ const ItemActionCheckbox = ({
     onChange={event => {
       onChangeCapabilityCheckbox?.(event, item.actions[action]);
     }}
-    readOnly={readOnly}
+    readOnly={readOnly || isCapabilityDisabled?.(item.actions[action])}
     checked={isCapabilitySelected(item.actions[action])}
   />;
 };
@@ -36,6 +37,7 @@ ItemActionCheckbox.propTypes = {
   action: PropTypes.string.isRequired,
   onChangeCapabilityCheckbox: PropTypes.func,
   readOnly: PropTypes.bool,
-  isCapabilitySelected: PropTypes.func
+  isCapabilitySelected: PropTypes.func,
+  isCapabilityDisabled: PropTypes.func
 };
 export default ItemActionCheckbox;

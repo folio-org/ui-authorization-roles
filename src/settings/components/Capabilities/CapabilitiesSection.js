@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { FormattedMessage } from 'react-intl';
-
 import { isEmpty } from 'lodash';
 import { CapabilitiesSettings } from './CapabilitiesSettings';
 import { CapabilitiesProcedural } from './CapabilitiesProcedural';
@@ -18,18 +16,18 @@ import { CapabilitiesDataType } from './CapabilitiesDataType';
  * @return {JSX.Element} - the rendered CapabilitiesSection component
  */
 
-const CapabilitiesSection = ({ capabilities, readOnly, onChangeCapabilityCheckbox, isCapabilitySelected }) => {
+const CapabilitiesSection = ({ capabilities, readOnly, onChangeCapabilityCheckbox, isCapabilitySelected, isCapabilityDisabled }) => {
   return <section>
-    {!isEmpty(capabilities.data) && <CapabilitiesDataType isCapabilitySelected={isCapabilitySelected} onChangeCapabilityCheckbox={onChangeCapabilityCheckbox} readOnly={readOnly} content={capabilities.data} />}
-    {!isEmpty(capabilities.settings) && <CapabilitiesSettings isCapabilitySelected={isCapabilitySelected} onChangeCapabilityCheckbox={onChangeCapabilityCheckbox} readOnly={readOnly} content={capabilities.settings} />}
-    {!isEmpty(capabilities.procedural) && <CapabilitiesProcedural isCapabilitySelected={isCapabilitySelected} onChangeCapabilityCheckbox={onChangeCapabilityCheckbox} readOnly={readOnly} content={capabilities.procedural} />}
-    <p id="asterisk-policy-desc"><FormattedMessage id="ui-authorization-roles.details.nonSinglePolicyText" /></p>
+    {!isEmpty(capabilities.data) && <CapabilitiesDataType isCapabilityDisabled={isCapabilityDisabled} isCapabilitySelected={isCapabilitySelected} onChangeCapabilityCheckbox={onChangeCapabilityCheckbox} readOnly={readOnly} content={capabilities.data} />}
+    {!isEmpty(capabilities.settings) && <CapabilitiesSettings isCapabilityDisabled={isCapabilityDisabled} isCapabilitySelected={isCapabilitySelected} onChangeCapabilityCheckbox={onChangeCapabilityCheckbox} readOnly={readOnly} content={capabilities.settings} />}
+    {!isEmpty(capabilities.procedural) && <CapabilitiesProcedural isCapabilityDisabled={isCapabilityDisabled} isCapabilitySelected={isCapabilitySelected} onChangeCapabilityCheckbox={onChangeCapabilityCheckbox} readOnly={readOnly} content={capabilities.procedural} />}
   </section>;
 };
 
 CapabilitiesSection.propTypes = { capabilities: PropTypes.object.isRequired,
   readOnly: PropTypes.bool,
   onChangeCapabilityCheckbox: PropTypes.func,
-  isCapabilitySelected: PropTypes.func };
+  isCapabilitySelected: PropTypes.func,
+  isCapabilityDisabled: PropTypes.func };
 
 export { CapabilitiesSection };
