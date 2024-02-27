@@ -28,7 +28,7 @@ const expectedGroupedCapabilitiesByType = {
   data: [{ id: '11', applicationId: 'application-01', resource: 'Capability data', actions: { create: '11', delete: '22', manage: '33' } }],
   procedural: [{ id: '111', applicationId: 'application-01', resource: 'Capability procedural', actions: { execute: '111' } }],
 };
-describe('useRoleById', () => {
+describe('useCapabilities', () => {
   const mockGet = jest.fn(() => ({
     json: () => Promise.resolve(data),
   }));

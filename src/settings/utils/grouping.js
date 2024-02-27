@@ -103,13 +103,19 @@ const groupCapabilitiesObjectByTypeAndResource = (groupedTypeByResource) => {
       // Push to result[type] only single row with appropriate application and resource;
       // example of pushed value - {applicationId: 111, resource: "resource 1", action: {view: "222", edit: "333", manage: "444"}}
       Object.entries(capabilitiesByApplication).forEach(([application, resourceCapabilities]) => {
-        result[type].push({ id: resourceCapabilities[0].id,
+        const resultItem = { id: resourceCapabilities[0].id,
           applicationId: application,
           resource,
           actions: resourceCapabilities.reduce((acc, item) => {
             acc[item.action] = item.id;
             return acc;
-          }, {}) });
+          }, {}) };
+
+        // capabilities field exist only on capabilitySets entity. If exists flat them into single array
+        if (resourceCapabilities[0].capabilities) {
+          resultItem.capabilities = resourceCapabilities?.flatMap(caps => caps.capabilities);
+        }
+        result[type].push(resultItem);
       });
     });
   });

@@ -8,7 +8,7 @@ import { capabilitiesPropType } from '../../types';
 import { columnTranslations } from '../../../constants/translations';
 import ItemActionCheckbox from './ItemActionCheckbox';
 
-const CapabilitiesDataType = ({ content, readOnly, onChangeCapabilityCheckbox, isCapabilitySelected }) => {
+const CapabilitiesDataType = ({ content, readOnly, onChangeCapabilityCheckbox, isCapabilitySelected, isCapabilityDisabled }) => {
   const { formatMessage } = useIntl();
 
   const columnMapping = {
@@ -39,6 +39,7 @@ const CapabilitiesDataType = ({ content, readOnly, onChangeCapabilityCheckbox, i
     return <ItemActionCheckbox
       action={action}
       readOnly={readOnly}
+      isCapabilityDisabled={isCapabilityDisabled}
       onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
       item={item}
       isCapabilitySelected={isCapabilitySelected}
@@ -93,6 +94,7 @@ const CapabilitiesDataType = ({ content, readOnly, onChangeCapabilityCheckbox, i
 CapabilitiesDataType.propTypes = { content: capabilitiesPropType,
   readOnly: PropTypes.bool,
   onChangeCapabilityCheckbox: PropTypes.func,
-  isCapabilitySelected: PropTypes.func };
+  isCapabilitySelected: PropTypes.func,
+  isCapabilityDisabled: PropTypes.func };
 
 export { CapabilitiesDataType };
