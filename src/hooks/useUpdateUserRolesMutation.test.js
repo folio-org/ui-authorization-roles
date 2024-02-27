@@ -27,7 +27,7 @@ describe('useUpdateUserRolesMutation', () => {
       { wrapper },
     );
 
-    await act(async () => { result.current.mutateUpdateUserRoles({ userId: '123', roleIds: ['1', '2', '3']}); });
+    await act(async () => { result.current.mutateUpdateUserRoles({ userId: '123', roleIds: ['1', '2', '3'] }); });
 
     expect(putMock).toHaveBeenCalled();
   });

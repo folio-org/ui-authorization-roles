@@ -31,10 +31,9 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
   useEffect(() => {
     (async () => {
       if (isAssignUsers && isSuccess) {
-
         const { added, removed } = getUpdatedUserRoles(Object.values(initialSelectedUsers).map(x => x.id), users.map(x => x.id));
 
-        for (let userId of combinedUserIds) {
+        for (const userId of combinedUserIds) {
           const roleIds = [];
 
           roleDetails?.userRoles?.forEach(x => {
@@ -65,8 +64,7 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
         }
       }
     })();
-  
-  }, [isSuccess, roleDetails, isAssignUsers]);
+  }, [isSuccess, roleDetails, isAssignUsers]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Pluggable
@@ -87,6 +85,8 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
 
 AssignUsers.propTypes = {
   selectedUsers: PropTypes.arrayOf(PropTypes.object),
+  roleId: PropTypes.string,
+  refetch: PropTypes.func
 };
 
 export default AssignUsers;

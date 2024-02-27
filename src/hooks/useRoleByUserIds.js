@@ -1,8 +1,5 @@
-import React, { useState } from 'react';
 import { useNamespace, useOkapiKy } from '@folio/stripes/core';
 import { useQuery } from 'react-query';
-
-//const [userIds, setUserIds] = useState([]);
 
 function useRoleByUserIds(users) {
   const ky = useOkapiKy();

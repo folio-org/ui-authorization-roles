@@ -27,7 +27,7 @@ describe('useDeleteUserRolesMutation', () => {
       { wrapper },
     );
 
-    await act(async () => { result.current.mutateDeleteUserRoles({ userId: '123'}); });
+    await act(async () => { result.current.mutateDeleteUserRoles({ userId: '123' }); });
 
     expect(deleteMock).toHaveBeenCalled();
   });
