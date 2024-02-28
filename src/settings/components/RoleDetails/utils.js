@@ -30,7 +30,8 @@ export function createUserRolesRequests(previousSelectedUsers, currentSelectedUs
   for (const userId of combinedUserIds) {
     const roleIds = [];
 
-    for (const userRole of roleDetails?.userRoles) {
+    const userRoles = roleDetails?.userRoles || [];
+    for (const userRole of userRoles) {
       if (userRole?.userId === userId) {
         roleIds.push(userRole.roleId);
       }
