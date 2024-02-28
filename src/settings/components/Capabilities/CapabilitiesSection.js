@@ -18,9 +18,27 @@ import { CapabilitiesDataType } from './CapabilitiesDataType';
 
 const CapabilitiesSection = ({ capabilities, readOnly, onChangeCapabilityCheckbox, isCapabilitySelected, isCapabilityDisabled }) => {
   return <section>
-    {!isEmpty(capabilities.data) && <CapabilitiesDataType isCapabilityDisabled={isCapabilityDisabled} isCapabilitySelected={isCapabilitySelected} onChangeCapabilityCheckbox={onChangeCapabilityCheckbox} readOnly={readOnly} content={capabilities.data} />}
-    {!isEmpty(capabilities.settings) && <CapabilitiesSettings isCapabilityDisabled={isCapabilityDisabled} isCapabilitySelected={isCapabilitySelected} onChangeCapabilityCheckbox={onChangeCapabilityCheckbox} readOnly={readOnly} content={capabilities.settings} />}
-    {!isEmpty(capabilities.procedural) && <CapabilitiesProcedural isCapabilityDisabled={isCapabilityDisabled} isCapabilitySelected={isCapabilitySelected} onChangeCapabilityCheckbox={onChangeCapabilityCheckbox} readOnly={readOnly} content={capabilities.procedural} />}
+    {!isEmpty(capabilities.data) && <CapabilitiesDataType
+      isCapabilityDisabled={isCapabilityDisabled}
+      isCapabilitySelected={isCapabilitySelected}
+      onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
+      readOnly={readOnly}
+      content={capabilities.data}
+    />}
+    {!isEmpty(capabilities.settings) && <CapabilitiesSettings
+      isCapabilityDisabled={isCapabilityDisabled}
+      isCapabilitySelected={isCapabilitySelected}
+      onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
+      readOnly={readOnly}
+      content={capabilities.settings}
+    />}
+    {!isEmpty(capabilities.procedural) && <CapabilitiesProcedural
+      isCapabilityDisabled={isCapabilityDisabled}
+      isCapabilitySelected={isCapabilitySelected}
+      onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
+      readOnly={readOnly}
+      content={capabilities.procedural}
+    />}
   </section>;
 };
 

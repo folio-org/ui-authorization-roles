@@ -15,6 +15,7 @@ import { getCapabilitiesGroupedByTypeAndResource } from '../settings/utils';
  */
 const useApplicationCapabilities = () => {
   const stripes = useStripes();
+  const [isInitialLoaded, setIsInitialLoaded] = useState(false);
   const [checkedAppIdsMap, setCheckedAppIdsMap] = useState({});
   const [capabilities, setCapabilities] = useState({ data: [], procedural: [], settings: [] });
   const [capabilitySets, setCapabilitySets] = useState({ data: [], procedural: [], settings: [] });
@@ -26,7 +27,7 @@ const useApplicationCapabilities = () => {
   const ky = useOkapiKy();
 
   const roleCapabilitiesListIds = Object.entries(selectedCapabilitiesMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
-  const roleCapabilitySetsListIds = Object.entries(selectedCapabilitiesMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
+  const roleCapabilitySetsListIds = Object.entries(selectedCapabilitySetsMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
 
   const getOnlyIntersectedWithApplicationsCapabilities = (applicationCaps) => {
     if (isEmpty(applicationCaps)) return {};
@@ -70,6 +71,7 @@ const useApplicationCapabilities = () => {
       const updatedSelectedCapabilitySetsMap = getOnlyIntersectedWithApplicationsCapabilities(capabilitySetsData.capabilitySets);
       setSelectedCapabilitiesMap(updatedSelectedCapabilitiesMap);
       setSelectedCapabilitySetsMap(updatedSelectedCapabilitySetsMap);
+      setIsInitialLoaded(true);
       onClose?.();
     } catch (error) {
       console.error(error); // eslint-disable-line no-console
@@ -86,6 +88,7 @@ const useApplicationCapabilities = () => {
       setCapabilitySetsList(capabilitySetsData.capabilitySets);
       setCapabilitySets(getCapabilitiesGroupedByTypeAndResource(capabilitySetsData.capabilitySets));
       setCapabilities(getCapabilitiesGroupedByTypeAndResource(data.capabilities));
+      setIsInitialLoaded(true);
     } catch (error) {
       console.error(error); // eslint-disable-line no-console
     }
@@ -104,7 +107,8 @@ const useApplicationCapabilities = () => {
     disabledCapabilities,
     setDisabledCapabilities,
     capabilitySetsList,
-    roleCapabilitySetsListIds };
+    roleCapabilitySetsListIds,
+    isInitialLoaded };
 };
 
 export default useApplicationCapabilities;

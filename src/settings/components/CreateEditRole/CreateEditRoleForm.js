@@ -38,7 +38,9 @@ function CreateEditRoleForm({
   capabilitySets,
   isCapabilitySetSelected,
   onChangeCapabilitySetCheckbox,
-  isCapabilityDisabled
+  isCapabilityDisabled,
+  isCapabilitiesLoading,
+  isCapabilitySetsLoading
 }) {
   const paneFooterRenderStart = <Button
     marginBottom0
@@ -92,6 +94,7 @@ function CreateEditRoleForm({
                 isCapabilitySetSelected={isCapabilitySetSelected}
                 onChangeCapabilitySetCheckbox={onChangeCapabilitySetCheckbox}
                 capabilitySets={capabilitySets}
+                isLoading={isCapabilitySetsLoading}
               />
               <CapabilitiesAccordion
                 checkedAppIdsMap={checkedAppIdsMap}
@@ -101,6 +104,7 @@ function CreateEditRoleForm({
                 selectedCapabilitiesMap={selectedCapabilitiesMap}
                 isCapabilityDisabled={isCapabilityDisabled}
                 capabilities={capabilities}
+                isLoading={isCapabilitiesLoading}
               />
             </AccordionSet>
           </AccordionStatus>
@@ -129,6 +133,8 @@ CreateEditRoleForm.propTypes = {
   onChangeCapabilitySetCheckbox: PropTypes.func,
   isCapabilityDisabled:PropTypes.func,
   checkedAppIdsMap:PropTypes.object,
+  isCapabilitiesLoading: PropTypes.bool,
+  isCapabilitySetsLoading: PropTypes.bool
 };
 
 export default CreateEditRoleForm;
