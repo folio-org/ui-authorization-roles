@@ -15,7 +15,11 @@ import { getCapabilitiesGroupedByTypeAndResource } from '../settings/utils';
  */
 const useApplicationCapabilities = () => {
   const stripes = useStripes();
+  /* isInitialLoaded is the state that indicates capabilitySets and capabilities data is loaded, since they are depend on each other.
+  Based on this we show spinner on accordion
+  */
   const [isInitialLoaded, setIsInitialLoaded] = useState(false);
+
   const [checkedAppIdsMap, setCheckedAppIdsMap] = useState({});
   const [capabilities, setCapabilities] = useState({ data: [], procedural: [], settings: [] });
   const [capabilitySets, setCapabilitySets] = useState({ data: [], procedural: [], settings: [] });

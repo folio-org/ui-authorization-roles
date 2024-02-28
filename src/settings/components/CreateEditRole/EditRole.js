@@ -38,7 +38,8 @@ const EditRole = ({ roleId }) => {
     disabledCapabilities,
     setDisabledCapabilities,
     capabilitySets,
-    roleCapabilitySetsListIds, isInitialLoaded } = useApplicationCapabilities();
+    roleCapabilitySetsListIds,
+    isInitialLoaded } = useApplicationCapabilities();
 
   const shouldUpdateCapabilities = !isEqual(initialRoleCapabilitiesSelectedMap, selectedCapabilitiesMap);
   const shouldUpdateCapabilitySets = !isEqual(initialRoleCapabilitySetsSelectedMap, selectedCapabilitiesMap);
