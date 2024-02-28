@@ -31,7 +31,7 @@ function useUsersByRoleId(id) {
   const [namespace] = useNamespace({ key: 'user-role-data' });
 
   // retrieve users assigned to the role to get their IDs...
-  const { data, isSuccess } = useQuery(
+  const { data, isSuccess, refetch } = useQuery(
     [namespace, id],
     () => ky.get(`roles/users?query=roleId==${id}`).json(),
     {
@@ -55,6 +55,7 @@ function useUsersByRoleId(id) {
   return {
     users,
     isLoading,
+    refetch
   };
 }
 
