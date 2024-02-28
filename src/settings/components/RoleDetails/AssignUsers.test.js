@@ -20,20 +20,20 @@ jest.mock('../../../hooks/useUpdateUserRolesMutation');
 jest.mock('../../../hooks/useDeleteUserRolesMutation');
 
 const userRoles = {
-  "userRoles": [
+  'userRoles': [
     {
-      "userId": "1",
-      "roleId": "555"
+      'userId': '1',
+      'roleId': '555'
     },
     {
-      "userId": "3",
-      "roleId": "111",
+      'userId': '3',
+      'roleId': '111',
     }
   ]
 };
 
 const renderComponent = () => render(
-  <AssignUsers selectedUsers={[{id: '1'}]} roleId='555' refetch={jest.fn()} />
+  <AssignUsers selectedUsers={[{ id: '1' }]} roleId="555" refetch={jest.fn()} />
 );
 
 describe('AssignUsers component', () => {
