@@ -4,11 +4,13 @@ import { FormattedMessage } from 'react-intl';
 import {
   Accordion,
   Button,
+  Loading,
 } from '@folio/stripes/components';
 import { Pluggable } from '@folio/stripes/core';
 
 import PropTypes from 'prop-types';
 import { CapabilitiesSection } from '../Capabilities/CapabilitiesSection';
+import css from '../../style.css';
 
 
 function CapabilitiesAccordion({ checkedAppIdsMap,
@@ -16,10 +18,10 @@ function CapabilitiesAccordion({ checkedAppIdsMap,
   isCapabilitySelected,
   onChangeCapabilityCheckbox,
   isCapabilityDisabled,
-  capabilities }) {
+  capabilities, isLoading }) {
   return (
     <Accordion
-      label={<FormattedMessage id="ui-authorization-roles.details.capabilities" />}
+      label={<><FormattedMessage id="ui-authorization-roles.details.capabilities" />{isLoading && <span className={css.loadingInTitle}> <Loading /></span>}</>}
       displayWhenOpen={
         <Pluggable
           type="select-application"
@@ -27,7 +29,7 @@ function CapabilitiesAccordion({ checkedAppIdsMap,
           onSave={onSaveSelectedApplications}
           renderTrigger={props => <Button icon="plus-sign" {...props}><FormattedMessage id="ui-authorization-roles.crud.selectApplication" /></Button>}
         />
-                }
+        }
     >
       <CapabilitiesSection
         readOnly={false}
@@ -36,7 +38,7 @@ function CapabilitiesAccordion({ checkedAppIdsMap,
         capabilities={capabilities}
         isCapabilityDisabled={isCapabilityDisabled}
       />
-      <p id="asterisk-policy-desc"><FormattedMessage id="ui-authorization-roles.details.nonSinglePolicyText" /></p>
+      {!isLoading && <p id="asterisk-policy-desc"><FormattedMessage id="ui-authorization-roles.details.nonSinglePolicyText" /></p>}
     </Accordion>
   );
 }
@@ -48,6 +50,8 @@ CapabilitiesAccordion.propTypes = {
   onChangeCapabilityCheckbox: PropTypes.func,
   capabilities: PropTypes.object,
   isCapabilityDisabled:PropTypes.func,
+  setCapabilitiesRendered: PropTypes.func,
+  isLoading: PropTypes.bool
 };
 
 export default CapabilitiesAccordion;

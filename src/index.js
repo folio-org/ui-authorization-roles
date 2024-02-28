@@ -1,5 +1,7 @@
+import React, { Suspense } from 'react';
 import { useIntlKeyStore } from '@k-int/stripes-kint-components';
 
+import { Loading } from '@folio/stripes/components';
 import Settings from './settings';
 
 const App = () => {
@@ -7,7 +9,9 @@ const App = () => {
   addKey('ui-authorization-roles');
 
 
-  return <Settings />;
+  return <Suspense fallback={<Loading />}>
+    <Settings />
+  </Suspense>;
 };
 
 export default App;

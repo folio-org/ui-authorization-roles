@@ -1,16 +1,16 @@
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
 
-import { useNamespace, useOkapiKy, useStripes } from '@folio/stripes/core';
+import { useNamespace, useOkapiKy } from '@folio/stripes/core';
 import { getCapabilitiesGroupedByTypeAndResource } from '../settings/utils';
+import { CAPABILITES_LIMIT } from './constants';
 
 const useRoleCapabilitySets = (roleId) => {
   const ky = useOkapiKy();
-  const stripes = useStripes();
   const [namespace] = useNamespace({ key: 'role-capability-sets' });
 
   const { data, isSuccess } = useQuery([namespace, roleId],
-    () => ky.get(`roles/${roleId}/capability-sets?limit=${stripes.config.maxUnpagedResourceCount}`).json(),
+    () => ky.get(`roles/${roleId}/capability-sets?limit=${CAPABILITES_LIMIT}`).json(),
     { enabled: !!roleId });
 
   const initialRoleCapabilitySetsSelectedMap = useMemo(() => {
@@ -30,7 +30,11 @@ const useRoleCapabilitySets = (roleId) => {
     return obj;
   }, {});
 
-  return { initialRoleCapabilitySetsSelectedMap, isSuccess, capabilitySetsTotalCount: data?.totalRecords || 0, groupedRoleCapabilitySetsByType, capabilitySetsCapabilities };
+  return { initialRoleCapabilitySetsSelectedMap,
+    isSuccess,
+    capabilitySetsTotalCount: data?.totalRecords || 0,
+    groupedRoleCapabilitySetsByType,
+    capabilitySetsCapabilities };
 };
 
 export default useRoleCapabilitySets;
