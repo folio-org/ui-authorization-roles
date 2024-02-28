@@ -45,12 +45,12 @@ const useApplicationCapabilities = () => {
 
   const requestApplicationCapabilitiesList = (listOfIds) => {
     const queryByApplications = listOfIds.map(appId => `applicationId=${appId}`).join(' or ');
-    return ky.get(`capabilities?limit=${CAPABILITES_LIMIT}&query=${queryByApplications} sortby resource`).json();
+    return ky.get(`capabilities?limit=${CAPABILITES_LIMIT}&query=${queryByApplications}`).json();
   };
 
   const requestApplicationCapabilitySets = (listOfIds) => {
     const queryByApplications = listOfIds.map(appId => `applicationId=${appId}`).join(' or ');
-    return ky.get(`capability-sets?limit=${stripes.config.maxUnpagedResourceCount}&query=${queryByApplications} sortby resource`).json();
+    return ky.get(`capability-sets?limit=${stripes.config.maxUnpagedResourceCount}&query=${queryByApplications}`).json();
   };
 
   const onSubmitSelectApplications = async (appIds, onClose) => {
