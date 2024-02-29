@@ -23,6 +23,7 @@ import useRoleById from '../../../hooks/useRoleById';
 import AccordionUsers from './AccordionUsers';
 import AccordionCapabilities from './AccordionCapabilities';
 import AccordionCapabilitySets from './AccordionCapabilitySets';
+import useDeleteRoleMutation from '../../../hooks/useDeleteRoleMutation';
 
 
 const RoleDetails = ({ onClose, roleId }) => {
@@ -30,6 +31,7 @@ const RoleDetails = ({ onClose, roleId }) => {
   const { pathname } = useLocation();
 
   const { roleDetails: role } = useRoleById(roleId);
+  const { mutateAsync: deleteRole } = useDeleteRoleMutation(onClose);
 
   const getActionMenu = () => (
     <>
@@ -38,7 +40,7 @@ const RoleDetails = ({ onClose, roleId }) => {
           <FormattedMessage id="ui-authorization-roles.crud.edit" />
         </Icon>
       </Button>
-      <Button buttonStyle="dropdownItem">
+      <Button buttonStyle="dropdownItem" onClick={() => deleteRole(roleId)}>
         <Icon icon="trash">
           <FormattedMessage id="ui-authorization-roles.crud.delete" />
         </Icon>

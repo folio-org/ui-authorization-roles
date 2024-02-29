@@ -7,9 +7,11 @@ import { render } from '@folio/jest-config-stripes/testing-library/react';
 import RoleDetails from './RoleDetails';
 import useRoleById from '../../../hooks/useRoleById';
 import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
+import useDeleteRoleMutation from '../../../hooks/useDeleteRoleMutation';
 
 
 jest.mock('../../../hooks/useRoleById');
+jest.mock('../../../hooks/useDeleteRoleMutation');
 
 const onClose = jest.fn();
 const getRoleData = (data) => ({
@@ -32,6 +34,7 @@ const renderComponent = () => render(
 );
 
 useRoleById.mockReturnValue({ roleDetails: getRoleData(), isRoleDetailsLoaded: true });
+useDeleteRoleMutation.mockReturnValue({ mutateAsync: jest.fn });
 jest.mock('./AccordionCapabilities', () => () => <div>Accordion capabilities</div>);
 jest.mock('./AccordionCapabilitySets', () => () => <div>Accordion capability sets</div>);
 jest.mock('./AccordionUsers', () => () => <div>Accordion users</div>);
