@@ -27,7 +27,7 @@ function CapabilitiesAccordion({ checkedAppIdsMap,
           type="select-application"
           checkedAppIdsMap={checkedAppIdsMap}
           onSave={onSaveSelectedApplications}
-          renderTrigger={props => <Button icon="plus-sign" {...props}><FormattedMessage id="ui-authorization-roles.crud.selectApplication" /></Button>}
+          renderTrigger={props => <Button disabled={isLoading} icon="plus-sign" {...props}><FormattedMessage id="ui-authorization-roles.crud.selectApplication" /></Button>}
         />
         }
     >
