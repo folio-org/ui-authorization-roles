@@ -58,6 +58,7 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
           // Refresh user list
           queryClient.invalidateQueries(USERS_BY_ROLE_ID_QUERY_KEY);
           await refetch();
+          setIsAssignUsers(false);
         }
       }
     })();

@@ -41,7 +41,7 @@ export function createUserRolesRequests(previousSelectedUsers, currentSelectedUs
       if (added?.includes(userId) && !roleIds.includes(roleId)) {
         roleIds.push(roleId);
       } else if (removed?.includes(userId)) {
-        roleIds.splice(roleIds.indexOf(userId), 1);
+        roleIds.splice(roleIds.indexOf(roleId), 1);
       }
       // If modified, then PUT
       if ((added.includes(userId) || removed.includes(userId)) && roleIds.length) {
