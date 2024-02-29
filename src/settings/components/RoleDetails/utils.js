@@ -38,10 +38,10 @@ export function createUserRolesRequests(previousSelectedUsers, currentSelectedUs
     }
 
     if (roleIds?.length) {
-      if (added?.includes(userId)) {
+      if (added?.includes(userId) && !roleIds.includes(roleId)) {
         roleIds.push(roleId);
       } else if (removed?.includes(userId)) {
-        roleIds.splice(roleIds.indexOf(userId), 1);
+        roleIds.splice(roleIds.indexOf(roleId), 1);
       }
       // If modified, then PUT
       if ((added.includes(userId) || removed.includes(userId)) && roleIds.length) {
@@ -49,7 +49,7 @@ export function createUserRolesRequests(previousSelectedUsers, currentSelectedUs
       } else if (!roleIds.length) { // If no more capabilities, DELETE
         requests.push({ userId, roleIds, apiVerb: apiVerbs.DELETE });
       }
-    } else { // if no matches, POST
+    } else if (added?.includes(userId)) { // if no matches, POST
       roleIds.push(roleId);
       requests.push({ userId, roleIds, apiVerb: apiVerbs.POST });
     }

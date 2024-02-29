@@ -1,4 +1,6 @@
 import { useMemo, useEffect, useState } from 'react';
+import { useQueryClient } from 'react-query'
+
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { keyBy } from 'lodash';
@@ -6,6 +8,8 @@ import { keyBy } from 'lodash';
 import { useStripes, Pluggable } from '@folio/stripes/core';
 
 import { apiVerbs, createUserRolesRequests, combineIds } from './utils';
+import { USERS_BY_ROLE_ID_QUERY_KEY } from '../../../hooks/useUsersByRoleId';
+
 import useRoleByUserIds from '../../../hooks/useRoleByUserIds';
 import useUpdateUserRolesMutation from '../../../hooks/useUpdateUserRolesMutation';
 import useAssignRolesToUserMutation from '../../../hooks/useAssignRolesToUserMutation';
@@ -13,6 +17,8 @@ import useDeleteUserRolesMutation from '../../../hooks/useDeleteUserRolesMutatio
 
 const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
   const stripes = useStripes();
+  const queryClient = useQueryClient();
+
   const { mutateUpdateUserRoles } = useUpdateUserRolesMutation();
   const { mutateAssignRolesToUser } = useAssignRolesToUserMutation();
   const { mutateDeleteUserRoles } = useDeleteUserRolesMutation();
@@ -51,8 +57,11 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
           }
         }
         if (promises.length) {
-          await Promise.all(promises);
+          await Promise.allSettled(promises);
+          // Refresh user list
+          queryClient.invalidateQueries(USERS_BY_ROLE_ID_QUERY_KEY);
           await refetch();
+          setIsAssignUsers(false);
         }
       }
     })();
