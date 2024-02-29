@@ -49,7 +49,7 @@ export function createUserRolesRequests(previousSelectedUsers, currentSelectedUs
       } else if (!roleIds.length) { // If no more capabilities, DELETE
         requests.push({ userId, roleIds, apiVerb: apiVerbs.DELETE });
       }
-    } else { // if no matches, POST
+    } else if (added?.includes(userId)) { // if no matches, POST
       roleIds.push(roleId);
       requests.push({ userId, roleIds, apiVerb: apiVerbs.POST });
     }
