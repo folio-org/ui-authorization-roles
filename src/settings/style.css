@@ -25,3 +25,7 @@
 .gutterTop{
     margin-block-start: var(--gutter);
 }
+
+.loadingInTitle{
+  margin-left: 8px;
+}

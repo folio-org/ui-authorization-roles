@@ -38,7 +38,8 @@ const EditRole = ({ roleId }) => {
     disabledCapabilities,
     setDisabledCapabilities,
     capabilitySets,
-    roleCapabilitySetsListIds } = useApplicationCapabilities();
+    roleCapabilitySetsListIds,
+    isInitialLoaded } = useApplicationCapabilities();
 
   const shouldUpdateCapabilities = !isEqual(initialRoleCapabilitiesSelectedMap, selectedCapabilitiesMap);
   const shouldUpdateCapabilitySets = !isEqual(initialRoleCapabilitySetsSelectedMap, selectedCapabilitiesMap);
@@ -118,6 +119,8 @@ const EditRole = ({ roleId }) => {
     onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
     onChangeCapabilitySetCheckbox={onChangeCapabilitySetCheckbox}
     onSaveSelectedApplications={onSubmitSelectApplications}
+    isCapabilitiesLoading={!isInitialLoaded}
+    isCapabilitySetsLoading={!isInitialLoaded}
   />;
 };
 
