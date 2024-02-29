@@ -9,7 +9,8 @@ const useAssignRolesToUserMutation = () => {
     mutationFn: (newRole) => ky.post('roles/users', { json: newRole }).json(),
     onSuccess: async () => {
       await queryClient.invalidateQueries(namespace);
-    }
+    },
+    onError: (error) => console.error(JSON.stringify(error)) // eslint-disable-line no-console
   });
 
   return { mutateAssignRolesToUser: mutateAsync, isLoading };
