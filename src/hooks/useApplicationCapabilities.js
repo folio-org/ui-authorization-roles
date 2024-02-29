@@ -15,6 +15,11 @@ import { getCapabilitiesGroupedByTypeAndResource } from '../settings/utils';
  */
 const useApplicationCapabilities = () => {
   const stripes = useStripes();
+  /* isInitialLoaded is the state that indicates capabilitySets and capabilities data is loaded, since they are depend on each other.
+  Based on this we show spinner on accordion
+  */
+  const [isInitialLoaded, setIsInitialLoaded] = useState(false);
+
   const [checkedAppIdsMap, setCheckedAppIdsMap] = useState({});
   const [capabilities, setCapabilities] = useState({ data: [], procedural: [], settings: [] });
   const [capabilitySets, setCapabilitySets] = useState({ data: [], procedural: [], settings: [] });
@@ -26,7 +31,7 @@ const useApplicationCapabilities = () => {
   const ky = useOkapiKy();
 
   const roleCapabilitiesListIds = Object.entries(selectedCapabilitiesMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
-  const roleCapabilitySetsListIds = Object.entries(selectedCapabilitiesMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
+  const roleCapabilitySetsListIds = Object.entries(selectedCapabilitySetsMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
 
   const getOnlyIntersectedWithApplicationsCapabilities = (applicationCaps) => {
     if (isEmpty(applicationCaps)) return {};
@@ -40,12 +45,12 @@ const useApplicationCapabilities = () => {
 
   const requestApplicationCapabilitiesList = (listOfIds) => {
     const queryByApplications = listOfIds.map(appId => `applicationId=${appId}`).join(' or ');
-    return ky.get(`capabilities?limit=${CAPABILITES_LIMIT}&query=${queryByApplications} sortby resource`).json();
+    return ky.get(`capabilities?limit=${CAPABILITES_LIMIT}&query=${queryByApplications}`).json();
   };
 
   const requestApplicationCapabilitySets = (listOfIds) => {
     const queryByApplications = listOfIds.map(appId => `applicationId=${appId}`).join(' or ');
-    return ky.get(`capability-sets?limit=${stripes.config.maxUnpagedResourceCount}&query=${queryByApplications} sortby resource`).json();
+    return ky.get(`capability-sets?limit=${stripes.config.maxUnpagedResourceCount}&query=${queryByApplications}`).json();
   };
 
   const onSubmitSelectApplications = async (appIds, onClose) => {
@@ -70,6 +75,7 @@ const useApplicationCapabilities = () => {
       const updatedSelectedCapabilitySetsMap = getOnlyIntersectedWithApplicationsCapabilities(capabilitySetsData.capabilitySets);
       setSelectedCapabilitiesMap(updatedSelectedCapabilitiesMap);
       setSelectedCapabilitySetsMap(updatedSelectedCapabilitySetsMap);
+      setIsInitialLoaded(true);
       onClose?.();
     } catch (error) {
       console.error(error); // eslint-disable-line no-console
@@ -86,6 +92,7 @@ const useApplicationCapabilities = () => {
       setCapabilitySetsList(capabilitySetsData.capabilitySets);
       setCapabilitySets(getCapabilitiesGroupedByTypeAndResource(capabilitySetsData.capabilitySets));
       setCapabilities(getCapabilitiesGroupedByTypeAndResource(data.capabilities));
+      setIsInitialLoaded(true);
     } catch (error) {
       console.error(error); // eslint-disable-line no-console
     }
@@ -104,7 +111,8 @@ const useApplicationCapabilities = () => {
     disabledCapabilities,
     setDisabledCapabilities,
     capabilitySetsList,
-    roleCapabilitySetsListIds };
+    roleCapabilitySetsListIds,
+    isInitialLoaded };
 };
 
 export default useApplicationCapabilities;
