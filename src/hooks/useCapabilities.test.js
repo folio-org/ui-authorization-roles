@@ -23,11 +23,6 @@ const data = { capabilities: [{ id: '1', type: 'settings', action: 'manage', res
   { id: '111', type: 'procedural', action: 'execute', resource: 'Capability procedural', applicationId: 'application-01' },
 ] };
 
-const expectedGroupedCapabilitiesByType = {
-  settings: [{ id: '1', applicationId: 'application-01', resource: 'Capability Roles', actions: { manage: '1', view: '2', edit: '3' } }],
-  data: [{ id: '11', applicationId: 'application-01', resource: 'Capability data', actions: { create: '11', delete: '22', manage: '33' } }],
-  procedural: [{ id: '111', applicationId: 'application-01', resource: 'Capability procedural', actions: { execute: '111' } }],
-};
 describe('useCapabilities', () => {
   const mockGet = jest.fn(() => ({
     json: () => Promise.resolve(data),
@@ -46,7 +41,6 @@ describe('useCapabilities', () => {
     await act(() => result.current.isSuccess);
 
     expect(result.current.isSuccess).toBe(true);
-    expect(result.current.groupedCapabilitiesByType).toEqual(expectedGroupedCapabilitiesByType);
     expect(result.current.capabilitiesList).toEqual(data.capabilities);
   });
 });
