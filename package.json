@@ -47,7 +47,15 @@
         "title": "Authorization roles"
       }
     ],
-    "permissionSets": []
+    "permissionSets": [
+      {
+        "permissionName": "settings.authorization-roles.enabled",
+        "displayName": "Settings (Authorization roles): display list of settings pages",
+        "subPermissions": [
+          "settings.enabled"
+        ]
+      }
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",
