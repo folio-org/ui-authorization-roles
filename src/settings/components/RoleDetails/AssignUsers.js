@@ -1,5 +1,5 @@
 import { useMemo, useEffect, useState } from 'react';
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from 'react-query';
 
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
@@ -27,7 +27,7 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
 
   const initialSelectedUsers = useMemo(() => keyBy(selectedUsers, 'id'), [selectedUsers]);
   const combinedUserIds = combineIds(Object.values(initialSelectedUsers).map(x => x.id), users.map(x => x.id));
-  const { roleDetails, isSuccess } = useRoleByUserIds(combinedUserIds);
+  const { roleDetails, isLoading } = useRoleByUserIds(combinedUserIds);
 
   const assignUsers = (newSelectedUsers) => {
     setIsAssignUsers(true);
@@ -36,7 +36,7 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
 
   useEffect(() => {
     (async () => {
-      if (isAssignUsers && isSuccess) {
+      if (isAssignUsers && !isLoading) {
         const requests = createUserRolesRequests(Object.values(initialSelectedUsers), users, roleId, roleDetails);
         const promises = [];
 
@@ -65,7 +65,7 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
         }
       }
     })();
-  }, [isSuccess, roleDetails, isAssignUsers]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isAssignUsers]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Pluggable

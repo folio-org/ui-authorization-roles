@@ -1,26 +1,50 @@
-import { useNamespace, useOkapiKy } from '@folio/stripes/core';
-import { useQuery } from 'react-query';
+import { useChunkedCQLFetch, useNamespace, useOkapiKy } from '@folio/stripes/core';
 
 function useRoleByUserIds(users) {
-  const ky = useOkapiKy();
-  const [namespace] = useNamespace({ key: 'role-data' });
-  let queryString = '';
+  // const ky = useOkapiKy();
+  // const [namespace] = useNamespace({ key: 'role-data' });
+  // let queryString = '';
 
-  if (users?.length) {
-    users.forEach(user => {
-      queryString += `(userId==${user}) or`;
-    });
-  }
+  // if (users?.length) {
+  //   users.forEach(user => {
+  //     queryString += `(userId==${user}) or`;
+  //   });
+  // }
 
-  queryString = queryString.slice(0, queryString.length - 3);
+  // queryString = queryString.slice(0, queryString.length - 3);
 
-  const { data, isSuccess } = useQuery(
-    [namespace, queryString],
-    () => ky.get(`roles/users?query=${queryString}`).json(),
-    { enabled: !!queryString }
-  );
+  // const { data, isSuccess } = useQuery(
+  //   [namespace, queryString],
+  //   () => ky.get(`roles/users?limit=1000&query=${queryString}`).json(),
+  //   { enabled: !!queryString }
+  // );
 
-  return { roleDetails:data, isSuccess };
+  // const chunkedUsersReducer = (result) => {
+  //   return result?[0]?.data : {};
+  // };
+
+  const chunkedUsersReducer = (list) => (
+    list.reduce((acc, cur) => {
+      return [...acc, ...(cur?.data?.userRoles ?? [])];
+    }, []));
+
+  // const chunkedUsersReducer = (olq) => (
+  //   olq.reduce((acc, curr) => {
+  //     return [...acc, ...(curr?.data ?? [])];
+  //   }, [])
+  // );
+
+  const {
+    isLoading,
+    items: roleDetails
+  } = useChunkedCQLFetch({
+    endpoint: 'roles/users',
+    ids: users,
+    idName: 'userId',
+    reduceFunction: chunkedUsersReducer
+  });
+
+  return { roleDetails, isLoading };
 }
 
 export default useRoleByUserIds;
