@@ -39,7 +39,7 @@ describe('RoleDetails utils', () => {
 
   describe('Create Roles API requests', () => {
     it('should create correct Roles API requests', () => {
-      const requests = createUserRolesRequests([{ id: '1' }], [{ id: '2' }, { id: '3' }], '555', { userRoles: [{ userId: '1', roleId: '555' }, { userId: '3', roleId: '111' }] });
+      const requests = createUserRolesRequests([{ id: '1' }], [{ id: '2' }, { id: '3' }], '555', [{ userId: '1', roleId: '555' }, { userId: '3', roleId: '111' }]);
 
       expect(requests).toEqual([
         { apiVerb: apiVerbs.DELETE, roleIds: [], userId: '1' },
@@ -49,7 +49,7 @@ describe('RoleDetails utils', () => {
     });
 
     it('should handle no change', () => {
-      const requests = createUserRolesRequests([{ id: '1' }], [{ id: '1' }], '555', { userRoles: [{ userId: '1', roleId: '555' }] });
+      const requests = createUserRolesRequests([{ id: '1' }], [{ id: '1' }], '555', [{ userId: '1', roleId: '555' }] );
 
       expect(requests.length).toEqual(0);
     });
