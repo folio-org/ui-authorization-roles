@@ -10,7 +10,7 @@ const useUpdateUserRolesMutation = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries(namespace);
     },
-    onError: (error) => console.error(JSON.stringify(error)) // eslint-disable-line no-console
+    onError: (error) => window.alert(JSON.stringify(error)) // eslint-disable-line no-alert
   });
 
   return { mutateUpdateUserRoles: mutateAsync, isLoading };
