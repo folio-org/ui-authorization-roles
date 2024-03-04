@@ -39,5 +39,6 @@
     "applications.totalSelected": "Total selected: {count}",
     "applications": "Applications",
     "crud.selectApplication": "Select application",
-    "details.capabilitySets": "Capability sets"
+    "details.capabilitySets": "Capability sets",
+    "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles"
 }
