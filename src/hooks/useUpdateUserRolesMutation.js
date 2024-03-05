@@ -9,7 +9,8 @@ const useUpdateUserRolesMutation = () => {
     mutationFn: (newRole) => ky.put(`roles/users/${newRole.userId}`, { json: newRole }).json(),
     onSuccess: async () => {
       await queryClient.invalidateQueries(namespace);
-    }
+    },
+    onError: (error) => console.error(JSON.stringify(error)) // eslint-disable-line no-console
   });
 
   return { mutateUpdateUserRoles: mutateAsync, isLoading };

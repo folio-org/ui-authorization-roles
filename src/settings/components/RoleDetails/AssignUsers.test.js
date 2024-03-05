@@ -9,6 +9,7 @@ import useAssignRolesToUserMutation from '../../../hooks/useAssignRolesToUserMut
 import useUpdateUserRolesMutation from '../../../hooks/useUpdateUserRolesMutation';
 import useDeleteUserRolesMutation from '../../../hooks/useDeleteUserRolesMutation';
 
+jest.mock('react-query');
 jest.mock('@folio/stripes/core', () => ({
   ...jest.requireActual('@folio/stripes/core'),
   useStripes: () => ({ hasPerm: jest.fn().mockReturnValue(true) }),

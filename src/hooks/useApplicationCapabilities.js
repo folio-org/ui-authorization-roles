@@ -59,7 +59,9 @@ const useApplicationCapabilities = () => {
 
     if (isEmpty(listOfIds)) {
       setCapabilities({ data: [], settings: [], procedural: [] });
+      setCapabilitySets({ data: [], settings: [], procedural: [] });
       setSelectedCapabilitiesMap({});
+      setSelectedCapabilitySetsMap({});
       onClose?.();
       return;
     }

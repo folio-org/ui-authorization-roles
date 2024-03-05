@@ -45,7 +45,7 @@
   "applications": "Applications",
 
   "role-details.accordion-users.columns.fullName": "Name",
-  "role-details.accordion-users.columns.patronGroup": "Patron group"
+  "role-details.accordion-users.columns.patronGroup": "Patron group",
 
-
+  "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles"
 }

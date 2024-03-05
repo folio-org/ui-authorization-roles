@@ -84,8 +84,8 @@ const EditRole = ({ roleId }) => {
   };
 
   useEffect(() => {
-    if (isCapabilitiesLoaded && isRoleCapabilitySetsLoaded && isInitialRoleCapabilitiesLoaded && isCapabilitySetsLoaded) {
-      const appIds = capabilitiesList.filter(cap => Object.keys(initialRoleCapabilitiesSelectedMap).includes(cap.id))
+    if (capabilitiesList && isCapabilitiesLoaded && isRoleCapabilitySetsLoaded && isInitialRoleCapabilitiesLoaded && isCapabilitySetsLoaded) {
+      const appIds = capabilitiesList?.filter(cap => Object.keys(initialRoleCapabilitiesSelectedMap).includes(cap.id))
         .reduce((acc, cap) => {
           if (!(cap.applicationId in acc)) {
             acc[cap.applicationId] = true;
@@ -99,7 +99,7 @@ const EditRole = ({ roleId }) => {
     }
     /* initialRoleCapabilitiesSelectedMap and isCapabilitiesLoaded is enough to know if initialCapabilitiesSelectedMap fetched and can be settled safely to local state */
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isCapabilitiesLoaded, isRoleCapabilitySetsLoaded, isCapabilitySetsLoaded]);
+  }, [capabilitiesList, isCapabilitiesLoaded, isRoleCapabilitySetsLoaded, isCapabilitySetsLoaded, isInitialRoleCapabilitiesLoaded]);
 
   return <CreateEditRoleForm
     title="ui-authorization-roles.crud.editRole"
