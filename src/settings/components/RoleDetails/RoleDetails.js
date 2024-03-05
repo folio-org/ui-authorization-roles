@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
@@ -13,7 +14,8 @@ import {
   Icon,
   PaneHeader,
   Loading,
-  NoValue
+  NoValue,
+  ConfirmationModal
 } from '@folio/stripes/components';
 
 
@@ -25,13 +27,14 @@ import AccordionCapabilities from './AccordionCapabilities';
 import AccordionCapabilitySets from './AccordionCapabilitySets';
 import useDeleteRoleMutation from '../../../hooks/useDeleteRoleMutation';
 
-
 const RoleDetails = ({ onClose, roleId }) => {
   const history = useHistory();
   const { pathname } = useLocation();
 
   const { roleDetails: role } = useRoleById(roleId);
   const { mutateAsync: deleteRole } = useDeleteRoleMutation(onClose);
+
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const getActionMenu = () => (
     <>
@@ -40,7 +43,7 @@ const RoleDetails = ({ onClose, roleId }) => {
           <FormattedMessage id="ui-authorization-roles.crud.edit" />
         </Icon>
       </Button>
-      <Button buttonStyle="dropdownItem" onClick={() => deleteRole(roleId)}>
+      <Button buttonStyle="dropdownItem" onClick={() => setIsDeleting(true)}>
         <Icon icon="trash">
           <FormattedMessage id="ui-authorization-roles.crud.delete" />
         </Icon>
@@ -94,6 +97,15 @@ const RoleDetails = ({ onClose, roleId }) => {
           <AccordionUsers roleId={roleId} />
         </AccordionSet>
       </AccordionStatus>
+      <ConfirmationModal
+        open={isDeleting}
+        heading={<FormattedMessage id="ui-authorization-roles.crud.deleteRole" />}
+        message={<><FormattedMessage id="ui-authorization-roles.crud.deleteRoleConfirmation" values={{ rolename: role?.name }} />
+          <b><FormattedMessage id="ui-authorization-roles.crud.deleted" /></b> </>}
+        onConfirm={() => deleteRole(roleId)}
+        onCancel={() => { setIsDeleting(false); }}
+        confirmLabel={<FormattedMessage id="ui-authorization-roles.crud.delete" />}
+      />
     </Pane>
   );
 };

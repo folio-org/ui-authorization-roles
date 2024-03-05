@@ -10,6 +10,9 @@ const useDeleteRoleMutation = (callback) => {
     onSuccess: async () => {
       await queryClient.invalidateQueries(namespace);
       callback();
+    },
+    onError: (error) => {
+      window.alert(JSON.stringify(error)); // eslint-disable-line no-alert
     }
   });
 
