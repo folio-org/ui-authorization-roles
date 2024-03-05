@@ -18,7 +18,6 @@ import {
   ConfirmationModal
 } from '@folio/stripes/components';
 
-
 import { useHistory, useLocation } from 'react-router';
 import css from '../../style.css';
 import useRoleById from '../../../hooks/useRoleById';
@@ -43,7 +42,12 @@ const RoleDetails = ({ onClose, roleId }) => {
           <FormattedMessage id="ui-authorization-roles.crud.edit" />
         </Icon>
       </Button>
-      <Button buttonStyle="dropdownItem" onClick={() => setIsDeleting(true)}>
+      <Button
+        buttonStyle="dropdownItem"
+        onClick={() => {
+          setIsDeleting(true);
+        }}
+      >
         <Icon icon="trash">
           <FormattedMessage id="ui-authorization-roles.crud.delete" />
         </Icon>
@@ -101,7 +105,7 @@ const RoleDetails = ({ onClose, roleId }) => {
         open={isDeleting}
         heading={<FormattedMessage id="ui-authorization-roles.crud.deleteRole" />}
         message={<><FormattedMessage id="ui-authorization-roles.crud.deleteRoleConfirmation" values={{ rolename: role?.name }} />
-          <b><FormattedMessage id="ui-authorization-roles.crud.deleted" /></b> </>}
+          {' '} <b><FormattedMessage id="ui-authorization-roles.crud.deleted" /></b> </>}
         onConfirm={() => deleteRole(roleId)}
         onCancel={() => { setIsDeleting(false); }}
         confirmLabel={<FormattedMessage id="ui-authorization-roles.crud.delete" />}
