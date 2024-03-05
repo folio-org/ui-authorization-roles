@@ -49,7 +49,7 @@ describe('RoleDetails utils', () => {
     });
 
     it('should handle no change', () => {
-      const requests = createUserRolesRequests([{ id: '1' }], [{ id: '1' }], '555', [{ userId: '1', roleId: '555' }] );
+      const requests = createUserRolesRequests([{ id: '1' }], [{ id: '1' }], '555', [{ userId: '1', roleId: '555' }]);
 
       expect(requests.length).toEqual(0);
     });
