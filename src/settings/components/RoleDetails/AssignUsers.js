@@ -10,7 +10,7 @@ import { useStripes, Pluggable } from '@folio/stripes/core';
 import { apiVerbs, createUserRolesRequests, combineIds } from './utils';
 import { USERS_BY_ROLE_ID_QUERY_KEY } from '../../../hooks/useUsersByRoleId';
 
-import useRoleByUserIds from '../../../hooks/useRoleByUserIds';
+import useUserRolesByUserIds from '../../../hooks/useUserRolesByUserIds';
 import useUpdateUserRolesMutation from '../../../hooks/useUpdateUserRolesMutation';
 import useAssignRolesToUserMutation from '../../../hooks/useAssignRolesToUserMutation';
 import useDeleteUserRolesMutation from '../../../hooks/useDeleteUserRolesMutation';
@@ -27,7 +27,7 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
 
   const initialSelectedUsers = useMemo(() => keyBy(selectedUsers, 'id'), [selectedUsers]);
   const combinedUserIds = combineIds(Object.values(initialSelectedUsers).map(x => x.id), users.map(x => x.id));
-  const { roleDetails, isLoading } = useRoleByUserIds(combinedUserIds);
+  const { userRolesResponse, isLoading } = useUserRolesByUserIds(combinedUserIds);
 
   const assignUsers = (newSelectedUsers) => {
     setIsAssignUsers(true);
@@ -37,7 +37,7 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
   useEffect(() => {
     (async () => {
       if (isAssignUsers && !isLoading) {
-        const requests = createUserRolesRequests(Object.values(initialSelectedUsers), users, roleId, roleDetails);
+        const requests = createUserRolesRequests(Object.values(initialSelectedUsers), users, roleId, userRolesResponse);
         const promises = [];
 
         for (const request of requests) {
