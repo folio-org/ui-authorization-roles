@@ -65,6 +65,7 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
         }
       }
     })();
+    // Disabling tracking on deps since certain values (userRolesResponse in particular) cause useEffect to loop
   }, [isAssignUsers]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
