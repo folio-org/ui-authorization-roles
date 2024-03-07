@@ -35,7 +35,7 @@ function useUsersByRoleId(id) {
   // retrieve users assigned to the role to get their IDs...
   const { data, isSuccess, refetch } = useQuery(
     [namespace, id],
-    () => ky.get(`roles/users?limit=1000&query=roleId==${id}`).json(),
+    () => ky.get(`roles/users?limit=${stripes.config.maxUnpagedResourceCount}&query=roleId==${id}`).json(),
     {
       enabled: !!id,
     }
