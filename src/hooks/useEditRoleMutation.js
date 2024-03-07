@@ -16,7 +16,7 @@ const useEditRoleMutation = ({ id, name, description }, { roleCapabilitiesListId
       }
       await queryClient.invalidateQueries(namespace);
     },
-    onError:(error) => console.error(JSON.stringify(error)) // eslint-disable-line no-console
+    onError:(error) => window.alert(JSON.stringify(error)) // eslint-disable-line no-alert
   });
   return { mutateRole: mutateAsync, isLoading };
 };

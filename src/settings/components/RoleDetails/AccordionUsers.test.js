@@ -11,6 +11,7 @@ import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 
 jest.mock('../../../hooks/useUsersByRoleId');
 jest.mock('../../../hooks/useUsergroups');
+jest.mock('./AssignUsers');
 
 const queryClient = new QueryClient();
 

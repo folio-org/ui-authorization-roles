@@ -16,7 +16,7 @@ const useCreateRoleMutation = (roleCapabilitiesListIds, capabilitySetListIds) =>
         await ky.post('roles/capability-sets', { json: { roleId: newRole.id, capabilitySetIds: capabilitySetListIds } }).json();
       }
     },
-    onError:(error) => console.error(JSON.stringify(error)) // eslint-disable-line no-console
+    onError:(error) => window.alert(JSON.stringify(error)) // eslint-disable-line no-alert
   });
 
   return { mutateRole: mutateAsync, isLoading };

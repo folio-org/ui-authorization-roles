@@ -1,5 +1,5 @@
 import { useMemo, useEffect, useState } from 'react';
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from 'react-query';
 
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
@@ -10,7 +10,7 @@ import { useStripes, Pluggable } from '@folio/stripes/core';
 import { apiVerbs, createUserRolesRequests, combineIds } from './utils';
 import { USERS_BY_ROLE_ID_QUERY_KEY } from '../../../hooks/useUsersByRoleId';
 
-import useRoleByUserIds from '../../../hooks/useRoleByUserIds';
+import useUserRolesByUserIds from '../../../hooks/useUserRolesByUserIds';
 import useUpdateUserRolesMutation from '../../../hooks/useUpdateUserRolesMutation';
 import useAssignRolesToUserMutation from '../../../hooks/useAssignRolesToUserMutation';
 import useDeleteUserRolesMutation from '../../../hooks/useDeleteUserRolesMutation';
@@ -27,7 +27,7 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
 
   const initialSelectedUsers = useMemo(() => keyBy(selectedUsers, 'id'), [selectedUsers]);
   const combinedUserIds = combineIds(Object.values(initialSelectedUsers).map(x => x.id), users.map(x => x.id));
-  const { roleDetails, isSuccess } = useRoleByUserIds(combinedUserIds);
+  const { userRolesResponse, isLoading } = useUserRolesByUserIds(combinedUserIds);
 
   const assignUsers = (newSelectedUsers) => {
     setIsAssignUsers(true);
@@ -36,8 +36,8 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
 
   useEffect(() => {
     (async () => {
-      if (isAssignUsers && isSuccess) {
-        const requests = createUserRolesRequests(Object.values(initialSelectedUsers), users, roleId, roleDetails);
+      if (isAssignUsers && !isLoading) {
+        const requests = createUserRolesRequests(Object.values(initialSelectedUsers), users, roleId, userRolesResponse);
         const promises = [];
 
         for (const request of requests) {
@@ -65,7 +65,8 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
         }
       }
     })();
-  }, [isSuccess, roleDetails, isAssignUsers]); // eslint-disable-line react-hooks/exhaustive-deps
+    // Disabling tracking on deps since certain values (userRolesResponse in particular) cause useEffect to loop
+  }, [isAssignUsers]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Pluggable
