@@ -104,8 +104,7 @@ const RoleDetails = ({ onClose, roleId }) => {
       <ConfirmationModal
         open={isDeleting}
         heading={<FormattedMessage id="ui-authorization-roles.crud.deleteRole" />}
-        message={<><FormattedMessage id="ui-authorization-roles.crud.deleteRoleConfirmation" values={{ rolename: role?.name }} />
-          {' '} <b><FormattedMessage id="ui-authorization-roles.crud.deleted" /></b> </>}
+        message={<FormattedMessage id="ui-authorization-roles.crud.deleteRoleConfirmation" values={{ rolename: role?.name }} />}
         onConfirm={() => deleteRole(roleId)}
         onCancel={() => { setIsDeleting(false); }}
         confirmLabel={<FormattedMessage id="ui-authorization-roles.crud.delete" />}
