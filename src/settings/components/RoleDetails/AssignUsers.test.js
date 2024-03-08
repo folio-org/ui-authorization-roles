@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import { render } from '@folio/jest-config-stripes/testing-library/react';
 
 import AssignUsers from './AssignUsers';
-import useRoleByUserIds from '../../../hooks/useRoleByUserIds';
+import useUserRolesByUserIds from '../../../hooks/useUserRolesByUserIds';
 import useAssignRolesToUserMutation from '../../../hooks/useAssignRolesToUserMutation';
 import useUpdateUserRolesMutation from '../../../hooks/useUpdateUserRolesMutation';
 import useDeleteUserRolesMutation from '../../../hooks/useDeleteUserRolesMutation';
@@ -15,7 +15,7 @@ jest.mock('@folio/stripes/core', () => ({
   useStripes: () => ({ hasPerm: jest.fn().mockReturnValue(true) }),
 }));
 
-jest.mock('../../../hooks/useRoleByUserIds');
+jest.mock('../../../hooks/useUserRolesByUserIds');
 jest.mock('../../../hooks/useAssignRolesToUserMutation');
 jest.mock('../../../hooks/useUpdateUserRolesMutation');
 jest.mock('../../../hooks/useDeleteUserRolesMutation');
@@ -47,7 +47,7 @@ describe('AssignUsers component', () => {
   });
 
   describe('displays AssignUsers', () => {
-    useRoleByUserIds.mockReturnValue({ roleDetails: userRoles, isLoading: false });
+    useUserRolesByUserIds.mockReturnValue({ roleDetails: userRoles, isLoading: false });
     useAssignRolesToUserMutation.mockReturnValue({ mutateUpdateUserRoles: jest.fn(), isLoading: false });
     useUpdateUserRolesMutation.mockReturnValue({ mutateUpdateUserRoles: jest.fn(), isLoading: false });
     useDeleteUserRolesMutation.mockReturnValue({ mutateDeleteUserRoles: jest.fn(), isLoading: false });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useChunkedCQLFetch, useNamespace, useOkapiKy } from '@folio/stripes/core';
+import { useChunkedCQLFetch, useNamespace, useOkapiKy, useStripes } from '@folio/stripes/core';
 import { useQuery } from 'react-query';
 
 export const USERS_BY_ROLE_ID_QUERY_KEY = 'user-role-data';
@@ -29,13 +29,14 @@ export const chunkedUsersReducer = (list) => (
  * @returns [ { id, personal: { firstName, lastName } }, ... ] Array of user objects
  */
 function useUsersByRoleId(id) {
+  const stripes = useStripes();
   const ky = useOkapiKy();
   const [namespace] = useNamespace({ key: USERS_BY_ROLE_ID_QUERY_KEY });
 
   // retrieve users assigned to the role to get their IDs...
   const { data, isSuccess, refetch } = useQuery(
     [namespace, id],
-    () => ky.get(`roles/users?query=roleId==${id}`).json(),
+    () => ky.get(`roles/users?limit=${stripes.config.maxUnpagedResourceCount}&query=roleId==${id}`).json(),
     {
       enabled: !!id,
     }
