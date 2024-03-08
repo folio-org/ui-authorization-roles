@@ -27,6 +27,8 @@
   "columns.procedure": "Procedure",
   "columns.execute": "Execute",
   "crud.createRole": "Create role",
+  "crud.deleteRole": "Delete role",
+  "crud.deleteRoleConfirmation": "{rolename} will be deleted",
   "crud.editRole": "Edit role",
   "crud.saveAndClose": "Save and close",
   "crud.cancel": "Cancel",
