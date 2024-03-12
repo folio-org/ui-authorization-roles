@@ -11,7 +11,7 @@ const useRoleCapabilities = (roleId) => {
   const [namespace] = useNamespace({ key: 'role-capabilities-list' });
 
   const { data, isSuccess } = useQuery([namespace, roleId],
-    () => ky.get(`roles/${roleId}/capabilities?limit=${CAPABILITES_LIMIT}`).json(),
+    () => ky.get(`roles/${roleId}/capabilities?limit=${CAPABILITES_LIMIT}&query=cql.allRecords=1 sortby resource`).json(),
     { enabled: !!roleId,
       placeholderData: {
         capabilities: [], totalRecords: 0

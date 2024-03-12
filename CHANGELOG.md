@@ -2,6 +2,8 @@
 
 ## 1.4.0 IN PROGRESS
 
+* Server-side query sort (temporary, lacking i18n).
+
 ## [1.3.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.3.0) (2024-03-05)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.2.0...v1.3.0)
 
