@@ -39,5 +39,10 @@
     "applications.totalSelected": "Total selecionado: {count}",
     "applications": "Aplicativos",
     "crud.selectApplication": "Selecione o aplicativo",
-    "details.capabilitySets": "Conjuntos de recursos"
+    "details.capabilitySets": "Conjuntos de recursos",
+    "role-details.accordion-users.columns.fullName": "Nome",
+    "role-details.accordion-users.columns.patronGroup": "Grupo de usuários",
+    "permission.settings.admin": "Configurações (funções de autorização): Pode gerenciar funções de autorização",
+    "crud.deleteRole": "Excluir função",
+    "crud.deleteRoleConfirmation": "{rolename} será excluído"
 }

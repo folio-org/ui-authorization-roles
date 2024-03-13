@@ -40,5 +40,9 @@
     "applications": "Applications",
     "crud.selectApplication": "Select application",
     "details.capabilitySets": "Capability sets",
-    "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles"
+    "role-details.accordion-users.columns.fullName": "Name",
+    "role-details.accordion-users.columns.patronGroup": "Patron group",
+    "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles",
+    "crud.deleteRole": "Delete role",
+    "crud.deleteRoleConfirmation": "{rolename} will be deleted"
 }
