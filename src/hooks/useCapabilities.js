@@ -10,7 +10,7 @@ const useCapabilities = () => {
 
   const { data, isSuccess } = useQuery(
     namespace,
-    () => ky.get(`capabilities?limit=${CAPABILITES_LIMIT}&query=cql.allRecords=1`).json(),
+    () => ky.get(`capabilities?limit=${CAPABILITES_LIMIT}&query=cql.allRecords=1 sortby name resource`).json(),
   );
 
 
