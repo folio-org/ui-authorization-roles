@@ -10,13 +10,13 @@
     "assignUnassign": "Przypisz/odpisz",
     "generalInformation": "General Information",
     "details.capabilities": "Capabilities",
-    "details.data": "Data",
+    "details.data": "Dane",
     "details.settings": "Ustawienia",
     "details.procedural": "Procedural",
     "details.nonSinglePolicyText": "* indicates one or more policies are set for the action.",
     "columns.application": "Application",
     "columns.resource": "Resource",
-    "columns.view": "Wyświetl",
+    "columns.view": "Podgląd",
     "columns.edit": "Edycja",
     "columns.create": "Utwórz",
     "columns.delete": "Usuń",
@@ -39,5 +39,10 @@
     "applications.totalSelected": "Razem wybranych: {count}",
     "applications": "Applications",
     "crud.selectApplication": "Select application",
-    "details.capabilitySets": "Capability sets"
+    "details.capabilitySets": "Capability sets",
+    "role-details.accordion-users.columns.fullName": "Name",
+    "role-details.accordion-users.columns.patronGroup": "Patron group",
+    "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles",
+    "crud.deleteRole": "Delete role",
+    "crud.deleteRoleConfirmation": "{rolename} will be deleted"
 }

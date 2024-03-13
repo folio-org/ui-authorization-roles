@@ -39,5 +39,10 @@
     "applications.totalSelected": "Celkem vybráno: {count}",
     "applications": "Aplikace",
     "crud.selectApplication": "Vybrat aplikaci",
-    "details.capabilitySets": "Capability sets"
+    "details.capabilitySets": "Sady schopností",
+    "role-details.accordion-users.columns.fullName": "Name",
+    "role-details.accordion-users.columns.patronGroup": "Patron group",
+    "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles",
+    "crud.deleteRole": "Smazat roli",
+    "crud.deleteRoleConfirmation": "{rolename} bude smazána"
 }
