@@ -33,10 +33,10 @@ const useApplicationCapabilities = () => {
   const roleCapabilitiesListIds = Object.entries(selectedCapabilitiesMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
   const roleCapabilitySetsListIds = Object.entries(selectedCapabilitySetsMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
 
-  const getOnlyIntersectedWithApplicationsCapabilities = (applicationCaps) => {
+  const getOnlyIntersectedWithApplicationsCapabilities = (applicationCaps, intersectingList) => {
     if (isEmpty(applicationCaps)) return {};
 
-    return applicationCaps.filter(cap => roleCapabilitiesListIds.includes(cap.id))
+    return applicationCaps.filter(cap => intersectingList.includes(cap.id))
       .reduce((acc, cap) => {
         acc[cap.id] = true;
         return acc;
@@ -73,8 +73,8 @@ const useApplicationCapabilities = () => {
       setCapabilitySetsList(capabilitySetsData.capabilitySets);
       setCapabilities(getCapabilitiesGroupedByTypeAndResource(capabilitiesData.capabilities));
       setCapabilitySets(getCapabilitiesGroupedByTypeAndResource(capabilitySetsData.capabilitySets));
-      const updatedSelectedCapabilitiesMap = getOnlyIntersectedWithApplicationsCapabilities(capabilitiesData.capabilities);
-      const updatedSelectedCapabilitySetsMap = getOnlyIntersectedWithApplicationsCapabilities(capabilitySetsData.capabilitySets);
+      const updatedSelectedCapabilitiesMap = getOnlyIntersectedWithApplicationsCapabilities(capabilitiesData.capabilities, roleCapabilitiesListIds);
+      const updatedSelectedCapabilitySetsMap = getOnlyIntersectedWithApplicationsCapabilities(capabilitySetsData.capabilitySets, roleCapabilitySetsListIds);
       setSelectedCapabilitiesMap(updatedSelectedCapabilitiesMap);
       setSelectedCapabilitySetsMap(updatedSelectedCapabilitySetsMap);
       setIsInitialLoaded(true);
