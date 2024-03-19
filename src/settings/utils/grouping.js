@@ -150,3 +150,21 @@ export const groupById = (arr) => {
     return acc;
   }, {});
 };
+
+
+/**
+ * Get object by findind intersection between application capabilities and intersecting list
+ *
+ * @param {Object[]} applicationCapabilities - List of application capabilities;
+ * @param {Array.<string>} intersectingList - Intersecting list to filter from;
+ * @returns {Object.<string, boolean>} - object with key string and value - true;
+ */
+export const getOnlyIntersectedWithApplicationsCapabilities = (applicationCapabilities, intersectingList) => {
+  if (isEmpty(applicationCapabilities)) return {};
+
+  return applicationCapabilities.filter(cap => intersectingList.includes(cap.id))
+    .reduce((acc, cap) => {
+      acc[cap.id] = true;
+      return acc;
+    }, {});
+};

@@ -5,7 +5,9 @@ import { isEmpty } from 'lodash';
 import { useStripes } from '@folio/stripes-core';
 
 import { CAPABILITES_LIMIT } from './constants';
-import { getCapabilitiesGroupedByTypeAndResource } from '../settings/utils';
+import { getCapabilitiesGroupedByTypeAndResource,
+  getOnlyIntersectedWithApplicationsCapabilities,
+  extractSelectedIdsFromObject } from '../settings/utils';
 
 /**
  * A hook for managing application capabilities.
@@ -30,18 +32,8 @@ const useApplicationCapabilities = () => {
 
   const ky = useOkapiKy();
 
-  const roleCapabilitiesListIds = Object.entries(selectedCapabilitiesMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
-  const roleCapabilitySetsListIds = Object.entries(selectedCapabilitySetsMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
-
-  const getOnlyIntersectedWithApplicationsCapabilities = (applicationCaps, intersectingList) => {
-    if (isEmpty(applicationCaps)) return {};
-
-    return applicationCaps.filter(cap => intersectingList.includes(cap.id))
-      .reduce((acc, cap) => {
-        acc[cap.id] = true;
-        return acc;
-      }, {});
-  };
+  const roleCapabilitiesListIds = extractSelectedIdsFromObject(selectedCapabilitiesMap);
+  const roleCapabilitySetsListIds = extractSelectedIdsFromObject(selectedCapabilitySetsMap);
 
   const requestApplicationCapabilitiesList = (listOfIds) => {
     const queryByApplications = listOfIds.map(appId => `applicationId=${appId}`).join(' or ');

@@ -15,6 +15,7 @@
 * Show spinner while loading capabilities/capabilitySets tables. Refs UIROLES-42
 * Show capabilities/capability sets depending on selected applications. Refs UIROLES-40.
 * Include `settings.authorization-roles.enabled` permission set. Refs UIROLES-54.
+* Fix bug related to unselecting applications in select-plugin-application that caused unselecting role capability sets. Refs UIROLES-59.
 
 ## 1.2.0
 
