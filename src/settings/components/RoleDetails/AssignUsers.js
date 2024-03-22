@@ -36,22 +36,19 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
   const assignUsers = async (newSelectedUsers) => {
     setUsers(newSelectedUsers);
 
-    const requests = await createUserRolesRequests(Object.values(initialSelectedUsers), users, roleId, queryClient, okapiKy);
+    const requests = await createUserRolesRequests(Object.values(initialSelectedUsers), newSelectedUsers, roleId, queryClient, okapiKy);
     const promises = [];
 
     for (const request of requests) {
       const { apiVerb, userId, roleIds } = request;
       switch (apiVerb) {
         case apiVerbs.PUT:
-          stripes.logger.log('authz-roles', `updating roles for ${userId}:: ${roleIds.join(', ')}`);
           promises.push(mutateUpdateUserRoles({ userId, roleIds }));
           break;
         case apiVerbs.POST:
-          stripes.logger.log('authz-roles', `creating role for ${userId}:: ${roleIds.join(', ')}`);
           promises.push(mutateAssignRolesToUser({ userId, roleIds }));
           break;
         case apiVerbs.DELETE:
-          stripes.logger.log('authz-roles', `removing roles for ${userId}`);
           promises.push(mutateDeleteUserRoles({ userId }));
           break;
         default:

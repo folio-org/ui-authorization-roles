@@ -1,12 +1,16 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { useNamespace, useOkapiKy } from '@folio/stripes/core';
+import { useNamespace, useOkapiKy, useStripes } from '@folio/stripes/core';
 
 const useAssignRolesToUserMutation = () => {
+  const stripes = useStripes();
   const ky = useOkapiKy();
   const queryClient = useQueryClient();
   const [namespace] = useNamespace();
   const { mutateAsync, isLoading } = useMutation({
-    mutationFn: (newRole) => ky.post('roles/users', { json: newRole }).json(),
+    mutationFn: (newRole) => {
+      stripes.logger.log('authz-roles', `creating role for ${newRole.userId}:: ${newRole.roleIds.join(', ')}`);
+      return ky.post('roles/users', { json: newRole }).json();
+    },
     onSuccess: async () => {
       await queryClient.invalidateQueries(namespace);
     },
