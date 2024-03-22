@@ -18,45 +18,85 @@ export function getSelectedIdsDifference(prevIds = [], newIds = []) {
   return { added, removed };
 }
 
-// Given previously selected users, currently selected users, role ID and role details
-// (including other roles assigned to that user), create appropriate API request to add to queue
-export function createUserRolesRequests(previousSelectedUsers, currentSelectedUsers, roleId, roleDetails) {
+
+/**
+ * createUserRolesRequests
+ * Given lists of previous-selections and current-selections, calculate
+ * the diff to figure out which users are being added to the role and which
+ * are being removed. For each user, retrieve their currently assigned roles
+ * in order to figure out what kind of update to perform. Generate a list of
+ * requests to perform and return it.
+ *
+ * List mgmt: given lists like
+ *     prev: A B C D
+ *     curr:     C D E F
+ * (prev - curr) yields users to remove (A, B)
+ * (curr - prev) yields users to add (E, F)
+ * We don't care about the intersection (C, D); those users are not changing.
+ * A user being removed who has no other roles will generate a DELETE request.
+ * A user being added who has no other roles will generate a POST request.
+ * Other operations generate PUT requests with an updated list of roles.
+ *
+ * The implementation here is ... awkward. Although we have a hook to retrieve
+ * all user-roles given a list of users, it is hook-based and what we really
+ * need here is to synchronously await the completion of those queries and
+ * then run these queries. Instead, this function eschews that data in favor
+ * of retrieving each user's roles individually. That potentially means A LOT
+ * more queries, but I just couldn't bend my brain around how to leverage
+ * useUserRolesByUserIds in an event-handler, which is what we need. I'm sure
+ * there's a way (some combination of setting the query to be disabled and
+ * then using refetch?), but I'm out of time to figure out how. That's elegant
+ * but I couldn't make it work; this is inelegant but it works. Grrrrrr.
+ *
+ * @param {*} previousSelectedUsers previous members
+ * @param {*} currentSelectedUsers current members
+ * @param {*} roleId ID of role whose membership is changing
+ * @param {*} queryClient react-query.queryClient
+ * @param {*} ky okapiKy instance
+ * @returns
+ */
+export async function createUserRolesRequests(previousSelectedUsers, currentSelectedUsers, roleId, queryClient, ky) {
   const requests = [];
-  const previousSelectedUserIds = previousSelectedUsers.map(x => x.id);
-  const currentSelectedUserIds = currentSelectedUsers.map(x => x.id);
-  const combinedUserIds = combineIds(previousSelectedUserIds, currentSelectedUserIds);
-  const { added, removed } = getSelectedIdsDifference(previousSelectedUserIds, currentSelectedUserIds);
+  const previousUserIds = previousSelectedUsers.map(x => x.id);
+  const currentUserIds = currentSelectedUsers.map(x => x.id);
+  const { added, removed } = getSelectedIdsDifference(previousUserIds, currentUserIds);
 
-  for (const userId of combinedUserIds) {
-    const roleIds = [];
+  // user-roles are fun! fun fun fun!
+  // user-roles are shaped like { userId, roleId }, which makes them look
+  // like a simple join between users and roles but it's not quite that simple.
+  // the API hides a complex structure behind the scenes that makes user-role
+  // manipulation somewhat fraught.
+  //
+  // The /roles/users/${userId} API will return 200 but empty for a user who
+  // has never had a role assigned but will return 200 { userRoles: [] } for a
+  // user who had roles once but doesn't any longer.
+  const rolesForUser = async (userId) => {
+    const data = await queryClient.fetchQuery(
+      `role-${roleId}-user-${userId}`,
+      () => ky.get(`roles/users/${userId}`).json()
+    );
 
-    for (const userRole of roleDetails) {
-      if (userRole?.userId === userId) {
-        roleIds.push(userRole.roleId);
-      }
+    let roles = [];
+    if (data && data.userRoles) {
+      roles = data.userRoles.map(i => i.roleId);
     }
 
-    // We are determining here which users were selected or deselected for this role.
-    if (roleIds?.length) {
-      // If user is added to role
-      if (added?.includes(userId) && !roleIds.includes(roleId)) {
-        roleIds.push(roleId);
-      // If user is removed from role
-      } else if (removed?.includes(userId)) {
-        roleIds.splice(roleIds.indexOf(roleId), 1);
-      }
-      // If user has at least one other role besides this one, then we are updating an existing userRoles entry.
-      if ((added.includes(userId) || removed.includes(userId)) && roleIds.length) {
-        requests.push({ userId, roleIds, apiVerb: apiVerbs.PUT });
-      // If user has no more roles, then we are deleting the userRoles entry.
-      } else if (!roleIds.length) {
-        requests.push({ userId, roleIds, apiVerb: apiVerbs.DELETE });
-      }
-    // If the user previously had no roles assigned, then we are creating a userRoles entry.
-    } else if (added?.includes(userId)) {
-      roleIds.push(roleId);
-      requests.push({ userId, roleIds, apiVerb: apiVerbs.POST });
-    }
+    return roles;
+  };
+
+  for (const userId of added) {
+    const roleIds = await rolesForUser(userId);
+    // console.log(JSON.stringify({ action: 'ADD', userId, roleIds }, null, 2))
+    const apiVerb = roleIds.length ? apiVerbs.PUT : apiVerbs.POST;
+    requests.push({ userId, roleIds: [...roleIds, roleId], apiVerb });
   }
+
+  for (const userId of removed) {
+    const roleIds = (await rolesForUser(userId)).filter(id => id !== roleId);
+    // console.log(JSON.stringify({ action: 'REM', userId, roleIds }, null, 2))
+    const apiVerb = roleIds.length > 0 ? apiVerbs.PUT : apiVerbs.DELETE;
+    requests.push({ userId, roleIds, apiVerb });
+  }
+
   return requests;
 }
