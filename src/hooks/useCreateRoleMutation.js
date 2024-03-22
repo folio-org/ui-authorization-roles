@@ -10,10 +10,10 @@ const useCreateRoleMutation = (roleCapabilitiesListIds, capabilitySetListIds) =>
     onSuccess: async (newRole) => {
       await queryClient.invalidateQueries(namespace);
       if (roleCapabilitiesListIds.length > 0) {
-        await ky.post('roles/capabilities', { json: { roleId:newRole.id, capabilityIds: roleCapabilitiesListIds } }).json();
+        await ky.post('roles/capabilities', { json: { roleId: newRole.id, capabilityIds: roleCapabilitiesListIds } }).json();
       }
       if (capabilitySetListIds.length > 0) {
-        await ky.post('roles/capability-sets', { json: { roleId:newRole.id, capabilitySetIds: capabilitySetListIds } }).json();
+        await ky.post('roles/capability-sets', { json: { roleId: newRole.id, capabilitySetIds: capabilitySetListIds } }).json();
       }
     },
     onError:(error) => console.error(JSON.stringify(error)) // eslint-disable-line no-console
