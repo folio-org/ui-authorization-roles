@@ -40,8 +40,8 @@
     "applications": "Aplikace",
     "crud.selectApplication": "Vybrat aplikaci",
     "details.capabilitySets": "Sady schopností",
-    "role-details.accordion-users.columns.fullName": "Name",
-    "role-details.accordion-users.columns.patronGroup": "Patron group",
+    "role-details.accordion-users.columns.fullName": "Jméno",
+    "role-details.accordion-users.columns.patronGroup": "Kategorie čtenáře",
     "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles",
     "crud.deleteRole": "Smazat roli",
     "crud.deleteRoleConfirmation": "{rolename} bude smazána"
