@@ -1,4 +1,4 @@
-import { groupById, getKeyBasedArrayGroup, getCapabilitiesGroupedByTypeAndResource } from './grouping';
+import { groupById, getKeyBasedArrayGroup, getCapabilitiesGroupedByTypeAndResource, getOnlyIntersectedWithApplicationsCapabilities } from './grouping';
 
 describe('Test grouping functions', () => {
   it('test groupById', () => {
@@ -56,5 +56,13 @@ describe('Test grouping functions', () => {
     };
 
     expect(getCapabilitiesGroupedByTypeAndResource(capabilities)).toEqual(expected);
+  });
+
+  it('test getOnlyIntersectedWithApplicationsCapabilities', () => {
+    const intersectingList = ['alpha', 'betta', 'gamma', 'tetta'];
+    const applicationCapabilities = [{ id: 'alpha' }, { id: 'gamma' }];
+
+    expect(getOnlyIntersectedWithApplicationsCapabilities(applicationCapabilities, intersectingList))
+      .toStrictEqual({ 'alpha': true, 'gamma': true });
   });
 });
