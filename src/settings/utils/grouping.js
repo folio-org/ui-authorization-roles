@@ -153,7 +153,11 @@ export const groupById = (arr) => {
 
 
 /**
- * Get object by findind intersection between application capabilities and intersecting list
+ * Get object by finding intersection between application capabilities and intersecting list
+ * Example,
+ * applicationCapabilities = [{id: 'foo'}, {id: 'bar'}, {id: 'baz'}]
+ * intersectingList = ['foo', 'baz', 'loop', 'noop']
+ * returns {foo: true, bar: true}
  *
  * @param {Object[]} applicationCapabilities - List of application capabilities;
  * @param {Array.<string>} intersectingList - Intersecting list to filter from;
