@@ -42,7 +42,7 @@ const EditRole = ({ roleId }) => {
     isInitialLoaded } = useApplicationCapabilities();
 
   const shouldUpdateCapabilities = !isEqual(initialRoleCapabilitiesSelectedMap, selectedCapabilitiesMap);
-  const shouldUpdateCapabilitySets = !isEqual(initialRoleCapabilitySetsSelectedMap, selectedCapabilitiesMap);
+  const shouldUpdateCapabilitySets = !isEqual(initialRoleCapabilitySetsSelectedMap, selectedCapabilitySetsMap);
 
   const onChangeCapabilityCheckbox = (event, id) => {
     setSelectedCapabilitiesMap({ ...selectedCapabilitiesMap, [id]: event.target.checked });
