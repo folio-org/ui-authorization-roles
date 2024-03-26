@@ -5,7 +5,9 @@ import { isEmpty } from 'lodash';
 import { useStripes } from '@folio/stripes-core';
 
 import { CAPABILITES_LIMIT } from './constants';
-import { getCapabilitiesGroupedByTypeAndResource } from '../settings/utils';
+import { getCapabilitiesGroupedByTypeAndResource,
+  getOnlyIntersectedWithApplicationsCapabilities,
+  extractSelectedIdsFromObject } from '../settings/utils';
 
 /**
  * A hook for managing application capabilities.
@@ -30,18 +32,8 @@ const useApplicationCapabilities = () => {
 
   const ky = useOkapiKy();
 
-  const roleCapabilitiesListIds = Object.entries(selectedCapabilitiesMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
-  const roleCapabilitySetsListIds = Object.entries(selectedCapabilitySetsMap).filter(([, isSelected]) => isSelected).map(([id]) => id);
-
-  const getOnlyIntersectedWithApplicationsCapabilities = (applicationCaps) => {
-    if (isEmpty(applicationCaps)) return {};
-
-    return applicationCaps.filter(cap => roleCapabilitiesListIds.includes(cap.id))
-      .reduce((acc, cap) => {
-        acc[cap.id] = true;
-        return acc;
-      }, {});
-  };
+  const roleCapabilitiesListIds = extractSelectedIdsFromObject(selectedCapabilitiesMap);
+  const roleCapabilitySetsListIds = extractSelectedIdsFromObject(selectedCapabilitySetsMap);
 
   const requestApplicationCapabilitiesList = (listOfIds) => {
     const queryByApplications = listOfIds.map(appId => `applicationId=${appId}`).join(' or ');
@@ -73,8 +65,8 @@ const useApplicationCapabilities = () => {
       setCapabilitySetsList(capabilitySetsData.capabilitySets);
       setCapabilities(getCapabilitiesGroupedByTypeAndResource(capabilitiesData.capabilities));
       setCapabilitySets(getCapabilitiesGroupedByTypeAndResource(capabilitySetsData.capabilitySets));
-      const updatedSelectedCapabilitiesMap = getOnlyIntersectedWithApplicationsCapabilities(capabilitiesData.capabilities);
-      const updatedSelectedCapabilitySetsMap = getOnlyIntersectedWithApplicationsCapabilities(capabilitySetsData.capabilitySets);
+      const updatedSelectedCapabilitiesMap = getOnlyIntersectedWithApplicationsCapabilities(capabilitiesData.capabilities, roleCapabilitiesListIds);
+      const updatedSelectedCapabilitySetsMap = getOnlyIntersectedWithApplicationsCapabilities(capabilitySetsData.capabilitySets, roleCapabilitySetsListIds);
       setSelectedCapabilitiesMap(updatedSelectedCapabilitiesMap);
       setSelectedCapabilitySetsMap(updatedSelectedCapabilitySetsMap);
       setIsInitialLoaded(true);
