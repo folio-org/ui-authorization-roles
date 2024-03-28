@@ -1,7 +1,5 @@
-import { cleanup } from '@testing-library/react';
-import '@testing-library/jest-dom';
-
-import { render } from '@folio/jest-config-stripes/testing-library/react';
+import { cleanup, render } from '@folio/jest-config-stripes/testing-library/react';
+import '@folio/jest-config-stripes/testing-library/jest-dom';
 
 import AccordionCapabilitySets from './AccordionCapabilitySets';
 import useRoleCapabilitySets from '../../../hooks/useRoleCapabilitySets';

@@ -1,10 +1,7 @@
-import React from 'react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
+import { cleanup, render } from '@folio/jest-config-stripes/testing-library/react';
+import '@folio/jest-config-stripes/testing-library/jest-dom';
 
-import userEvent from '@testing-library/user-event';
-import { cleanup } from '@testing-library/react';
-
-import '@testing-library/jest-dom';
-import { render } from '@folio/jest-config-stripes/testing-library/react';
 import SearchForm from './SearchForm';
 
 const setSearchTerm = jest.fn();

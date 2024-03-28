@@ -1,15 +1,11 @@
-import React from 'react';
+import { cleanup, render } from '@folio/jest-config-stripes/testing-library/react';
+import '@folio/jest-config-stripes/testing-library/jest-dom';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 
-import { cleanup } from '@testing-library/react';
-import '@testing-library/jest-dom';
-
-import { render } from '@folio/jest-config-stripes/testing-library/react';
-import userEvent from '@testing-library/user-event';
 import RoleDetails from './RoleDetails';
 import useRoleById from '../../../hooks/useRoleById';
 import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 import useDeleteRoleMutation from '../../../hooks/useDeleteRoleMutation';
-
 
 jest.mock('../../../hooks/useRoleById');
 jest.mock('../../../hooks/useDeleteRoleMutation');

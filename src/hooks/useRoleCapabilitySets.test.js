@@ -1,9 +1,8 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { act, renderHook } from '@folio/jest-config-stripes/testing-library/react';
+import { act, cleanup, renderHook } from '@folio/jest-config-stripes/testing-library/react';
 
 import { useOkapiKy } from '@folio/stripes/core';
 
-import { cleanup } from '@testing-library/react';
 import useRoleCapabilitySets from './useRoleCapabilitySets';
 
 const queryClient = new QueryClient();

@@ -1,8 +1,6 @@
-import { cleanup } from '@testing-library/react';
+import { cleanup, render } from '@folio/jest-config-stripes/testing-library/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import '@testing-library/jest-dom';
-
-import { render } from '@folio/jest-config-stripes/testing-library/react';
+import '@folio/jest-config-stripes/testing-library/jest-dom';
 
 import AccordionUsers from './AccordionUsers';
 import useUsersByRoleId from '../../../hooks/useUsersByRoleId';

@@ -1,8 +1,7 @@
 import { useState } from 'react';
-
-import { useOkapiKy } from '@folio/stripes/core';
 import { isEmpty } from 'lodash';
-import { useStripes } from '@folio/stripes-core';
+
+import { useOkapiKy, useStripes } from '@folio/stripes/core';
 
 import { CAPABILITES_LIMIT } from './constants';
 import { getCapabilitiesGroupedByTypeAndResource,

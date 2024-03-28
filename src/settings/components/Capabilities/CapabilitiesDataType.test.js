@@ -1,7 +1,7 @@
 import React from 'react';
-import userEvent from '@testing-library/user-event';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { render } from '@folio/jest-config-stripes/testing-library/react';
-import '@testing-library/jest-dom';
+import '@folio/jest-config-stripes/testing-library/jest-dom';
 
 import { CapabilitiesDataType } from './CapabilitiesDataType';
 

@@ -1,10 +1,6 @@
-import React from 'react';
-
-import userEvent from '@testing-library/user-event';
-import { cleanup } from '@testing-library/react';
-
-import '@testing-library/jest-dom';
-import { render } from '@folio/jest-config-stripes/testing-library/react';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
+import { act, cleanup, render } from '@folio/jest-config-stripes/testing-library/react';
+import '@folio/jest-config-stripes/testing-library/jest-dom';
 
 import EditRole from './EditRole';
 import useCapabilities from '../../../hooks/useCapabilities';
@@ -164,8 +160,10 @@ describe('EditRole component', () => {
     const nameInput = getByTestId('rolename-input');
     const descriptionInput = getByTestId('description-input');
 
-    await userEvent.type(nameInput, ' New Role');
-    await userEvent.type(descriptionInput, ' changed');
+    await act(async () => {
+      await userEvent.type(nameInput, ' New Role');
+      await userEvent.type(descriptionInput, ' changed');
+    });
 
     expect(nameInput).toHaveValue('Admin New Role');
     expect(descriptionInput).toHaveValue('Description changed');
@@ -181,7 +179,9 @@ describe('EditRole component', () => {
 
     expect(cancelButton).toBeInTheDocument();
 
-    await userEvent.type(getByTestId('rolename-input'), 'New Role');
+    await act(async () => {
+      await userEvent.type(getByTestId('rolename-input'), 'New Role');
+    });
 
     expect(submitButton).toBeEnabled();
   });
@@ -192,9 +192,11 @@ describe('EditRole component', () => {
     ));
     const submitButton = getByRole('button', { name: 'ui-authorization-roles.crud.saveAndClose' });
 
-    await userEvent.type(getByTestId('rolename-input'), 'Change role');
+    await act(async () => {
+      await userEvent.type(getByTestId('rolename-input'), 'Change role');
 
-    await userEvent.click(submitButton);
+      await userEvent.click(submitButton);
+    });
     expect(submitButton).toBeEnabled();
     expect(mockMutateRole).toHaveBeenCalledTimes(1);
   });
@@ -222,7 +224,10 @@ describe('EditRole component', () => {
 
     expect(getAllByRole('checkbox')).toHaveLength(capabilitiesCheckboxLength + capabilitySetsCheckboxLength);
 
-    await userEvent.click(getAllByRole('checkbox')[0]);
+    await act(async () => {
+      await userEvent.click(getAllByRole('checkbox')[0]);
+    });
+
     expect(mockSetSelectedCapabilitiesMap).toHaveBeenCalledWith({ '6e59c367-888a-4561-a3f3-3ca677de437f': true });
   });
 
