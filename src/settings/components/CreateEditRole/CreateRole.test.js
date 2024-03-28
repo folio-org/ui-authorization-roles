@@ -1,19 +1,12 @@
-import React from 'react';
-
-import userEvent from '@testing-library/user-event';
-import { cleanup } from '@testing-library/react';
-
-import { render, waitFor } from '@folio/jest-config-stripes/testing-library/react';
-
-
-import '@testing-library/jest-dom';
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
+import { act, cleanup, render, waitFor } from '@folio/jest-config-stripes/testing-library/react';
+import '@folio/jest-config-stripes/testing-library/jest-dom';
 
 import CreateRole from './CreateRole';
 
 import useCreateRoleMutation from '../../../hooks/useCreateRoleMutation';
 import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 import useApplicationCapabilities from '../../../hooks/useApplicationCapabilities';
-
 
 jest.mock('../../../hooks/useCapabilities');
 jest.mock('../../../hooks/useCreateRoleMutation', () => ({
@@ -99,8 +92,10 @@ describe('CreateRole component', () => {
     const descriptionInput = getByTestId('description-input');
     const nameInput = getByTestId('rolename-input');
 
-    await userEvent.type(nameInput, 'New Role');
-    await userEvent.type(descriptionInput, 'Description');
+    await act(async () => {
+      await userEvent.type(nameInput, 'New Role');
+      await userEvent.type(descriptionInput, 'Description');
+    });
 
     expect(nameInput).toHaveValue('New Role');
     expect(descriptionInput).toHaveValue('Description');
@@ -115,8 +110,10 @@ describe('CreateRole component', () => {
     expect(submitButton).toBeDisabled();
     expect(cancelButton).toBeInTheDocument();
 
-    await userEvent.type(getByTestId('rolename-input'), 'New Role');
-    await userEvent.click(submitButton);
+    await act(async () => {
+      await userEvent.type(getByTestId('rolename-input'), 'New Role');
+      await userEvent.click(submitButton);
+    });
 
     expect(mockMutateRole).toHaveBeenCalledWith({ name: 'New Role', description: '' });
   });
@@ -126,9 +123,8 @@ describe('CreateRole component', () => {
 
     expect(getAllByRole('checkbox')).toHaveLength(3);
 
-    await userEvent.click(getAllByRole('checkbox')[0]);
-
-    await waitFor(() => {
+    await waitFor(async () => {
+      await userEvent.click(getAllByRole('checkbox')[0]);
       expect(mockSetSelectedCapabilitiesMap).toHaveBeenCalledWith({ '6e59c367-888a-4561-a3f3-3ca677de437f': true });
       expect(mockSetSelectedCapabilitiesMap).toHaveBeenCalledTimes(1);
     });
@@ -137,11 +133,11 @@ describe('CreateRole component', () => {
   it('should call capability checkbox handler actions on click', async () => {
     const { getAllByRole } = renderComponent();
 
-    await waitFor(() => {
+    await waitFor(async () => {
       expect(getAllByRole('checkbox')).toHaveLength(3);
+      await userEvent.click(getAllByRole('checkbox')[2]);
     });
 
-    await userEvent.click(getAllByRole('checkbox')[2]);
     expect(mockSetSelectedCapabilitiesMap).toHaveBeenCalledWith({ 'DDD-888a-4561-a3f3-3ca677de437f': true });
   });
 });
