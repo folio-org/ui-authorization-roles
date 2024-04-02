@@ -38,18 +38,42 @@ describe('RoleDetails utils', () => {
   });
 
   describe('Create Roles API requests', () => {
-    it('should create correct Roles API requests', () => {
-      const requests = createUserRolesRequests([{ id: '1' }], [{ id: '2' }, { id: '3' }], '555', [{ userId: '1', roleId: '555' }, { userId: '3', roleId: '111' }]);
+    it('should create correct Roles API requests', async () => {
+      const qc = {
+        fetchQuery: jest.fn()
+          .mockResolvedValueOnce({ userRoles: [] })
+          .mockResolvedValueOnce({ userRoles: [{ roleId: '111' }] })
+          .mockResolvedValueOnce({ userRoles: [] })
+      };
+
+      const requests = await createUserRolesRequests(
+        [{ id: '1' }], // will be removed because fetchQuery mock 3 is empty so the user will have no roles
+        [
+          { id: '2' }, // will be added via POST because fetchQuery mock 1 is empty so this user will have one role
+          { id: '3' }, // will be added via PUT because fetchQuery mock 2 contains a role so this user will have two roles
+        ],
+        '555',
+        qc,
+        jest.fn(),
+      );
 
       expect(requests).toEqual([
-        { apiVerb: apiVerbs.DELETE, roleIds: [], userId: '1' },
         { apiVerb: apiVerbs.POST, roleIds: ['555'], userId: '2' },
-        { apiVerb: apiVerbs.PUT, roleIds: ['111', '555'], userId: '3' }
+        { apiVerb: apiVerbs.PUT, roleIds: ['111', '555'], userId: '3' },
+        { apiVerb: apiVerbs.DELETE, roleIds: [], userId: '1' },
       ]);
     });
 
-    it('should handle no change', () => {
-      const requests = createUserRolesRequests([{ id: '1' }], [{ id: '1' }], '555', [{ userId: '1', roleId: '555' }]);
+    it('should handle no change', async () => {
+      const qc = {};
+
+      const requests = await createUserRolesRequests(
+        [{ id: '2' }, { id: '3' }],
+        [{ id: '2' }, { id: '3' }],
+        '555',
+        qc,
+        jest.fn(),
+      );
 
       expect(requests.length).toEqual(0);
     });
