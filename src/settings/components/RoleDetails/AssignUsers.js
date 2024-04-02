@@ -1,72 +1,65 @@
-import { useMemo, useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { useQueryClient } from 'react-query';
 
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { keyBy } from 'lodash';
 
-import { useStripes, Pluggable } from '@folio/stripes/core';
+import { useStripes, Pluggable, useOkapiKy } from '@folio/stripes/core';
 
-import { apiVerbs, createUserRolesRequests, combineIds } from './utils';
+import { apiVerbs, createUserRolesRequests } from './utils';
 import { USERS_BY_ROLE_ID_QUERY_KEY } from '../../../hooks/useUsersByRoleId';
 
-import useUserRolesByUserIds from '../../../hooks/useUserRolesByUserIds';
 import useUpdateUserRolesMutation from '../../../hooks/useUpdateUserRolesMutation';
 import useAssignRolesToUserMutation from '../../../hooks/useAssignRolesToUserMutation';
 import useDeleteUserRolesMutation from '../../../hooks/useDeleteUserRolesMutation';
 
 const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
   const stripes = useStripes();
+  const okapiKy = useOkapiKy();
   const queryClient = useQueryClient();
 
   const { mutateUpdateUserRoles } = useUpdateUserRolesMutation();
   const { mutateAssignRolesToUser } = useAssignRolesToUserMutation();
   const { mutateDeleteUserRoles } = useDeleteUserRolesMutation();
-  const [users, setUsers] = useState([]);
-  const [isAssignUsers, setIsAssignUsers] = useState(false);
-
   const initialSelectedUsers = useMemo(() => keyBy(selectedUsers, 'id'), [selectedUsers]);
-  const combinedUserIds = combineIds(Object.values(initialSelectedUsers).map(x => x.id), users.map(x => x.id));
-  const { userRolesResponse, isLoading } = useUserRolesByUserIds(combinedUserIds);
 
-  const assignUsers = (newSelectedUsers) => {
-    setIsAssignUsers(true);
-    setUsers(newSelectedUsers);
-  };
+  /**
+   * assignUsers
+   * Callback from the plugin receives an updated list of selected users.
+   * Since we only have 1/2 an API and cannot manipulate a role's users,
+   * we instead have to manipulate each user's roles.
+   *
+   * @param {*} newSelectedUsers
+   */
+  const assignUsers = async (newSelectedUsers) => {
+    const requests = await createUserRolesRequests(Object.values(initialSelectedUsers), newSelectedUsers, roleId, queryClient, okapiKy);
+    const promises = [];
 
-  useEffect(() => {
-    (async () => {
-      if (isAssignUsers && !isLoading) {
-        const requests = createUserRolesRequests(Object.values(initialSelectedUsers), users, roleId, userRolesResponse);
-        const promises = [];
-
-        for (const request of requests) {
-          const { apiVerb, userId, roleIds } = request;
-          switch (apiVerb) {
-            case apiVerbs.PUT:
-              promises.push(mutateUpdateUserRoles({ userId, roleIds }));
-              break;
-            case apiVerbs.POST:
-              promises.push(mutateAssignRolesToUser({ userId, roleIds }));
-              break;
-            case apiVerbs.DELETE:
-              promises.push(mutateDeleteUserRoles({ userId }));
-              break;
-            default:
-              break;
-          }
-        }
-        if (promises.length) {
-          await Promise.allSettled(promises);
-          // Refresh user list
-          queryClient.invalidateQueries(USERS_BY_ROLE_ID_QUERY_KEY);
-          await refetch();
-          setIsAssignUsers(false);
-        }
+    for (const request of requests) {
+      const { apiVerb, userId, roleIds } = request;
+      switch (apiVerb) {
+        case apiVerbs.PUT:
+          promises.push(mutateUpdateUserRoles({ userId, roleIds }));
+          break;
+        case apiVerbs.POST:
+          promises.push(mutateAssignRolesToUser({ userId, roleIds }));
+          break;
+        case apiVerbs.DELETE:
+          promises.push(mutateDeleteUserRoles({ userId }));
+          break;
+        default:
+          break;
       }
-    })();
-    // Disabling tracking on deps since certain values (userRolesResponse in particular) cause useEffect to loop
-  }, [isAssignUsers]); // eslint-disable-line react-hooks/exhaustive-deps
+    }
+
+    if (promises.length) {
+      await Promise.allSettled(promises);
+      // Refresh user list
+      queryClient.invalidateQueries(USERS_BY_ROLE_ID_QUERY_KEY);
+      await refetch();
+    }
+  };
 
   return (
     <Pluggable
