@@ -29,7 +29,7 @@
     "crud.editRole": "Edit role",
     "crud.saveAndClose": "Save and close",
     "crud.cancel": "Cancel",
-    "crud.edit": "Edit",
+    "crud.edit": "編集",
     "crud.delete": "Delete",
     "form.labels.name": "Name",
     "form.labels.description": "Description",

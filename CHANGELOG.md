@@ -3,6 +3,7 @@
 ## 1.4.0 IN PROGRESS
 
 * Server-side query sort (temporary, lacking i18n).
+* Clean up `package.json` cruft etc. Refs UIROLES-57.
 * Correctly assign/unassign users to roles. Refs UIROLES-63, UIROLES-43.
 
 ## [1.3.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.3.0) (2024-03-05)
@@ -16,6 +17,9 @@
 * Show spinner while loading capabilities/capabilitySets tables. Refs UIROLES-42
 * Show capabilities/capability sets depending on selected applications. Refs UIROLES-40.
 * Include `settings.authorization-roles.enabled` permission set. Refs UIROLES-54.
+* Fix error when updating only name/description for authorization role. Refs UIROLES-62.
+* Replace `roleCapabilitiesListIds` with `roleCapabilitySetsListIds` as intersecting list in the `updatedSelectedCapabilitySetsMap` variable within the `useApplicationCapabilities` hook. Refs UIROLES-59.
+
 
 ## 1.2.0
 
