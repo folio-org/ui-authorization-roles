@@ -22,7 +22,6 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
   const { mutateUpdateUserRoles } = useUpdateUserRolesMutation();
   const { mutateAssignRolesToUser } = useAssignRolesToUserMutation();
   const { mutateDeleteUserRoles } = useDeleteUserRolesMutation();
-  const [users, setUsers] = useState([]);
   const initialSelectedUsers = useMemo(() => keyBy(selectedUsers, 'id'), [selectedUsers]);
 
   /**
@@ -34,8 +33,6 @@ const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
    * @param {*} newSelectedUsers
    */
   const assignUsers = async (newSelectedUsers) => {
-    setUsers(newSelectedUsers);
-
     const requests = await createUserRolesRequests(Object.values(initialSelectedUsers), newSelectedUsers, roleId, queryClient, okapiKy);
     const promises = [];
 

@@ -77,7 +77,7 @@ export async function createUserRolesRequests(previousSelectedUsers, currentSele
     );
 
     let roles = [];
-    if (data && data.userRoles) {
+    if (data?.userRoles) {
       roles = data.userRoles.map(i => i.roleId);
     }
 
