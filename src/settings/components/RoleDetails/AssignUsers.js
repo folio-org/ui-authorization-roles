@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useQueryClient } from 'react-query';
 
 import PropTypes from 'prop-types';
