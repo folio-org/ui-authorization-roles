@@ -38,11 +38,11 @@
     "applications.found": "找到{count}个应用",
     "applications.totalSelected": "已选总数： {count}",
     "applications": "应用",
-    "crud.selectApplication": "Select application",
-    "details.capabilitySets": "Capability sets",
-    "role-details.accordion-users.columns.fullName": "Name",
-    "role-details.accordion-users.columns.patronGroup": "Patron group",
-    "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles",
-    "crud.deleteRole": "Delete role",
-    "crud.deleteRoleConfirmation": "{rolename} will be deleted"
+    "crud.selectApplication": "选择应用",
+    "details.capabilitySets": "能力设置",
+    "role-details.accordion-users.columns.fullName": "名称",
+    "role-details.accordion-users.columns.patronGroup": "读者组",
+    "permission.settings.admin": "设置（授权角色）：可管理授权角色",
+    "crud.deleteRole": "删除角色",
+    "crud.deleteRoleConfirmation": "{rolename}将被删除"
 }
