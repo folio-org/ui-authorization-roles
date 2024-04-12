@@ -7,7 +7,7 @@
     "columns.updatedDate": "Aktualizováno",
     "columns.updatedBy": "Aktualizoval",
     "assignedUsers": "Přiřazení uživatelé",
-    "assignUnassign": "Přiřadit/Zrušit",
+    "assignUnassign": "Přiřadit/Zrušit přiřazení",
     "generalInformation": "Obecné informace",
     "details.capabilities": "Schopnosti",
     "details.data": "Data",
@@ -42,7 +42,7 @@
     "details.capabilitySets": "Sady schopností",
     "role-details.accordion-users.columns.fullName": "Jméno",
     "role-details.accordion-users.columns.patronGroup": "Kategorie čtenáře",
-    "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles",
+    "permission.settings.admin": "Nastavení (Autorizační role): Může spravovat autorizační role",
     "crud.deleteRole": "Smazat roli",
     "crud.deleteRoleConfirmation": "{rolename} bude smazána"
 }
