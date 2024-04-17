@@ -1,5 +1,10 @@
 # Change history for ui-authorization-roles
 
+## [1.3.4](https://github.com/folio-org/ui-authorization-roles/tree/v1.3.4) (2024-04-17)
+[Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.3.3...v1.3.4)
+
+* Sort role, capability, and capability-set queries.
+
 ## [1.3.3](https://github.com/folio-org/ui-authorization-roles/tree/v1.3.3) (2024-04-16)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.3.2...v1.3.3)
 
