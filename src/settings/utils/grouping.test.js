@@ -48,9 +48,9 @@ describe('Test grouping functions', () => {
         { id: 22, applicationId: 'ccc', resource: 'resource1', actions: { manage: 22, delete: 222 } },
       ],
       settings: [{ id: 5, applicationId: 'app1', resource: 'resource2', actions: { edit: 5, delete: 6 } }],
-      procedural: [
-        { id: 7, applicationId: 'app1', resource: 'resource3', actions: { execute: 7 } },
+      procedural: [ // expecting list first sorted by applicationId, then by resource
         { id: 8, applicationId: 'app1', resource: 'resource1', actions: { execute: 8 } },
+        { id: 7, applicationId: 'app1', resource: 'resource3', actions: { execute: 7 } },
         { id: 9, applicationId: 'bbb', resource: 'resource3', actions: { execute: 9, delete: 10 } },
       ]
     };

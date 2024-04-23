@@ -122,7 +122,8 @@ const groupCapabilitiesObjectByTypeAndResource = (groupedTypeByResource) => {
 
   for (const key in result) {
     if (key in result) {
-      result[key].sort((a, b) => a.applicationId.localeCompare(b.applicationId));
+      // first sort by Application ID, then sort by Resource
+      result[key].sort((a, b) => (a.applicationId.localeCompare(b.applicationId) || a.resource.localeCompare(b.resource)));
     }
   }
 
