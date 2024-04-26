@@ -6,6 +6,7 @@
 * Clean up `package.json` cruft etc. Refs UIROLES-57.
 * Correctly assign/unassign users to roles. Refs UIROLES-63, UIROLES-43.
 * Fix capabilities/sets not sorted by "Resource" value when creating/editing an authorization role. Refs UIROLES-70.
+* Fix Patron group not always shown for assigned users in detailed view of authorization role. Refs UIROLES-52.
 
 ## [1.3.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.3.0) (2024-03-05)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.2.0...v1.3.0)

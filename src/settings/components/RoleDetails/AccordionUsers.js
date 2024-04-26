@@ -31,13 +31,19 @@ const AccordionUsers = ({ roleId }) => {
     return getFullName(a).localeCompare(getFullName(b));
   });
 
-  users.forEach(i => {
-    i.fullName = (
+  const usersData = users.map(i => {
+    const fullName = (
       <TextLink to={`/users/preview/${i.id}?query=${i.username}`}>
         {getFullName(i)}
       </TextLink>
     );
-    i.patronGroup = groupHash[i.patronGroup]?.desc || <NoValue />;
+
+    const patronGroup = groupHash[i.patronGroup]?.group || <NoValue />;
+
+    return {
+      fullName,
+      patronGroup
+    };
   });
 
   return (
@@ -47,11 +53,11 @@ const AccordionUsers = ({ roleId }) => {
       }
       displayWhenClosed={
         <Badge>
-          {users?.length || 0}
+          {usersData?.length || 0}
         </Badge>
       }
       displayWhenOpen={<AssignUsers
-        selectedUsers={users}
+        selectedUsers={usersData}
         roleId={roleId}
         refetch={refetch}
       />}
@@ -61,7 +67,7 @@ const AccordionUsers = ({ roleId }) => {
           fullName: <FormattedMessage id="ui-authorization-roles.role-details.accordion-users.columns.fullName" />,
           patronGroup: <FormattedMessage id="ui-authorization-roles.role-details.accordion-users.columns.patronGroup" />,
         }}
-        contentData={users}
+        contentData={usersData}
         visibleColumns={['fullName', 'patronGroup']}
       />
     </Accordion>
