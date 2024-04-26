@@ -1,6 +1,7 @@
 # Change history for ui-authorization-roles
 
-## 1.4.0 IN PROGRESS
+## [1.4.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.4.0) (2024-04-26)
+[Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.3.0...v1.4.0)
 
 * Server-side query sort (temporary, lacking i18n).
 * Clean up `package.json` cruft etc. Refs UIROLES-57.
@@ -13,7 +14,7 @@
 * View role capability sets. Refs UIROLES-30.
 * List users assigned to a given role. Refs UIROLES-31.
 * Retrieve up to 5000 capabilities at once. Refs UIROLES-47.
-* Include `settings.authorization-roles.enabled` permission set. Refs UIROLES-54. 
+* Include `settings.authorization-roles.enabled` permission set. Refs UIROLES-54.
 * Add ability to Assign/unassign roles to users in role details pane. Refs UIROLES-43.
 * Show spinner while loading capabilities/capabilitySets tables. Refs UIROLES-42
 * Show capabilities/capability sets depending on selected applications. Refs UIROLES-40.
