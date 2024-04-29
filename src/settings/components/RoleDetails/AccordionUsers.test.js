@@ -71,8 +71,8 @@ describe('AccordionUsers component', () => {
       getByText('ui-authorization-roles.assignedUsers');
       getByText(users[0].personal.firstName, { exact: false });
       getByText(users[1].personal.firstName, { exact: false });
-      getByText(usergroups[0].desc, { exact: false });
-      getByText(usergroups[1].desc, { exact: false });
+      getByText(usergroups[0].group, { exact: false });
+      getByText(usergroups[1].group, { exact: false });
     });
   });
 
