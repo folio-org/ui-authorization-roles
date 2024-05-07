@@ -17,6 +17,8 @@ import {
   NoValue,
   ConfirmationModal
 } from '@folio/stripes/components';
+import { UserName } from '@folio/stripes/smart-components';
+import { useStripes } from '@folio/stripes/core';
 
 import { useHistory, useLocation } from 'react-router';
 import css from '../../style.css';
@@ -27,6 +29,9 @@ import AccordionCapabilitySets from './AccordionCapabilitySets';
 import useDeleteRoleMutation from '../../../hooks/useDeleteRoleMutation';
 
 const RoleDetails = ({ onClose, roleId }) => {
+  const { connect } = useStripes();
+
+  const ConnectedUserName = connect(UserName);
   const history = useHistory();
   const { pathname } = useLocation();
 
@@ -77,9 +82,11 @@ const RoleDetails = ({ onClose, roleId }) => {
               createdDate={role?.metadata?.createdDate}
               lastUpdatedDate={role?.metadata?.modifiedDate}
               lastUpdatedBy={
-                role?.metadata?.modifiedBy || ''
+                <ConnectedUserName id={role?.metadata?.modifiedBy || ''} />
               }
-              createdBy={role?.metadata?.createdBy || ''}
+              createdBy={
+                <ConnectedUserName id={role?.metadata?.createdBy || ''} />
+              }
             />
             <KeyValue
               data-testid="role-name"
