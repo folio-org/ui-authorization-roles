@@ -1,5 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import {
+  NoValue
+} from '@folio/stripes/components';
+
 import { CheckboxWithAsterisk } from '../../../components/CheckboxWithAsterisk/CheckboxWithAsterisk';
 import { useCheckboxAriaStates } from './helpers';
 
@@ -12,8 +17,13 @@ const ItemActionCheckbox = ({
   isCapabilityDisabled
 }) => {
   const { getCheckboxAriaLabel } = useCheckboxAriaStates();
+  const checked = isCapabilitySelected(item.actions[action]);
 
   if (!readOnly && !item.actions[action]) return null;
+
+  if (readOnly && !checked) {
+    return <NoValue />;
+  }
 
   return <CheckboxWithAsterisk
     aria-describedby="asterisk-policy-desc"
