@@ -3,7 +3,6 @@ import { MultiColumnList, Headline } from '@folio/stripes/components';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import PropTypes from 'prop-types';
-import { getApplicationName } from '../../utils';
 import { capabilitiesPropType } from '../../types';
 import { columnTranslations } from '../../../constants/translations';
 import ItemActionCheckbox from './ItemActionCheckbox';
@@ -47,7 +46,7 @@ const CapabilitiesDataType = ({ content, readOnly, onChangeCapabilityCheckbox, i
   };
 
   const resultsFormatter = {
-    application: (item) => getApplicationName(item.applicationId),
+    application: (item) => item.applicationId,
     resource: (item) => item.resource,
     view: (item) => renderItemActionCheckbox(item, 'view'),
     edit: (item) => renderItemActionCheckbox(item, 'edit'),
