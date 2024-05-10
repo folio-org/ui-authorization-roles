@@ -8,7 +8,7 @@ import { CapabilitiesDataType } from './CapabilitiesDataType';
 const dataTypeCapabilities = [
   {
     id: '8d2da27c-1d56-48b6-923358d-2bfae6d79dc8',
-    applicationId: 'Circulation-2',
+    applicationId: 'Circulation',
     name: 'foo_item.create',
     description: 'Sample: Create foo item',
     resource: 'Foo Item',
