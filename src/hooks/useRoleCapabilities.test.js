@@ -84,7 +84,7 @@ const expectedGroupedRoleCapabilitiesByType = {
       'actions':  {
         'manage': 'data-capability-id',
       },
-      'applicationId': 'app-platform-minimal-0.0.4',
+      'applicationId': 'app-platform-minimal',
       'id': 'data-capability-id',
       'resource': 'Capability Roles',
     },
@@ -94,7 +94,7 @@ const expectedGroupedRoleCapabilitiesByType = {
       'actions':  {
         'manage': 'procedural-capability-id',
       },
-      'applicationId': 'app-platform-minimal-0.0.4',
+      'applicationId': 'app-platform-minimal',
       'id': 'procedural-capability-id',
       'resource': 'Capability Roles',
     },
@@ -104,7 +104,7 @@ const expectedGroupedRoleCapabilitiesByType = {
       'actions':  {
         'manage': 'settings-capability-id',
       },
-      'applicationId': 'app-platform-minimal-0.0.4',
+      'applicationId': 'app-platform-minimal',
       'id': 'settings-capability-id',
       'resource': 'Capability Roles',
     },

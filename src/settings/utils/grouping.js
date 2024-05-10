@@ -1,4 +1,5 @@
-import { isEmpty } from 'lodash';
+import { isEmpty, sortBy } from 'lodash';
+import { getApplicationName } from './transformStrings';
 
 export const getKeyBasedArrayGroup = (array, key) => {
   return array.reduce((acc, currentObject) => {
@@ -104,7 +105,7 @@ const groupCapabilitiesObjectByTypeAndResource = (groupedTypeByResource) => {
       // example of pushed value - {applicationId: 111, resource: "resource 1", action: {view: "222", edit: "333", manage: "444"}}
       Object.entries(capabilitiesByApplication).forEach(([application, resourceCapabilities]) => {
         const resultItem = { id: resourceCapabilities[0].id,
-          applicationId: application,
+          applicationId: getApplicationName(application),
           resource,
           actions: resourceCapabilities.reduce((acc, item) => {
             acc[item.action] = item.id;
@@ -123,7 +124,7 @@ const groupCapabilitiesObjectByTypeAndResource = (groupedTypeByResource) => {
   for (const key in result) {
     if (key in result) {
       // first sort by Application ID, then sort by Resource
-      result[key].sort((a, b) => (a.applicationId.localeCompare(b.applicationId) || a.resource.localeCompare(b.resource)));
+      result[key] = sortBy(result[key], ['applicationId', 'resource']);
     }
   }
 
