@@ -1,5 +1,5 @@
 import { isEmpty, sortBy } from 'lodash';
-import { getApplicationName } from '../utils/transformStrings';
+import { getApplicationName } from './transformStrings';
 
 export const getKeyBasedArrayGroup = (array, key) => {
   return array.reduce((acc, currentObject) => {
