@@ -10,6 +10,10 @@ import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 
 jest.mock('../../../hooks/useCapabilities');
 jest.mock('../../../hooks/useRoleCapabilities');
+jest.mock('../../../hooks/useMatchPath', () => ({
+  __esModule: true,
+  default: jest.fn().mockReturnValue({ getParams: () => ({ roleId: 'id' }) })
+}));
 
 useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
 
@@ -79,7 +83,7 @@ describe('SettingsPage', () => {
     expect(gridCells[2]).toHaveTextContent('-');
   });
 
-  it('renders role details on click', async () => {
+  it('renders role details if role id present in the path', async () => {
     useAuthorizationRoles.mockImplementation(() => ({
       roles: [
         {
@@ -90,9 +94,8 @@ describe('SettingsPage', () => {
         },
       ],
     }));
-    const { queryByTestId, getAllByRole } = renderComponent();
+    const { queryByTestId } = renderComponent();
 
-    await userEvent.click(getAllByRole('gridcell')[0]);
     expect(queryByTestId('mock-role-details')).toBeInTheDocument();
   });
 

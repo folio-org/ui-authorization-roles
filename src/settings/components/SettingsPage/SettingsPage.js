@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useHistory, useLocation } from 'react-router';
+import { useHistory } from 'react-router';
 
 import { FormattedMessage, FormattedDate } from 'react-intl';
 
@@ -12,6 +12,7 @@ import {
   PaneMenu,
   MultiColumnList,
   TextLink,
+  NoValue,
 } from '@folio/stripes/components';
 
 import useAuthorizationRoles from '../../../hooks/useAuthorizationRoles';
@@ -19,21 +20,22 @@ import { SearchForm } from '../SearchForm';
 import { RoleDetails } from '../RoleDetails';
 import EditRole from '../CreateEditRole/EditRole';
 import CreateRole from '../CreateEditRole/CreateRole';
+import useMatchPath from '../../../hooks/useMatchPath';
+
+const baseUrl = '/settings/authorization-roles';
 
 const SettingsPage = () => {
   const history = useHistory();
-  const { pathname } = useLocation();
+  const { getParams } = useMatchPath();
 
   const queryParams = new URLSearchParams(history.location.search);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedRow, setSelectedRow] = useState(null);
-
-  const onRowClick = (_event, row) => setSelectedRow(row);
+  const roleId = getParams(`${baseUrl}/:roleId`)?.roleId || '';
 
   const lastMenu = (
     <PaneMenu>
-      <Button buttonStyle="primary" marginBottom0 onClick={() => history.push(`${pathname}?layout=add`)}>
+      <Button buttonStyle="primary" marginBottom0 onClick={() => history.push(`${baseUrl}/${roleId}?layout=add`)}>
         + <FormattedMessage id="ui-authorization-roles.new" />
       </Button>
     </PaneMenu>
@@ -47,12 +49,12 @@ const SettingsPage = () => {
   };
 
   const resultsFormatter = {
-    name: (item) => <TextLink>{item.name}</TextLink>,
-    updatedBy: (item) => (item.metadata?.modifiedBy || ''),
+    name: (item) => <TextLink to={`${baseUrl}/${item.id}`}>{item.name}</TextLink>,
+    updatedBy: (item) => (item.metadata?.modifiedBy || <NoValue />),
     updated: (item) => (item.metadata?.modifiedDate ? (
       <FormattedDate value={item.metadata?.modifiedDate} />
     ) : (
-      '-'
+      <NoValue />
     )),
   };
 
@@ -60,8 +62,8 @@ const SettingsPage = () => {
     return <CreateRole />;
   }
 
-  if (queryParams.get('layout') === 'edit' && queryParams.get('id') === selectedRow?.id) {
-    return <EditRole roleId={selectedRow.id} />;
+  if (roleId && queryParams.get('layout') === 'edit') {
+    return <EditRole roleId={roleId} />;
   }
 
   return (
@@ -98,13 +100,11 @@ const SettingsPage = () => {
           }}
           contentData={roles}
           formatter={resultsFormatter}
-          selectedRow={selectedRow}
           loading={isLoading}
           visibleColumns={['name', 'description', 'updated', 'updatedBy']}
-          onRowClick={onRowClick}
         />
       </Pane>
-      {selectedRow && <RoleDetails roleId={selectedRow.id} onClose={() => setSelectedRow(null)} />}
+      {roleId && <RoleDetails roleId={roleId} onClose={() => history.push(baseUrl)} />}
     </Paneset>
   );
 };
