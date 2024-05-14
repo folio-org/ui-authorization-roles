@@ -35,7 +35,7 @@ const SettingsPage = () => {
 
   const lastMenu = (
     <PaneMenu>
-      <Button buttonStyle="primary" marginBottom0 onClick={() => history.push(`${baseUrl}/${roleId}?layout=add`)}>
+      <Button buttonStyle="primary" marginBottom0 onClick={() => history.push(`${baseUrl}?layout=add`)}>
         + <FormattedMessage id="ui-authorization-roles.new" />
       </Button>
     </PaneMenu>
@@ -62,7 +62,7 @@ const SettingsPage = () => {
     return <CreateRole />;
   }
 
-  if (roleId && queryParams.get('layout') === 'edit') {
+  if (queryParams.get('layout') === 'edit') {
     return <EditRole roleId={roleId} />;
   }
 

@@ -20,7 +20,7 @@ import {
 import { UserName } from '@folio/stripes/smart-components';
 import { useStripes } from '@folio/stripes/core';
 
-import { useHistory, useLocation } from 'react-router';
+import { useHistory } from 'react-router';
 import css from '../../style.css';
 import useRoleById from '../../../hooks/useRoleById';
 import AccordionUsers from './AccordionUsers';
@@ -33,7 +33,6 @@ const RoleDetails = ({ onClose, roleId }) => {
 
   const ConnectedUserName = connect(UserName);
   const history = useHistory();
-  const { pathname } = useLocation();
 
   const { roleDetails: role } = useRoleById(roleId);
   const { mutateAsync: deleteRole } = useDeleteRoleMutation(onClose);
@@ -42,7 +41,7 @@ const RoleDetails = ({ onClose, roleId }) => {
 
   const getActionMenu = () => (
     <>
-      <Button buttonStyle="dropdownItem" onClick={() => history.push(`${pathname}?layout=edit&id=${roleId}`)}>
+      <Button buttonStyle="dropdownItem" onClick={() => history.push(`/settings/authorization-roles?id=${roleId}&layout=edit`)}>
         <Icon icon="edit">
           <FormattedMessage id="ui-authorization-roles.crud.edit" />
         </Icon>
