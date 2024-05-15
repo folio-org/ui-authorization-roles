@@ -44,20 +44,26 @@ const useApplicationCapabilities = () => {
     return ky.get(`capability-sets?limit=${stripes.config.maxUnpagedResourceCount}&query=${queryByApplications}`).json();
   };
 
+  const cleanupCapabilitiesData = () => {
+    setCapabilities({ data: [], settings: [], procedural: [] });
+    setCapabilitySets({ data: [], settings: [], procedural: [] });
+    setSelectedCapabilitiesMap({});
+    setSelectedCapabilitySetsMap({});
+  };
+
   const onSubmitSelectApplications = async (appIds, onClose) => {
+    // cleanup is preventing users from interacting with data that might no longer be available after selection
+    cleanupCapabilitiesData();
+    onClose?.();
     setCheckedAppIdsMap(appIds);
     const listOfIds = Object.entries(appIds).filter(([, isSelected]) => isSelected).map(([id]) => id);
 
     if (isEmpty(listOfIds)) {
-      setCapabilities({ data: [], settings: [], procedural: [] });
-      setCapabilitySets({ data: [], settings: [], procedural: [] });
-      setSelectedCapabilitiesMap({});
-      setSelectedCapabilitySetsMap({});
-      onClose?.();
       return;
     }
 
     try {
+      setIsInitialLoaded(false);
       const capabilitiesData = await requestApplicationCapabilitiesList(listOfIds);
       const capabilitySetsData = await requestApplicationCapabilitySets(listOfIds);
 
@@ -69,7 +75,6 @@ const useApplicationCapabilities = () => {
       setSelectedCapabilitiesMap(updatedSelectedCapabilitiesMap);
       setSelectedCapabilitySetsMap(updatedSelectedCapabilitySetsMap);
       setIsInitialLoaded(true);
-      onClose?.();
     } catch (error) {
       console.error(error); // eslint-disable-line no-console
     }

@@ -86,4 +86,27 @@ describe('useApplicationCapabilities', () => {
       expect(result.current.selectedCapabilitiesMap).toStrictEqual({});
     });
   });
+
+  it('should call initial load function', async () => {
+    const { result } = renderHook(useApplicationCapabilities);
+
+    const data = { capabilities: [{ id: 1, applicationId: 'cap1', type: 'data', action:'edit', resource: 'r1' }, { id: 12, applicationId: 'cap12', type: 'data', action: 'create', resource: 'r1' }] };
+
+    const mockGet = jest.fn(() => ({
+      json: () => Promise.resolve(data),
+    }));
+
+    useOkapiKy.mockClear().mockReturnValue({
+      get: mockGet,
+    });
+
+    const appIds = {};
+
+    await waitFor(async () => {
+      await result.current.onInitialLoad(appIds);
+
+      expect(result.current.capabilities).toStrictEqual({ data: [], settings: [], procedural: [] });
+      expect(result.current.selectedCapabilitiesMap).toStrictEqual({});
+    });
+  });
 });
