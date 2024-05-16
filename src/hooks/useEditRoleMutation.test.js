@@ -23,7 +23,7 @@ describe('useEditRoleMutation', () => {
     });
 
     const { result } = renderHook(
-      () => useEditRoleMutation({ id:'1', description: 'description', name: 'name' }, ['1', '2', '3']),
+      () => useEditRoleMutation({ id:'1', description: 'description', name: 'name' }, ['1', '2', '3'], { handleError: jest.fn() }),
       { wrapper },
     );
 
