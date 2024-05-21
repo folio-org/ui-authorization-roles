@@ -4,6 +4,7 @@ import { useHistory, useLocation } from 'react-router';
 import CreateEditRoleForm from './CreateEditRoleForm';
 import useCreateRoleMutation from '../../../hooks/useCreateRoleMutation';
 import useApplicationCapabilities from '../../../hooks/useApplicationCapabilities';
+import useErrorCallout from '../../../hooks/useErrorCallout';
 
 const CreateRole = () => {
   const history = useHistory();
@@ -24,6 +25,8 @@ const CreateRole = () => {
     capabilitySets,
     capabilitySetsList, roleCapabilitySetsListIds } = useApplicationCapabilities();
 
+  const { sendErrorCallout } = useErrorCallout();
+
   const onChangeCapabilityCheckbox = (event, id) => setSelectedCapabilitiesMap({ ...selectedCapabilitiesMap, [id]: event.target.checked });
   const onChangeCapabilitySetCheckbox = (event, capabilitySetId) => {
     const selectedCapabilitySet = capabilitySetsList.find(cap => cap.id === capabilitySetId);
@@ -43,13 +46,13 @@ const CreateRole = () => {
   const isCapabilitySetSelected = id => !!selectedCapabilitySetsMap[id];
   const isCapabilityDisabled = id => !!disabledCapabilities[id];
 
-  const { mutateRole, isLoading } = useCreateRoleMutation(roleCapabilitiesListIds, roleCapabilitySetsListIds);
+  const { mutateRole, isLoading } = useCreateRoleMutation(roleCapabilitiesListIds, roleCapabilitySetsListIds, sendErrorCallout);
 
   const goBack = () => history.push(pathname);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await mutateRole({ name:roleName, description });
+    await mutateRole({ name: roleName, description });
     goBack();
   };
 

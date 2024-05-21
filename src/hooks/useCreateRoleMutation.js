@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { useNamespace, useOkapiKy } from '@folio/stripes/core';
 
-const useCreateRoleMutation = (roleCapabilitiesListIds, capabilitySetListIds) => {
+const useCreateRoleMutation = (roleCapabilitiesListIds, capabilitySetListIds, handleError) => {
   const ky = useOkapiKy();
   const queryClient = useQueryClient();
   const [namespace] = useNamespace();
@@ -16,7 +16,7 @@ const useCreateRoleMutation = (roleCapabilitiesListIds, capabilitySetListIds) =>
         await ky.post('roles/capability-sets', { json: { roleId: newRole.id, capabilitySetIds: capabilitySetListIds } }).json();
       }
     },
-    onError:(error) => window.alert(JSON.stringify(error)) // eslint-disable-line no-alert
+    onError: handleError,
   });
 
   return { mutateRole: mutateAsync, isLoading };

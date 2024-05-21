@@ -11,6 +11,7 @@ import useRoleById from '../../../hooks/useRoleById';
 import useApplicationCapabilities from '../../../hooks/useApplicationCapabilities';
 import useRoleCapabilitySets from '../../../hooks/useRoleCapabilitySets';
 import useCapabilitySets from '../../../hooks/useCapabilitySets';
+import useSendErrorCallout from '../../../hooks/useErrorCallout';
 
 const EditRole = ({ roleId }) => {
   const history = useHistory();
@@ -40,6 +41,8 @@ const EditRole = ({ roleId }) => {
     capabilitySets,
     roleCapabilitySetsListIds,
     isInitialLoaded } = useApplicationCapabilities();
+
+  const { sendErrorCallout } = useSendErrorCallout();
 
   const shouldUpdateCapabilities = !isEqual(initialRoleCapabilitiesSelectedMap, selectedCapabilitiesMap);
   const shouldUpdateCapabilitySets = !isEqual(initialRoleCapabilitySetsSelectedMap, selectedCapabilitySetsMap);
@@ -75,7 +78,11 @@ const EditRole = ({ roleId }) => {
 
   const goBack = () => history.push(pathname);
 
-  const { mutateRole, isLoading } = useEditRoleMutation({ id: roleId, name: roleName, description }, { roleCapabilitiesListIds, shouldUpdateCapabilities, roleCapabilitySetsListIds, shouldUpdateCapabilitySets });
+  const { mutateRole, isLoading } = useEditRoleMutation(
+    { id: roleId, name: roleName, description },
+    { roleCapabilitiesListIds, shouldUpdateCapabilities, roleCapabilitySetsListIds, shouldUpdateCapabilitySets },
+    { handleError: sendErrorCallout }
+  );
 
   const onSubmit = async (event) => {
     event.preventDefault();
