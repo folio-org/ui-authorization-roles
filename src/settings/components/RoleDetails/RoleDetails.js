@@ -41,7 +41,7 @@ const RoleDetails = ({ onClose, roleId }) => {
 
   const getActionMenu = () => (
     <>
-      <Button buttonStyle="dropdownItem" onClick={() => history.push(`/settings/authorization-roles/${roleId}?layout=edit`)}>
+      <Button buttonStyle="dropdownItem" onClick={() => history.push('?layout=edit')}>
         <Icon icon="edit">
           <FormattedMessage id="ui-authorization-roles.crud.edit" />
         </Icon>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useHistory } from 'react-router';
+import { useHistory, useRouteMatch } from 'react-router';
 
 import { FormattedMessage, FormattedDate } from 'react-intl';
 
@@ -20,22 +20,21 @@ import { SearchForm } from '../SearchForm';
 import { RoleDetails } from '../RoleDetails';
 import EditRole from '../CreateEditRole/EditRole';
 import CreateRole from '../CreateEditRole/CreateRole';
-import useMatchPath from '../../../hooks/useMatchPath';
 
 const baseUrl = '/settings/authorization-roles';
 
 const SettingsPage = () => {
   const history = useHistory();
-  const { getParams } = useMatchPath();
+  const router = useRouteMatch();
 
   const queryParams = new URLSearchParams(history.location.search);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const roleId = getParams(`${baseUrl}/:roleId`)?.roleId || '';
+  const roleId = router.params.id;
 
   const lastMenu = (
     <PaneMenu>
-      <Button buttonStyle="primary" marginBottom0 onClick={() => history.push(`${baseUrl}?layout=add`)}>
+      <Button buttonStyle="primary" marginBottom0 onClick={() => history.push('?layout=add')}>
         + <FormattedMessage id="ui-authorization-roles.new" />
       </Button>
     </PaneMenu>

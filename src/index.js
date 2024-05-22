@@ -1,17 +1,18 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { useIntlKeyStore } from '@k-int/stripes-kint-components';
+import { Switch, Route } from 'react-router-dom';
 
-import { Loading } from '@folio/stripes/components';
 import Settings from './settings';
+
+const baseUrl = '/settings/authorization-roles';
 
 const App = () => {
   const addKey = useIntlKeyStore((state) => state.addKey);
   addKey('ui-authorization-roles');
 
-
-  return <Suspense fallback={<Loading />}>
-    <Settings />
-  </Suspense>;
+  return <Switch>
+    <Route path={`${baseUrl}/:id?`} component={Settings} />
+  </Switch>;
 };
 
 export default App;
