@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { useQueryClient } from 'react-query';
-
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { keyBy } from 'lodash';
@@ -9,19 +8,20 @@ import { useStripes, Pluggable, useOkapiKy } from '@folio/stripes/core';
 
 import { apiVerbs, createUserRolesRequests } from './utils';
 import { USERS_BY_ROLE_ID_QUERY_KEY } from '../../../hooks/useUsersByRoleId';
-
 import useUpdateUserRolesMutation from '../../../hooks/useUpdateUserRolesMutation';
 import useAssignRolesToUserMutation from '../../../hooks/useAssignRolesToUserMutation';
 import useDeleteUserRolesMutation from '../../../hooks/useDeleteUserRolesMutation';
+import useErrorCallout from '../../../hooks/useErrorCallout';
 
 const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
   const stripes = useStripes();
   const okapiKy = useOkapiKy();
   const queryClient = useQueryClient();
+  const { sendErrorCallout } = useErrorCallout();
 
-  const { mutateUpdateUserRoles } = useUpdateUserRolesMutation();
-  const { mutateAssignRolesToUser } = useAssignRolesToUserMutation();
-  const { mutateDeleteUserRoles } = useDeleteUserRolesMutation();
+  const { mutateUpdateUserRoles } = useUpdateUserRolesMutation(sendErrorCallout);
+  const { mutateAssignRolesToUser } = useAssignRolesToUserMutation(sendErrorCallout);
+  const { mutateDeleteUserRoles } = useDeleteUserRolesMutation(sendErrorCallout);
   const initialSelectedUsers = useMemo(() => keyBy(selectedUsers, 'id'), [selectedUsers]);
 
   /**

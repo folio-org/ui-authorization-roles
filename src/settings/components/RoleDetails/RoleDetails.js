@@ -27,15 +27,17 @@ import AccordionUsers from './AccordionUsers';
 import AccordionCapabilities from './AccordionCapabilities';
 import AccordionCapabilitySets from './AccordionCapabilitySets';
 import useDeleteRoleMutation from '../../../hooks/useDeleteRoleMutation';
+import useErrorCallout from '../../../hooks/useErrorCallout';
 
 const RoleDetails = ({ onClose, roleId }) => {
   const { connect } = useStripes();
 
   const ConnectedUserName = connect(UserName);
   const history = useHistory();
+  const { sendErrorCallout } = useErrorCallout();
 
   const { roleDetails: role } = useRoleById(roleId);
-  const { mutateAsync: deleteRole } = useDeleteRoleMutation(onClose);
+  const { mutateAsync: deleteRole } = useDeleteRoleMutation(onClose, sendErrorCallout);
 
   const [isDeleting, setIsDeleting] = useState(false);
 

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { useNamespace, useOkapiKy, useStripes } from '@folio/stripes/core';
 
-const useAssignRolesToUserMutation = () => {
+const useAssignRolesToUserMutation = (handleError) => {
   const stripes = useStripes();
   const ky = useOkapiKy();
   const queryClient = useQueryClient();
@@ -14,7 +14,7 @@ const useAssignRolesToUserMutation = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries(namespace);
     },
-    onError: (error) => console.error(JSON.stringify(error)) // eslint-disable-line no-console
+    onError: handleError,
   });
 
   return { mutateAssignRolesToUser: mutateAsync, isLoading };
