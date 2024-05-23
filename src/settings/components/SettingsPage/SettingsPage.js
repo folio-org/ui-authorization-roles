@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import { useHistory, useRouteMatch } from 'react-router';
 
 import { FormattedMessage, FormattedDate } from 'react-intl';
@@ -26,11 +25,15 @@ const baseUrl = '/settings/authorization-roles';
 const SettingsPage = () => {
   const history = useHistory();
   const router = useRouteMatch();
-
   const queryParams = new URLSearchParams(history.location.search);
 
   const [searchTerm, setSearchTerm] = useState('');
   const roleId = router.params.id;
+
+  const getRowUrl = (id) => {
+    const basePath = router.path.split('/:')[0];
+    return `${basePath}/${id}`;
+  };
 
   const lastMenu = (
     <PaneMenu>
@@ -48,7 +51,7 @@ const SettingsPage = () => {
   };
 
   const resultsFormatter = {
-    name: (item) => <TextLink to={`${baseUrl}/${item.id}`}>{item.name}</TextLink>,
+    name: (item) => <TextLink to={getRowUrl(item.id)}>{item.name}</TextLink>,
     updatedBy: (item) => (item.metadata?.modifiedBy || <NoValue />),
     updated: (item) => (item.metadata?.modifiedDate ? (
       <FormattedDate value={item.metadata?.modifiedDate} />
