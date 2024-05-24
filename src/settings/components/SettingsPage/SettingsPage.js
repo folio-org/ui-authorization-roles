@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory, useRouteMatch } from 'react-router';
+import { useRouteMatch } from 'react-router';
 
 import { FormattedMessage, FormattedDate } from 'react-intl';
 
@@ -17,33 +17,26 @@ import {
 import useAuthorizationRoles from '../../../hooks/useAuthorizationRoles';
 import { SearchForm } from '../SearchForm';
 import { RoleDetails } from '../RoleDetails';
-import EditRole from '../CreateEditRole/EditRole';
-import CreateRole from '../CreateEditRole/CreateRole';
-
-const baseUrl = '/settings/authorization-roles';
 
 const SettingsPage = () => {
-  const history = useHistory();
   const router = useRouteMatch();
-  const queryParams = new URLSearchParams(history.location.search);
-
-  const [searchTerm, setSearchTerm] = useState('');
   const roleId = router.params.id;
 
-  const getRowUrl = (id) => {
-    const basePath = router.path.split('/:')[0];
-    return `${basePath}/${id}`;
-  };
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const { roles, isLoading, onSubmitSearch } = useAuthorizationRoles();
 
   const lastMenu = (
     <PaneMenu>
-      <Button buttonStyle="primary" marginBottom0 onClick={() => history.push('?layout=add')}>
+      <Button
+        to="/create"
+        buttonStyle="primary"
+        marginBottom0
+      >
         + <FormattedMessage id="ui-authorization-roles.new" />
       </Button>
     </PaneMenu>
   );
-
-  const { roles, isLoading, onSubmitSearch } = useAuthorizationRoles();
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
@@ -51,7 +44,7 @@ const SettingsPage = () => {
   };
 
   const resultsFormatter = {
-    name: (item) => <TextLink to={getRowUrl(item.id)}>{item.name}</TextLink>,
+    name: (item) => <TextLink to={`${item.id}`}>{item.name}</TextLink>,
     updatedBy: (item) => (item.metadata?.modifiedBy || <NoValue />),
     updated: (item) => (item.metadata?.modifiedDate ? (
       <FormattedDate value={item.metadata?.modifiedDate} />
@@ -59,14 +52,6 @@ const SettingsPage = () => {
       <NoValue />
     )),
   };
-
-  if (queryParams.get('layout') === 'add') {
-    return <CreateRole />;
-  }
-
-  if (queryParams.get('layout') === 'edit') {
-    return <EditRole roleId={roleId} />;
-  }
 
   return (
     <Paneset>
@@ -106,7 +91,7 @@ const SettingsPage = () => {
           visibleColumns={['name', 'description', 'updated', 'updatedBy']}
         />
       </Pane>
-      {roleId && <RoleDetails roleId={roleId} onClose={() => history.push(baseUrl)} />}
+      {roleId && <RoleDetails roleId={roleId} />}
     </Paneset>
   );
 };

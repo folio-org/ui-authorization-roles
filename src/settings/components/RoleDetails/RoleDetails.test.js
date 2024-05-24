@@ -7,10 +7,16 @@ import useRoleById from '../../../hooks/useRoleById';
 import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 import useDeleteRoleMutation from '../../../hooks/useDeleteRoleMutation';
 
+const mockHistoryPushFn = jest.fn();
+
 jest.mock('../../../hooks/useRoleById');
 jest.mock('../../../hooks/useDeleteRoleMutation');
 
-const onClose = jest.fn();
+jest.mock('react-router', () => {
+  return { ...jest.requireActual('react-router'),
+    useHistory: jest.fn().mockReturnValue({ push: (path) => mockHistoryPushFn(path), location: { search: '' } }) };
+});
+
 const getRoleData = (data) => ({
   id: '2efe1d13-eff9-4b01-a2fe-512e9d5239c7',
   name: 'demo test role',
@@ -26,7 +32,7 @@ const getRoleData = (data) => ({
 
 const renderComponent = () => render(
   renderWithRouter(
-    <RoleDetails onClose={onClose} roleId="2efe1d13-eff9-4b01-a2fe-512e9d5239c7" />
+    <RoleDetails roleId="2efe1d13-eff9-4b01-a2fe-512e9d5239c7" />
   )
 );
 
@@ -39,11 +45,11 @@ jest.mock('./AccordionCapabilitySets', () => () => <div>Accordion capability set
 jest.mock('./AccordionUsers', () => () => <div>Accordion users</div>);
 
 describe('RoleDetails component', () => {
-  afterEach(() => {
+  afterAll(() => {
     cleanup();
   });
 
-  afterAll(() => {
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
@@ -71,6 +77,21 @@ describe('RoleDetails component', () => {
       await userEvent.click(getByRole('button', { name: 'stripes-components.paneMenuActionsToggleLabel' }));
       await userEvent.click(getByRole('button', { name:'ui-authorization-roles.crud.delete' }));
       await userEvent.click(getByText('cancel'));
+    });
+
+    it('calls onClose function on close details button', async () => {
+      renderComponent();
+      const closeButton = document.querySelector('[data-test-pane-header-dismiss-button]');
+      await userEvent.click(closeButton);
+
+      expect(mockHistoryPushFn).toHaveBeenCalledWith('/');
+    });
+
+    it('calls edit function on click dropdown edit button', async () => {
+      const { getByText } = renderComponent();
+
+      await userEvent.click(getByText('ui-authorization-roles.crud.edit'));
+      expect(mockHistoryPushFn).toHaveBeenCalledWith('/2efe1d13-eff9-4b01-a2fe-512e9d5239c7/edit');
     });
   });
 });

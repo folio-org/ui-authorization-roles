@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory, useLocation } from 'react-router';
+import { useHistory } from 'react-router';
 
 import CreateEditRoleForm from './CreateEditRoleForm';
 import useCreateRoleMutation from '../../../hooks/useCreateRoleMutation';
@@ -8,7 +8,6 @@ import useErrorCallout from '../../../hooks/useErrorCallout';
 
 const CreateRole = () => {
   const history = useHistory();
-  const { pathname } = useLocation();
 
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');
@@ -48,7 +47,7 @@ const CreateRole = () => {
 
   const { mutateRole, isLoading } = useCreateRoleMutation(roleCapabilitiesListIds, roleCapabilitySetsListIds, sendErrorCallout);
 
-  const goBack = () => history.push(pathname);
+  const goBack = () => history.push('/');
 
   const onSubmit = async (e) => {
     e.preventDefault();

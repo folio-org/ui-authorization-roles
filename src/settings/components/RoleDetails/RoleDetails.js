@@ -29,12 +29,13 @@ import AccordionCapabilitySets from './AccordionCapabilitySets';
 import useDeleteRoleMutation from '../../../hooks/useDeleteRoleMutation';
 import useErrorCallout from '../../../hooks/useErrorCallout';
 
-const RoleDetails = ({ onClose, roleId }) => {
+const RoleDetails = ({ roleId }) => {
   const { connect } = useStripes();
 
   const ConnectedUserName = connect(UserName);
   const history = useHistory();
   const { sendErrorCallout } = useErrorCallout();
+  const onClose = () => history.push('/');
 
   const { roleDetails: role } = useRoleById(roleId);
   const { mutateAsync: deleteRole } = useDeleteRoleMutation(onClose, sendErrorCallout);
@@ -43,7 +44,7 @@ const RoleDetails = ({ onClose, roleId }) => {
 
   const getActionMenu = () => (
     <>
-      <Button buttonStyle="dropdownItem" onClick={() => history.push('?layout=edit')}>
+      <Button buttonStyle="dropdownItem" onClick={() => history.push(`/${roleId}/edit`)}>
         <Icon icon="edit">
           <FormattedMessage id="ui-authorization-roles.crud.edit" />
         </Icon>
@@ -64,7 +65,13 @@ const RoleDetails = ({ onClose, roleId }) => {
   return (
     <Pane
       defaultWidth="80%"
-      renderHeader={renderProps => <PaneHeader {...renderProps} dismissible actionMenu={getActionMenu} paneTitle={role?.name || <Loading />} onClose={onClose} />}
+      renderHeader={renderProps => <PaneHeader
+        {...renderProps}
+        dismissible
+        actionMenu={getActionMenu}
+        paneTitle={role?.name || <Loading />}
+        onClose={onClose}
+      />}
     >
       <AccordionStatus>
         <div className={css.alignRightWrapper}>
@@ -83,10 +90,10 @@ const RoleDetails = ({ onClose, roleId }) => {
               createdDate={role?.metadata?.createdDate}
               lastUpdatedDate={role?.metadata?.modifiedDate}
               lastUpdatedBy={
-                <ConnectedUserName id={role?.metadata?.modifiedBy || ''} />
+                <ConnectedUserName id={role?.metadata?.modifiedBy || <NoValue />} />
               }
               createdBy={
-                <ConnectedUserName id={role?.metadata?.createdBy || ''} />
+                <ConnectedUserName id={role?.metadata?.createdBy || <NoValue />} />
               }
             />
             <KeyValue
@@ -112,7 +119,10 @@ const RoleDetails = ({ onClose, roleId }) => {
       <ConfirmationModal
         open={isDeleting}
         heading={<FormattedMessage id="ui-authorization-roles.crud.deleteRole" />}
-        message={<FormattedMessage id="ui-authorization-roles.crud.deleteRoleConfirmation" values={{ rolename: role?.name }} />}
+        message={<FormattedMessage
+          id="ui-authorization-roles.crud.deleteRoleConfirmation"
+          values={{ rolename: role?.name }}
+        />}
         onConfirm={() => deleteRole(roleId)}
         onCancel={() => { setIsDeleting(false); }}
         confirmLabel={<FormattedMessage id="ui-authorization-roles.crud.delete" />}
@@ -122,7 +132,6 @@ const RoleDetails = ({ onClose, roleId }) => {
 };
 
 RoleDetails.propTypes = {
-  onClose: PropTypes.func.isRequired,
   roleId: PropTypes.string.isRequired
 };
 
