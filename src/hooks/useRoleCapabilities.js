@@ -6,16 +6,27 @@ import { useNamespace, useOkapiKy } from '@folio/stripes/core';
 import { CAPABILITES_LIMIT } from './constants';
 import { getCapabilitiesGroupedByTypeAndResource } from '../settings/utils';
 
-const useRoleCapabilities = (roleId) => {
+const useRoleCapabilities = (roleId, expand = false) => {
   const ky = useOkapiKy();
   const [namespace] = useNamespace({ key: 'role-capabilities-list' });
 
   const { data, isSuccess } = useQuery([namespace, roleId],
-    () => ky.get(`roles/${roleId}/capabilities?limit=${CAPABILITES_LIMIT}&query=cql.allRecords=1 sortby resource`).json(),
-    { enabled: !!roleId,
+    () => ky.get(
+      `roles/${roleId}/capabilities`,
+      {
+        searchParams: {
+          limit: CAPABILITES_LIMIT,
+          query: 'cql.allRecords=1 sortby resource',
+          expand: !!expand,
+        },
+      }
+    ).json(),
+    {
+      enabled: !!roleId,
       placeholderData: {
         capabilities: [], totalRecords: 0
-      } });
+      }
+    });
 
   const initialRoleCapabilitiesSelectedMap = useMemo(() => {
     return data?.capabilities.reduce((acc, capability) => {
