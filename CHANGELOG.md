@@ -12,6 +12,7 @@
 * Show spinner while loading capabilities/capabilitySets tables after selecting applications. Refs UIROLES-60.
 * Show callout instead of JS alert on save/delete error. Refs UIROLES-53.
 * Role details should show capabilities inherited from capability-sets. Refs UIROLES-67.
+* Handle empty `metadata` values without invalid `/users/` API queries. Refs UIROLES-78.
 
 ## [1.3.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.3.0) (2024-03-05)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.2.0...v1.3.0)

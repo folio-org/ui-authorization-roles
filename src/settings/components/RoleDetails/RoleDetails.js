@@ -10,14 +10,13 @@ import {
   Pane,
   Button,
   KeyValue,
-  MetaSection,
   Icon,
   PaneHeader,
   Loading,
   NoValue,
   ConfirmationModal
 } from '@folio/stripes/components';
-import { UserName } from '@folio/stripes/smart-components';
+import { ViewMetaData } from '@folio/stripes/smart-components';
 import { useStripes } from '@folio/stripes/core';
 
 import { useHistory, useLocation } from 'react-router';
@@ -32,7 +31,8 @@ import useErrorCallout from '../../../hooks/useErrorCallout';
 const RoleDetails = ({ onClose, roleId }) => {
   const { connect } = useStripes();
 
-  const ConnectedUserName = connect(UserName);
+  const ConnectedViewMetaData = connect(ViewMetaData);
+
   const history = useHistory();
   const { pathname } = useLocation();
   const { sendErrorCallout } = useErrorCallout();
@@ -77,19 +77,7 @@ const RoleDetails = ({ onClose, roleId }) => {
               <FormattedMessage id="ui-authorization-roles.generalInformation" />
             }
           >
-            <MetaSection
-              id="roleMetadataId"
-              contentId="roleMetadata"
-              headingLevel={4}
-              createdDate={role?.metadata?.createdDate}
-              lastUpdatedDate={role?.metadata?.modifiedDate}
-              lastUpdatedBy={
-                <ConnectedUserName id={role?.metadata?.modifiedBy || ''} />
-              }
-              createdBy={
-                <ConnectedUserName id={role?.metadata?.createdBy || ''} />
-              }
-            />
+            <ConnectedViewMetaData metadata={role?.metadata} />
             <KeyValue
               data-testid="role-name"
               label={
