@@ -18,7 +18,7 @@ const AccordionCapabilities = ({ roleId }) => {
     initialRoleCapabilitiesSelectedMap,
     groupedRoleCapabilitiesByType,
     isSuccess
-  } = useRoleCapabilities(roleId);
+  } = useRoleCapabilities(roleId, true);
 
   if (!isSuccess) {
     return <Loading />;
