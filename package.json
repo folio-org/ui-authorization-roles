@@ -1,6 +1,6 @@
 {
   "name": "@folio/authorization-roles",
-  "version": "1.4.0",
+  "version": "1.6.0",
   "description": "FOLIO app for Authorization Roles",
   "main": "src/index.js",
   "repository": "folio/ui-authorization-roles",
