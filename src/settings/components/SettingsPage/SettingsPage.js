@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-
-import { useHistory, useLocation } from 'react-router';
+import { useRouteMatch } from 'react-router';
 
 import { FormattedMessage, FormattedDate } from 'react-intl';
 
@@ -12,34 +11,32 @@ import {
   PaneMenu,
   MultiColumnList,
   TextLink,
+  NoValue,
 } from '@folio/stripes/components';
 
 import useAuthorizationRoles from '../../../hooks/useAuthorizationRoles';
 import { SearchForm } from '../SearchForm';
 import { RoleDetails } from '../RoleDetails';
-import EditRole from '../CreateEditRole/EditRole';
-import CreateRole from '../CreateEditRole/CreateRole';
 
 const SettingsPage = () => {
-  const history = useHistory();
-  const { pathname } = useLocation();
-
-  const queryParams = new URLSearchParams(history.location.search);
+  const router = useRouteMatch();
+  const roleId = router.params.id;
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedRow, setSelectedRow] = useState(null);
 
-  const onRowClick = (_event, row) => setSelectedRow(row);
+  const { roles, isLoading, onSubmitSearch } = useAuthorizationRoles();
 
   const lastMenu = (
     <PaneMenu>
-      <Button buttonStyle="primary" marginBottom0 onClick={() => history.push(`${pathname}?layout=add`)}>
+      <Button
+        to="/create"
+        buttonStyle="primary"
+        marginBottom0
+      >
         + <FormattedMessage id="ui-authorization-roles.new" />
       </Button>
     </PaneMenu>
   );
-
-  const { roles, isLoading, onSubmitSearch } = useAuthorizationRoles();
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
@@ -47,22 +44,14 @@ const SettingsPage = () => {
   };
 
   const resultsFormatter = {
-    name: (item) => <TextLink>{item.name}</TextLink>,
-    updatedBy: (item) => (item.metadata?.modifiedBy || ''),
+    name: (item) => <TextLink to={`${item.id}`}>{item.name}</TextLink>,
+    updatedBy: (item) => (item.metadata?.modifiedBy || <NoValue />),
     updated: (item) => (item.metadata?.modifiedDate ? (
       <FormattedDate value={item.metadata?.modifiedDate} />
     ) : (
-      '-'
+      <NoValue />
     )),
   };
-
-  if (queryParams.get('layout') === 'add') {
-    return <CreateRole />;
-  }
-
-  if (queryParams.get('layout') === 'edit' && queryParams.get('id') === selectedRow?.id) {
-    return <EditRole roleId={selectedRow.id} />;
-  }
 
   return (
     <Paneset>
@@ -98,13 +87,11 @@ const SettingsPage = () => {
           }}
           contentData={roles}
           formatter={resultsFormatter}
-          selectedRow={selectedRow}
           loading={isLoading}
           visibleColumns={['name', 'description', 'updated', 'updatedBy']}
-          onRowClick={onRowClick}
         />
       </Pane>
-      {selectedRow && <RoleDetails roleId={selectedRow.id} onClose={() => setSelectedRow(null)} />}
+      {roleId && <RoleDetails roleId={roleId} />}
     </Paneset>
   );
 };
