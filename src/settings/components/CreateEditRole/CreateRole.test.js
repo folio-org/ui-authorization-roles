@@ -77,7 +77,8 @@ describe('CreateRole component', () => {
     setSelectedCapabilitiesMap:mockSetSelectedCapabilitiesMap,
     onInitialLoad: mockOnInitialLoad,
     setSelectedCapabilitySetsMap: jest.fn(),
-    setDisabledCapabilities: jest.fn() });
+    setDisabledCapabilities: jest.fn(),
+    isInitialLoaded: true });
   });
 
   it('renders TextField and Button components', async () => {
@@ -116,18 +117,6 @@ describe('CreateRole component', () => {
     });
 
     expect(mockMutateRole).toHaveBeenCalledWith({ name: 'New Role', description: '' });
-  });
-
-  it('should call capability sets handler actions on click', async () => {
-    const { getAllByRole } = renderComponent();
-
-    expect(getAllByRole('checkbox')).toHaveLength(3);
-
-    await waitFor(async () => {
-      await userEvent.click(getAllByRole('checkbox')[0]);
-      expect(mockSetSelectedCapabilitiesMap).toHaveBeenCalledWith({ '6e59c367-888a-4561-a3f3-3ca677de437f': true });
-      expect(mockSetSelectedCapabilitiesMap).toHaveBeenCalledTimes(1);
-    });
   });
 
   it('should call capability checkbox handler actions on click', async () => {

@@ -42,7 +42,11 @@ const buildStripes = (otherProperties = {}) => ({
   ...otherProperties,
 });
 
-const STRIPES = buildStripes();
+const STRIPES = buildStripes({ discovery: {
+  applications:{
+    'app-1': 'app-1'
+  }
+} });
 
 const mockStripesCore = {
   stripesConnect: Component => ({ mutator, resources, stripes, ...rest }) => {

@@ -17,13 +17,16 @@ const CreateRole = ({ path }) => {
     onSubmitSelectApplications,
     capabilities,
     selectedCapabilitiesMap,
-    setSelectedCapabilitiesMap, roleCapabilitiesListIds,
+    setSelectedCapabilitiesMap,
+    roleCapabilitiesListIds,
     selectedCapabilitySetsMap,
     setSelectedCapabilitySetsMap,
     disabledCapabilities,
     setDisabledCapabilities,
     capabilitySets,
-    capabilitySetsList, roleCapabilitySetsListIds } = useApplicationCapabilities();
+    capabilitySetsList,
+    roleCapabilitySetsListIds,
+    isInitialLoaded } = useApplicationCapabilities();
 
   const { sendErrorCallout } = useErrorCallout();
 
@@ -39,12 +42,11 @@ const CreateRole = ({ path }) => {
 
     setDisabledCapabilities({ ...disabledCapabilities, ...capabilitySetsCap });
     setSelectedCapabilitySetsMap({ ...selectedCapabilitySetsMap, [capabilitySetId]: event.target.checked });
-    setSelectedCapabilitiesMap({ ...selectedCapabilitiesMap, ...capabilitySetsCap });
   };
 
-  const isCapabilitySelected = id => !!selectedCapabilitiesMap[id];
   const isCapabilitySetSelected = id => !!selectedCapabilitySetsMap[id];
   const isCapabilityDisabled = id => !!disabledCapabilities[id];
+  const isCapabilitySelected = id => !!selectedCapabilitiesMap[id] || isCapabilityDisabled(id);
 
   const { mutateRole, isLoading } = useCreateRoleMutation(roleCapabilitiesListIds, roleCapabilitySetsListIds, sendErrorCallout);
 
@@ -75,6 +77,8 @@ const CreateRole = ({ path }) => {
     selectedCapabilitiesMap={selectedCapabilitiesMap}
     onSaveSelectedApplications={onSubmitSelectApplications}
     checkedAppIdsMap={checkedAppIdsMap}
+    isCapabilitiesLoading={!isInitialLoaded}
+    isCapabilitySetsLoading={!isInitialLoaded}
   />;
 };
 

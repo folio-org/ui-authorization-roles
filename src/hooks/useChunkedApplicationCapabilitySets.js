@@ -8,7 +8,7 @@ export default function useChunkedApplicationCapabilitySets(appIds) {
     limit: CAPABILITES_LIMIT,
     idName: 'applicationId',
     reduceFunction: data => data.flatMap(d => d.data?.capabilitySets || []),
-    STEP_SIZE: 5
+    STEP_SIZE: 1
   });
 
   return { items, isLoading };

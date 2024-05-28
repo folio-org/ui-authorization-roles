@@ -24,6 +24,7 @@ const useApplicationCapabilities = () => {
   const cleanupCapabilitiesData = () => {
     setSelectedCapabilitiesMap({});
     setSelectedCapabilitySetsMap({});
+    setDisabledCapabilities({});
   };
 
   const onSubmitSelectApplications = (appIds, onClose) => {
@@ -34,23 +35,28 @@ const useApplicationCapabilities = () => {
   };
 
   const onInitialLoad = (appIds) => setCheckedAppIdsMap(appIds);
+  const selectedAppIds = extractSelectedIdsFromObject(checkedAppIdsMap);
 
-  const { items:capabilities, isLoading } = useChunkedApplicationCapabilities(extractSelectedIdsFromObject(checkedAppIdsMap));
-  const { items: capabilitySets, isLoading: isCapabilitySetsLoading } = useChunkedApplicationCapabilitySets(extractSelectedIdsFromObject(checkedAppIdsMap));
+  const { items:capabilities, isLoading: isCapabilitiesLoading } = useChunkedApplicationCapabilities(selectedAppIds);
+  const { items: capabilitySets, isLoading: isCapabilitySetsLoading } = useChunkedApplicationCapabilitySets(selectedAppIds);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isCapabilitiesLoading) {
       const updatedSelectedCapabilitiesMap = getOnlyIntersectedWithApplicationsCapabilities(capabilities, roleCapabilitiesListIds);
       setSelectedCapabilitiesMap(updatedSelectedCapabilitiesMap);
     }
-  }, [capabilities, roleCapabilitiesListIds]);
+    // isCapabilitiesLoading only information we need to know if capabilities fetched
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCapabilitiesLoading]);
 
   useEffect(() => {
     if (!isCapabilitySetsLoading) {
       const updatedSelectedCapabilitySetsMap = getOnlyIntersectedWithApplicationsCapabilities(capabilitySets, roleCapabilitySetsListIds);
       setSelectedCapabilitySetsMap(updatedSelectedCapabilitySetsMap);
     }
-  }, [capabilitySets, roleCapabilitySetsListIds]);
+    // isCapabilitySetsLoading only information we need to know if capability sets fetched
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCapabilitySetsLoading]);
 
   const memoizedCapabilities = useMemo(() => getCapabilitiesGroupedByTypeAndResource(capabilities),
     [capabilities]);
@@ -66,12 +72,13 @@ const useApplicationCapabilities = () => {
     setSelectedCapabilitiesMap,
     onInitialLoad,
     capabilitySets:memoizedCapabilitySets,
+    capabilitySetsList: capabilitySets,
     selectedCapabilitySetsMap,
     setSelectedCapabilitySetsMap,
     disabledCapabilities,
     setDisabledCapabilities,
     roleCapabilitySetsListIds,
-    isInitialLoaded: !isLoading };
+    isInitialLoaded: !isCapabilitiesLoading && !isCapabilitySetsLoading };
 };
 
 export default useApplicationCapabilities;
