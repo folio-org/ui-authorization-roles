@@ -1,4 +1,4 @@
-import { renderHook } from '@folio/jest-config-stripes/testing-library/react';
+import { renderHook, cleanup } from '@folio/jest-config-stripes/testing-library/react';
 import { waitFor } from '@folio/jest-config-stripes/testing-library/dom';
 import useApplicationCapabilities from './useApplicationCapabilities';
 import useChunkedApplicationCapabilities from './useChunkedApplicationCapabilities';
@@ -17,6 +17,10 @@ jest.mock('@folio/stripes/core', () => ({
 }));
 
 describe('useApplicationCapabilities', () => {
+  afterAll(() => {
+    cleanup();
+    jest.clearAllMocks();
+  });
   it('should test if returning fields and methods are defined', () => {
     useChunkedApplicationCapabilities.mockClear().mockReturnValue({ items: [], isLoading: false });
     useChunkedApplicationCapabilitySets.mockClear().mockReturnValue({ items: [], isLoading: false });
