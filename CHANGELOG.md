@@ -10,6 +10,7 @@
 * Use `<NoValue>` to represent unselected checkboxes in read-only mode. Refs UIROLES-41.
 * Show user name instead of UUID in Role Detail page. Refs UIROLES-71.
 * Show spinner while loading capabilities/capabilitySets tables after selecting applications. Refs UIROLES-60.
+* Show ID of role in URL path when viewing role details. Refs UIROLES-46.
 * Show callout instead of JS alert on save/delete error. Refs UIROLES-53.
 * Role details should show capabilities inherited from capability-sets. Refs UIROLES-67.
 * Handle empty `metadata` values without invalid `/users/` API queries. Refs UIROLES-78.

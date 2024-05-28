@@ -28,6 +28,17 @@ jest.mock('../../../hooks/useAuthorizationRoles', () => {
   };
 });
 
+const mockPushFn = jest.fn();
+
+jest.mock('react-router', () => {
+  return { ...jest.requireActual('react-router'),
+    useHistory: jest.fn().mockReturnValue({ push: (path) => mockPushFn(path), location: { search: '' } }),
+    useRouteMatch: jest.fn().mockReturnValue({ params:{
+      id: 'id'
+    },
+    path: '/settings/authorization-roles/:id?' }) };
+});
+
 describe('SettingsPage', () => {
   afterAll(() => {
     jest.clearAllMocks();
@@ -79,7 +90,7 @@ describe('SettingsPage', () => {
     expect(gridCells[2]).toHaveTextContent('-');
   });
 
-  it('renders role details on click', async () => {
+  it('renders role details if role id present in the path', async () => {
     useAuthorizationRoles.mockImplementation(() => ({
       roles: [
         {
@@ -90,9 +101,8 @@ describe('SettingsPage', () => {
         },
       ],
     }));
-    const { queryByTestId, getAllByRole } = renderComponent();
+    const { queryByTestId } = renderComponent();
 
-    await userEvent.click(getAllByRole('gridcell')[0]);
     expect(queryByTestId('mock-role-details')).toBeInTheDocument();
   });
 
@@ -116,6 +126,6 @@ describe('SettingsPage', () => {
     await userEvent.type(inputElement, 'Test');
     await userEvent.click(getByRole('button', { name: 'ui-authorization-roles.search' }));
 
-    expect(mockFilterRoles).toHaveBeenCalled();
+    expect(mockFilterRoles).toHaveBeenCalledTimes(1);
   });
 });
