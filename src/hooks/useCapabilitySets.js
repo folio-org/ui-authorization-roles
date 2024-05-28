@@ -25,7 +25,7 @@ const useCapabilitySets = () => {
     STEP_SIZE: 1
   });
 
-  return { data: items,
+  return { capabilitySetsList: items,
     isLoading };
 };
 

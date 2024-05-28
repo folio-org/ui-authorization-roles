@@ -1,4 +1,5 @@
 import { useChunkedCQLFetch } from '@folio/stripes/core';
+import { isEmpty } from 'lodash';
 import { CAPABILITES_LIMIT } from './constants';
 
 export default function useChunkedApplicationCapabilities(appIds) {
@@ -8,6 +9,9 @@ export default function useChunkedApplicationCapabilities(appIds) {
     limit: CAPABILITES_LIMIT,
     idName: 'applicationId',
     reduceFunction: data => data.flatMap(d => d.data?.capabilities || []),
+    queryOptions:{
+      enabled: !isEmpty(appIds)
+    },
     STEP_SIZE: 1
   });
 

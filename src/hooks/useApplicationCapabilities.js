@@ -29,8 +29,8 @@ const useApplicationCapabilities = () => {
 
   const onSubmitSelectApplications = (appIds, onClose) => {
     // cleanup is preventing users from interacting with data that might no longer be available after selection
-    cleanupCapabilitiesData();
     onClose?.();
+    cleanupCapabilitiesData();
     setCheckedAppIdsMap(appIds);
   };
 
@@ -78,7 +78,7 @@ const useApplicationCapabilities = () => {
     disabledCapabilities,
     setDisabledCapabilities,
     roleCapabilitySetsListIds,
-    isInitialLoaded: !isCapabilitiesLoading && !isCapabilitySetsLoading };
+    isApplicationCapabilitiesLoading: isCapabilitiesLoading || isCapabilitySetsLoading };
 };
 
 export default useApplicationCapabilities;

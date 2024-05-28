@@ -42,7 +42,7 @@ const EditRole = ({ path }) => {
     setDisabledCapabilities,
     capabilitySets,
     roleCapabilitySetsListIds,
-    isInitialLoaded } = useApplicationCapabilities();
+    isApplicationCapabilitiesLoading } = useApplicationCapabilities();
 
   const { sendErrorCallout } = useSendErrorCallout();
 
@@ -127,8 +127,8 @@ const EditRole = ({ path }) => {
     onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
     onChangeCapabilitySetCheckbox={onChangeCapabilitySetCheckbox}
     onSaveSelectedApplications={onSubmitSelectApplications}
-    isCapabilitiesLoading={!isInitialLoaded || isCapabilityListLoading || isCapabilitySetsLoading}
-    isCapabilitySetsLoading={!isInitialLoaded || isCapabilityListLoading || isCapabilitySetsLoading}
+    isCapabilitiesLoading={isApplicationCapabilitiesLoading || isCapabilityListLoading}
+    isCapabilitySetsLoading={isApplicationCapabilitiesLoading || isCapabilitySetsLoading}
   />;
 };
 

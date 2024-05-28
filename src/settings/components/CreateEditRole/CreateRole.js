@@ -26,7 +26,7 @@ const CreateRole = ({ path }) => {
     capabilitySets,
     capabilitySetsList,
     roleCapabilitySetsListIds,
-    isInitialLoaded } = useApplicationCapabilities();
+    isApplicationCapabilitiesLoading } = useApplicationCapabilities();
 
   const { sendErrorCallout } = useErrorCallout();
 
@@ -77,8 +77,8 @@ const CreateRole = ({ path }) => {
     selectedCapabilitiesMap={selectedCapabilitiesMap}
     onSaveSelectedApplications={onSubmitSelectApplications}
     checkedAppIdsMap={checkedAppIdsMap}
-    isCapabilitiesLoading={!isInitialLoaded}
-    isCapabilitySetsLoading={!isInitialLoaded}
+    isCapabilitiesLoading={isApplicationCapabilitiesLoading}
+    isCapabilitySetsLoading={isApplicationCapabilitiesLoading}
   />;
 };
 
