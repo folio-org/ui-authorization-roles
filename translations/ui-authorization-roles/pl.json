@@ -7,7 +7,7 @@
     "columns.updatedDate": "Aktualizacja",
     "columns.updatedBy": "Aktualizowany przez",
     "assignedUsers": "Przydzieleni użytkownicy",
-    "assignUnassign": "Przypisz/odpisz",
+    "assignUnassign": "Przypisz/Odpisz",
     "generalInformation": "General Information",
     "details.capabilities": "Capabilities",
     "details.data": "Dane",
@@ -41,7 +41,7 @@
     "crud.selectApplication": "Select application",
     "details.capabilitySets": "Capability sets",
     "role-details.accordion-users.columns.fullName": "Name",
-    "role-details.accordion-users.columns.patronGroup": "Grupa czytelnika",
+    "role-details.accordion-users.columns.patronGroup": "Grupa czytelników",
     "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles",
     "crud.deleteRole": "Delete role",
     "crud.deleteRoleConfirmation": "{rolename} will be deleted"
