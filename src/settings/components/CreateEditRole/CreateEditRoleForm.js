@@ -69,7 +69,7 @@ function CreateEditRoleForm({
             renderStart={paneFooterRenderStart}
             renderEnd={paneFooterRenderEnd}
           />}
-          renderHeader={renderProps => <PaneHeader {...renderProps} paneTitle={<FormattedMessage id={title} />} dismissible onClose={onClose} />}
+          renderHeader={renderProps => <PaneHeader {...renderProps} paneTitle={intl.formatMessage({ id: title })} dismissible onClose={onClose} />}
         >
           <AccordionStatus>
             <div className={css.alignRightWrapper}>
