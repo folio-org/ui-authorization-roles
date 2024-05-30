@@ -1,7 +1,7 @@
 import { renderHook } from '@folio/jest-config-stripes/testing-library/react';
 import { useChunkedCQLFetch } from '@folio/stripes/core';
 import useChunkedApplicationCapabilities from './useChunkedApplicationCapabilities';
-import { CAPABILITES_LIMIT } from './constants';
+import { APPLICATIONS_STEP_SIZE, CAPABILITES_LIMIT } from './constants';
 
 jest.mock('@folio/stripes/core', () => ({
   useChunkedCQLFetch: jest.fn(),
@@ -31,7 +31,7 @@ describe('useChunkedApplicationCapabilities', () => {
         enabled: true,
       },
       reduceFunction: expect.any(Function),
-      STEP_SIZE: 1,
+      STEP_SIZE: APPLICATIONS_STEP_SIZE,
     });
 
     expect(result.current.items).toEqual([]);
@@ -57,7 +57,7 @@ describe('useChunkedApplicationCapabilities', () => {
         enabled: false,
       },
       reduceFunction: expect.any(Function),
-      STEP_SIZE: 1,
+      STEP_SIZE: APPLICATIONS_STEP_SIZE,
     });
 
     expect(result.current.items).toEqual([]);

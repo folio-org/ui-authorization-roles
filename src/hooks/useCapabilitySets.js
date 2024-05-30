@@ -1,8 +1,9 @@
 import { useChunkedCQLFetch, useNamespace, useStripes } from '@folio/stripes/core';
 
-import { CAPABILITES_LIMIT } from './constants';
+import { APPLICATIONS_STEP_SIZE, CAPABILITES_LIMIT } from './constants';
 
-// When fetching from a potentially large list of applications,
+// When fetching from a potentially large list of applications derived
+// from stripes.discovery.applications
 // make sure to chunk the request to avoid hitting limits.
 
 const useCapabilitySets = () => {
@@ -21,7 +22,7 @@ const useCapabilitySets = () => {
     generateQueryKey: ({ chunkedItem, endpoint }) => {
       return [namespace, endpoint, chunkedItem];
     },
-    STEP_SIZE: 1
+    STEP_SIZE: APPLICATIONS_STEP_SIZE
   });
 
   return { capabilitySetsList: items,

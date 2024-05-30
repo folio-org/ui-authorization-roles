@@ -5,6 +5,20 @@ import { getCapabilitiesGroupedByTypeAndResource,
   extractSelectedIdsFromObject } from '../settings/utils';
 import useChunkedApplicationCapabilitySets from './useChunkedApplicationCapabilitySets';
 
+/**
+ * Customhook that fetches and manages capability sets for a given list of checked application IDs.
+ *
+ * @param {Object} checkedAppIdsMap - An object mapping application IDs to boolean values indicating whether they are checked.
+ *   Using this object, the hook will fetch the capability sets for the selected applications.
+ * @return {Object} An object containing the following properties:
+ *   - capabilitySets: An object grouping capability sets by type and resource.
+ *   - capabilitySetsList: An array of capability sets.
+ *   - selectedCapabilitySetsMap: An object mapping capability set IDs to boolean values indicating whether they are selected.
+ *   - setSelectedCapabilitySetsMap: A function to update the selected capability sets map.
+ *   - roleCapabilitySetsListIds: An array of selected capability set IDs.
+ *   - isLoading: A boolean indicating whether capability sets are currently being fetched.
+ */
+
 const useApplicationCapabilitySets = (checkedAppIdsMap) => {
   const selectedAppIds = extractSelectedIdsFromObject(checkedAppIdsMap);
   const { items: capabilitySets, isLoading: isCapabilitySetsLoading } = useChunkedApplicationCapabilitySets(selectedAppIds);

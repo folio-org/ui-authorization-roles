@@ -76,8 +76,10 @@ const EditRole = ({ path }) => {
   };
 
   const isCapabilityDisabled = id => !!disabledCapabilities[id];
-  /* If disabled means that capability is included in the some of the capability set,
-  and NOT interactively selected, or selected by retrieved capabilities */
+  /* disabled means that capability is included in the some of the capability set,
+  and not interactively selected. And we show that capabilities as disabled and selected in the UI,
+  instead of storing them in the selected capabilities
+  */
   const isCapabilitySelected = (id) => !!selectedCapabilitiesMap[id] || isCapabilityDisabled(id);
   const isCapabilitySetSelected = id => !!selectedCapabilitySetsMap[id];
 
@@ -107,8 +109,14 @@ const EditRole = ({ path }) => {
 
   useEffect(() => {
     if (isInitialDataReady) {
-      // After fetching all capabilities,capabilitySets, assigned to role capability ids,capability set ids
-      // define define selected application ids
+      // Kind of reverse engeeniring happenning here.
+      // We request all tenant installed application capabilities,capabilitySets,
+      // assigned to role capability ids,capability set ids.
+      // We iterate over capabilitiesList and capabilitySetsList for each capability id,
+      // capability-set id, to define the list of selected applications.
+      // Once we know the selected applications, we update checkedAppIdsMap,
+      // that triggers useChunkedApplicationCapabilities, useChunkedApplicationCapabilitySets
+      // in useApplicationCapabilities, useApplicationCapabilitySets again to fetch the actual data for tables.
       const capabilitiesAppIds = getOnlyIntersectedWithApplicationsCapabilities(capabilitiesList, Object.keys(initialRoleCapabilitiesSelectedMap), 'applicationId');
       const capabilitySetAppIds = getOnlyIntersectedWithApplicationsCapabilities(capabilitySetsList, Object.keys(initialRoleCapabilitySetsSelectedMap), 'applicationId');
       setCheckedAppIdsMap({ ...capabilitiesAppIds, ...capabilitySetAppIds });

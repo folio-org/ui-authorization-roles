@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import {
   Accordion,
   AccordionSet,
@@ -57,8 +57,10 @@ function CreateEditRoleForm({
     onClick={onSubmit}
   ><FormattedMessage id="stripes-components.saveAndClose" /></Button>;
 
+  const intl = useIntl();
+
   return <form onSubmit={onSubmit} data-testid="create-role-form">
-    <Layer isOpen inRootSet contentLabel={<FormattedMessage id={title} />}>
+    <Layer isOpen inRootSet contentLabel={intl.formatMessage({ id: title })}>
       <Paneset isRoot>
         <Pane
           centerContent

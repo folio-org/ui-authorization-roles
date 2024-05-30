@@ -1,6 +1,9 @@
 import { useChunkedCQLFetch } from '@folio/stripes/core';
 import { isEmpty } from 'lodash';
-import { CAPABILITES_LIMIT } from './constants';
+import { APPLICATIONS_STEP_SIZE, CAPABILITES_LIMIT } from './constants';
+
+// When fetching from a potentially large list of applications derived from appIds list
+// make sure to chunk the request to avoid hitting limits.
 
 export default function useChunkedApplicationCapabilitySets(appIds) {
   const { items, isLoading } = useChunkedCQLFetch({
@@ -12,7 +15,7 @@ export default function useChunkedApplicationCapabilitySets(appIds) {
       enabled: !isEmpty(appIds)
     },
     reduceFunction: data => data.flatMap(d => d.data?.capabilitySets || []),
-    STEP_SIZE: 1
+    STEP_SIZE: APPLICATIONS_STEP_SIZE
   });
 
   return { items, isLoading };

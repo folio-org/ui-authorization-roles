@@ -5,6 +5,19 @@ import { getCapabilitiesGroupedByTypeAndResource,
   extractSelectedIdsFromObject } from '../settings/utils';
 import useChunkedApplicationCapabilities from './useChunkedApplicationCapabilities';
 
+/**
+ * Custom hook that retrieves application capabilities based on the selected application IDs.
+ *
+ * @param {Object} checkedAppIdsMap - An object containing the selected application IDs. Using
+ *   this object, the hook will retrieve the capabilities for the selected applications.
+ * @return {Object} An object containing the following properties:
+ *   - capabilities: An object containing the capabilities grouped by type and resource.
+ *   - selectedCapabilitiesMap: An object containing the selected capabilities mapped by their IDs.
+ *   - roleCapabilitiesListIds: An array containing the IDs of the selected capabilities.
+ *   - setSelectedCapabilitiesMap: A function to update the selected capabilities map.
+ *   - isLoading: A boolean indicating if the capabilities are currently being loaded.
+ */
+
 const useApplicationCapabilities = (checkedAppIdsMap) => {
   const selectedAppIds = extractSelectedIdsFromObject(checkedAppIdsMap);
   const { items:capabilities, isLoading: isCapabilitiesLoading } = useChunkedApplicationCapabilities(selectedAppIds);

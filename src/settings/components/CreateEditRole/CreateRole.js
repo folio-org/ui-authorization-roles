@@ -48,7 +48,9 @@ const CreateRole = ({ path }) => {
   const isCapabilitySetSelected = id => !!selectedCapabilitySetsMap[id];
   const isCapabilityDisabled = id => !!disabledCapabilities[id];
   /* disabled means that capability is included in the some of the capability set,
-  and not interactively selected */
+  and not interactively selected. And we show that capabilities as disabled and selected in the UI,
+  instead of storing them in the selected capabilities
+  */
   const isCapabilitySelected = id => !!selectedCapabilitiesMap[id] || isCapabilityDisabled(id);
 
   const { mutateRole, isLoading } = useCreateRoleMutation(roleCapabilitiesListIds, roleCapabilitySetsListIds, sendErrorCallout);

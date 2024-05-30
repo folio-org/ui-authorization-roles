@@ -1,7 +1,7 @@
 import { renderHook } from '@folio/jest-config-stripes/testing-library/react';
 import { useChunkedCQLFetch } from '@folio/stripes/core';
 import useCapabilities from './useCapabilities';
-import { CAPABILITES_LIMIT } from './constants';
+import { APPLICATIONS_STEP_SIZE, CAPABILITES_LIMIT } from './constants';
 
 jest.mock('@folio/stripes/core', () => ({
   ...jest.requireActual('@folio/stripes/core'),
@@ -70,7 +70,7 @@ describe('useCapabilities', () => {
       idName: 'applicationId',
       reduceFunction: expect.any(Function),
       generateQueryKey: expect.any(Function),
-      STEP_SIZE: 1
+      STEP_SIZE: APPLICATIONS_STEP_SIZE
     });
   });
 
@@ -84,7 +84,7 @@ describe('useCapabilities', () => {
       idName: 'applicationId',
       reduceFunction: expect.any(Function),
       generateQueryKey: expect.any(Function),
-      STEP_SIZE: 1
+      STEP_SIZE: APPLICATIONS_STEP_SIZE
     });
   });
 
