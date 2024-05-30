@@ -2,8 +2,7 @@ import { useChunkedCQLFetch, useNamespace, useStripes } from '@folio/stripes/cor
 
 import { CAPABILITES_LIMIT } from './constants';
 
-// When fetching from a potentially large list of capabilities,
-// single application can include more that 2000 capabilities,
+// When fetching from a potentially large list of applications,
 // make sure to chunk the request to avoid hitting limits.
 
 const useCapabilities = () => {

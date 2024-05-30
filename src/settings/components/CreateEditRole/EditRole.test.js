@@ -1,5 +1,5 @@
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { act, cleanup, render } from '@folio/jest-config-stripes/testing-library/react';
+import { act, render } from '@folio/jest-config-stripes/testing-library/react';
 import '@folio/jest-config-stripes/testing-library/jest-dom';
 
 import EditRole from './EditRole';
@@ -11,12 +11,12 @@ import useCapabilitySets from '../../../hooks/useCapabilitySets';
 import useRoleById from '../../../hooks/useRoleById';
 import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 import useApplicationCapabilities from '../../../hooks/useApplicationCapabilities';
+import useApplicationCapabilitySets from '../../../hooks/useApplicationCapabilitySets';
 
 const mockPutRequest = jest.fn().mockReturnValue({ ok:true });
 const mockPostRequest = jest.fn().mockReturnValue({ ok:true });
-
-const mockOnInitialLoad = jest.fn();
 const mockSetSelectedCapabilitiesMap = jest.fn();
+const mockSetSelectedCapabilitySetsMap = jest.fn();
 
 jest.mock('../../../hooks/useCapabilities');
 jest.mock('../../../hooks/useRoleCapabilities');
@@ -24,6 +24,7 @@ jest.mock('../../../hooks/useRoleById');
 jest.mock('../../../hooks/useRoleCapabilitySets');
 jest.mock('../../../hooks/useCapabilitySets');
 jest.mock('../../../hooks/useApplicationCapabilities');
+jest.mock('../../../hooks/useApplicationCapabilitySets');
 
 jest.mock('../../../hooks/useEditRoleMutation', () => ({
   __esModule: true,
@@ -73,11 +74,10 @@ describe('EditRole component', () => {
   const mockMutateRole = jest.fn();
 
   afterEach(() => {
-    cleanup();
+    jest.clearAllMocks();
   });
 
   afterAll(() => {
-    cleanup();
     jest.clearAllMocks();
   });
 
@@ -136,17 +136,24 @@ describe('EditRole component', () => {
       capabilities:['6e59c367-888a-4561-a3f3-3ca677de437f'] }
     ] },
     selectedCapabilitiesMap: { '5c5198f9-de27-4349-9537-dc0b2b41c8c3':true },
-    roleCapabilitySetsListIds: [],
+
     disabledCapabilities: {},
-    selectedCapabilitySetsMap: {},
-    onSubmitSelectApplications: jest.fn(),
     setSelectedCapabilitiesMap:mockSetSelectedCapabilitiesMap,
-    onInitialLoad: mockOnInitialLoad,
-    setSelectedCapabilitySetsMap: jest.fn(),
     setDisabledCapabilities: jest.fn() });
+
+    useApplicationCapabilitySets.mockReturnValue({
+      capabilitySets: { data: [{ id:'d2e91897-c10d-46f6-92df-dad77c1e8862',
+        applicationId:'app-platform-complete-0.0.5',
+        resource:'Erm Agreements Collection',
+        actions:{ view:'d2e91897-c10d-46f6-92df-dad77c1e8862' },
+        capabilities:['6e59c367-888a-4561-a3f3-3ca677de437f'] }
+      ] },
+      setSelectedCapabilitySetsMap: mockSetSelectedCapabilitySetsMap,
+      selectedCapabilitySetsMap: {},
+      roleCapabilitySetsListIds: ['d2e91897-c10d-46f6-92df-dad77c1e8862'],
+      isLoading: false
+    });
   });
-
-
 
   it('renders TextField and Button components', async () => {
     const { getByTestId } = render(renderWithRouter(
@@ -218,7 +225,7 @@ describe('EditRole component', () => {
     expect(getByTestId('pluggable-select-application')).toBeInTheDocument();
   });
 
-  it('should call capabilities checkbox handlers', async () => {
+  it('should call capability sets checkbox handler', async () => {
     const { getAllByRole } = render(renderWithRouter(
       <EditRole path="/auz/roles/1" />
     ));
@@ -231,14 +238,26 @@ describe('EditRole component', () => {
     await act(async () => {
       await userEvent.click(getAllByRole('checkbox')[0]);
     });
-
-    expect(mockSetSelectedCapabilitiesMap).toHaveBeenCalledWith({ '6e59c367-888a-4561-a3f3-3ca677de437f': true });
+    // Should be called 2 times, first call is on isInitialDataReady in useEffect
+    expect(mockSetSelectedCapabilitySetsMap).toHaveBeenNthCalledWith(1, {});
+    expect(mockSetSelectedCapabilitySetsMap).toHaveBeenNthCalledWith(2, { 'd2e91897-c10d-46f6-92df-dad77c1e8862':true });
   });
 
   it('should call initial load function from useApplicationCapabilities hook', async () => {
-    render(renderWithRouter(
+    const { getAllByRole } = render(renderWithRouter(
       <EditRole path="/auz/roles/1" />
     ));
-    expect(mockOnInitialLoad).toHaveBeenCalledWith({ 'app-platform-complete-0.0.5': true });
+
+    const capabilitiesCheckboxLength = 3;
+    const capabilitySetsCheckboxLength = 1;
+
+    expect(getAllByRole('checkbox')).toHaveLength(capabilitiesCheckboxLength + capabilitySetsCheckboxLength);
+
+    await act(async () => {
+      await userEvent.click(getAllByRole('checkbox')[1]);
+    });
+    // Should be called 2 times, first call is on isInitialDataReady in useEffect
+    expect(mockSetSelectedCapabilitiesMap).toHaveBeenNthCalledWith(1, { '6e59c367-888a-4561-a3f3-3ca677de437f': true });
+    expect(mockSetSelectedCapabilitiesMap).toHaveBeenNthCalledWith(2, { '5c5198f9-de27-4349-9537-dc0b2b41c8c3': true, '6e59c367-888a-4561-a3f3-3ca677de437f': true });
   });
 });

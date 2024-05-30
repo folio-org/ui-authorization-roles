@@ -24,8 +24,7 @@ const useApplicationCapabilities = (checkedAppIdsMap) => {
   const memoizedCapabilities = useMemo(() => getCapabilitiesGroupedByTypeAndResource(capabilities),
     [capabilities]);
 
-  return { checkedAppIdsMap,
-    capabilities: memoizedCapabilities,
+  return { capabilities: memoizedCapabilities,
     selectedCapabilitiesMap,
     roleCapabilitiesListIds,
     setSelectedCapabilitiesMap,
