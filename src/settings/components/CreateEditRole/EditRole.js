@@ -13,6 +13,7 @@ import useRoleCapabilitySets from '../../../hooks/useRoleCapabilitySets';
 import useCapabilitySets from '../../../hooks/useCapabilitySets';
 import useSendErrorCallout from '../../../hooks/useErrorCallout';
 import { getOnlyIntersectedWithApplicationsCapabilities } from '../../utils';
+import useApplicationCapabilitySets from '../../../hooks/useApplicationCapabilitySets';
 
 const EditRole = ({ path }) => {
   const history = useHistory();
@@ -26,23 +27,31 @@ const EditRole = ({ path }) => {
   const { capabilitiesList, isLoading: isCapabilityListLoading } = useCapabilities();
   const { capabilitySetsList, isLoading: isCapabilitySetsLoading } = useCapabilitySets();
   const { initialRoleCapabilitiesSelectedMap, isSuccess: isInitialRoleCapabilitiesLoaded } = useRoleCapabilities(roleId);
+  const [checkedAppIdsMap, setCheckedAppIdsMap] = useState({});
+  const [disabledCapabilities, setDisabledCapabilities] = useState({});
 
   const { initialRoleCapabilitySetsSelectedMap,
     capabilitySetsCapabilities, isSuccess: isRoleCapabilitySetsLoaded } = useRoleCapabilitySets(roleId);
 
-  const { checkedAppIdsMap,
-    onSubmitSelectApplications,
-    capabilities,
+  const { capabilities,
     selectedCapabilitiesMap,
-    setSelectedCapabilitiesMap, roleCapabilitiesListIds,
-    onInitialLoad,
+    setSelectedCapabilitiesMap,
+    roleCapabilitiesListIds,
+    isLoading: isAppCapabilitiesLoading } = useApplicationCapabilities(checkedAppIdsMap);
+
+  const { capabilitySets,
     selectedCapabilitySetsMap,
     setSelectedCapabilitySetsMap,
-    disabledCapabilities,
-    setDisabledCapabilities,
-    capabilitySets,
     roleCapabilitySetsListIds,
-    isApplicationCapabilitiesLoading } = useApplicationCapabilities();
+    isLoading: isAppCapabilitySetsLoading } = useApplicationCapabilitySets(checkedAppIdsMap);
+
+  const onSubmitSelectApplications = (appIds, onClose) => {
+    onClose?.();
+    setSelectedCapabilitiesMap({});
+    setSelectedCapabilitySetsMap({});
+    setDisabledCapabilities({});
+    setCheckedAppIdsMap(appIds);
+  };
 
   const { sendErrorCallout } = useSendErrorCallout();
 
@@ -67,6 +76,8 @@ const EditRole = ({ path }) => {
   };
 
   const isCapabilityDisabled = id => !!disabledCapabilities[id];
+  /* If disabled means that capability is included in the some of the capability set,
+  and NOT interactively selected, or selected by retrieved capabilities */
   const isCapabilitySelected = (id) => !!selectedCapabilitiesMap[id] || isCapabilityDisabled(id);
   const isCapabilitySetSelected = id => !!selectedCapabilitySetsMap[id];
 
@@ -100,7 +111,7 @@ const EditRole = ({ path }) => {
       // define define selected application ids
       const capabilitiesAppIds = getOnlyIntersectedWithApplicationsCapabilities(capabilitiesList, Object.keys(initialRoleCapabilitiesSelectedMap), 'applicationId');
       const capabilitySetAppIds = getOnlyIntersectedWithApplicationsCapabilities(capabilitySetsList, Object.keys(initialRoleCapabilitySetsSelectedMap), 'applicationId');
-      onInitialLoad({ ...capabilitiesAppIds, ...capabilitySetAppIds });
+      setCheckedAppIdsMap({ ...capabilitiesAppIds, ...capabilitySetAppIds });
       setSelectedCapabilitiesMap({ ...initialRoleCapabilitiesSelectedMap });
       setSelectedCapabilitySetsMap({ ...initialRoleCapabilitySetsSelectedMap });
       setDisabledCapabilities({ ...capabilitySetsCapabilities });
@@ -127,8 +138,8 @@ const EditRole = ({ path }) => {
     onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
     onChangeCapabilitySetCheckbox={onChangeCapabilitySetCheckbox}
     onSaveSelectedApplications={onSubmitSelectApplications}
-    isCapabilitiesLoading={isApplicationCapabilitiesLoading || isCapabilityListLoading}
-    isCapabilitySetsLoading={isApplicationCapabilitiesLoading || isCapabilitySetsLoading}
+    isCapabilitiesLoading={isAppCapabilitiesLoading || isCapabilityListLoading}
+    isCapabilitySetsLoading={isAppCapabilitySetsLoading || isCapabilitySetsLoading}
   />;
 };
 
