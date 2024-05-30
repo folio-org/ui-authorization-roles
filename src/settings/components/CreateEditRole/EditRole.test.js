@@ -174,7 +174,7 @@ describe('EditRole component', () => {
       <EditRole roleId="1" />
     ));
 
-    const submitButton = getByRole('button', { name: 'ui-authorization-roles.crud.saveAndClose' });
+    const submitButton = getByRole('button', { name: 'stripes-components.saveAndClose' });
     const cancelButton = getByRole('button', { name: 'ui-authorization-roles.crud.cancel' });
 
     expect(cancelButton).toBeInTheDocument();
@@ -190,7 +190,7 @@ describe('EditRole component', () => {
     const { getByRole, getByTestId } = render(renderWithRouter(
       <EditRole roleId="1" />
     ));
-    const submitButton = getByRole('button', { name: 'ui-authorization-roles.crud.saveAndClose' });
+    const submitButton = getByRole('button', { name: 'stripes-components.saveAndClose' });
 
     await act(async () => {
       await userEvent.type(getByTestId('rolename-input'), 'Change role');

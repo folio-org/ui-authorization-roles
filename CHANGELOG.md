@@ -12,6 +12,7 @@
 * Show callout instead of JS alert on save/delete error. Refs UIROLES-53.
 * Role details should show capabilities inherited from capability-sets. Refs UIROLES-67.
 * Handle empty `metadata` values without invalid `/users/` API queries. Refs UIROLES-78.
+* Use Save & close button label stripes-component translation key. Refs UIROLES-61.
 
 ## [1.4.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.4.0) (2024-04-26)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.3.0...v1.4.0)
