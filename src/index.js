@@ -12,12 +12,11 @@ const App = () => {
   const addKey = useIntlKeyStore((state) => state.addKey);
   addKey('ui-authorization-roles');
 
-  return <Router basename={baseUrl}>
+  return <Router>
     <Switch>
-      <Route exact path="/create" component={CreateRole} />
-      <Route exact path="/:id/edit" component={EditRole} />
-      <Route path="/:id" component={Settings} />
-      <Route path="/" component={Settings} />
+      <Route exact path={`${baseUrl}/create`} component={CreateRole} />
+      <Route exact path={`${baseUrl}/:id/edit`} component={EditRole} />
+      <Route path={`${baseUrl}/:id?`} component={Settings} />
     </Switch>
   </Router>;
 };

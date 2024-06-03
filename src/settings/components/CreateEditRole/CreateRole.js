@@ -47,12 +47,12 @@ const CreateRole = () => {
 
   const { mutateRole, isLoading } = useCreateRoleMutation(roleCapabilitiesListIds, roleCapabilitySetsListIds, sendErrorCallout);
 
-  const goBack = () => history.push('/');
+  const onClose = () => history.push('/');
 
   const onSubmit = async (e) => {
     e.preventDefault();
     await mutateRole({ name: roleName, description });
-    goBack();
+    onClose();
   };
 
   return <CreateEditRoleForm
@@ -68,7 +68,7 @@ const CreateRole = () => {
     setRoleName={setRoleName}
     setDescription={setDescription}
     onSubmit={onSubmit}
-    onClose={goBack}
+    onClose={onClose}
     onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
     onChangeCapabilitySetCheckbox={onChangeCapabilitySetCheckbox}
     selectedCapabilitiesMap={selectedCapabilitiesMap}

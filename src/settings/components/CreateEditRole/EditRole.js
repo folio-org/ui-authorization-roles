@@ -18,6 +18,11 @@ const EditRole = () => {
   const roleId = router.params.id;
   const { roleDetails, isSuccess: isRoleDetailsLoaded } = useRoleById(roleId);
 
+  const getRowUrl = id => {
+    const basePath = router.path.split(':')[0];
+    return basePath.endsWith('/') ? `${basePath}${id}` : `${basePath}/${id}`;
+  };
+
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');
 
@@ -76,7 +81,7 @@ const EditRole = () => {
     }
   }, [isRoleDetailsLoaded, roleDetails]);
 
-  const goBack = () => history.push(`/${roleId}`);
+  const onClose = () => history.push(getRowUrl(roleId));
 
   const { mutateRole, isLoading } = useEditRoleMutation(
     { id: roleId, name: roleName, description },
@@ -87,7 +92,7 @@ const EditRole = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
     await mutateRole();
-    goBack();
+    onClose();
   };
 
   useEffect(() => {
@@ -122,7 +127,7 @@ const EditRole = () => {
     setRoleName={setRoleName}
     setDescription={setDescription}
     onSubmit={onSubmit}
-    onClose={goBack}
+    onClose={onClose}
     onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
     onChangeCapabilitySetCheckbox={onChangeCapabilitySetCheckbox}
     onSaveSelectedApplications={onSubmitSelectApplications}

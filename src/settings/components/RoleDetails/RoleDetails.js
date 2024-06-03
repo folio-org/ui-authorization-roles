@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import {
   AccordionSet,
@@ -19,7 +19,7 @@ import {
 import { ViewMetaData } from '@folio/stripes/smart-components';
 import { useStripes } from '@folio/stripes/core';
 
-import { useHistory } from 'react-router';
+import { useHistory, useRouteMatch } from 'react-router';
 import css from '../../style.css';
 import useRoleById from '../../../hooks/useRoleById';
 import AccordionUsers from './AccordionUsers';
@@ -30,12 +30,15 @@ import useErrorCallout from '../../../hooks/useErrorCallout';
 
 const RoleDetails = ({ roleId }) => {
   const { connect } = useStripes();
-
+  const intl = useIntl();
   const ConnectedViewMetaData = connect(ViewMetaData);
 
   const history = useHistory();
   const { sendErrorCallout } = useErrorCallout();
-  const onClose = () => history.push('/');
+  const { path } = useRouteMatch();
+
+  const basePath = path.split(':')[0];
+  const onClose = () => history.push(basePath);
 
   const { roleDetails: role } = useRoleById(roleId);
   const { mutateAsync: deleteRole } = useDeleteRoleMutation(onClose, sendErrorCallout);
@@ -106,7 +109,7 @@ const RoleDetails = ({ roleId }) => {
       </AccordionStatus>
       <ConfirmationModal
         open={isDeleting}
-        heading={<FormattedMessage id="ui-authorization-roles.crud.deleteRole" />}
+        heading={intl.formatMessage({ id: 'ui-authorization-roles.crud.deleteRole' })}
         message={<FormattedMessage
           id="ui-authorization-roles.crud.deleteRoleConfirmation"
           values={{ rolename: role?.name }}

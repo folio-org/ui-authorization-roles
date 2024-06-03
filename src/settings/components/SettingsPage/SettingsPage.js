@@ -26,6 +26,11 @@ const SettingsPage = () => {
 
   const { roles, isLoading, onSubmitSearch } = useAuthorizationRoles();
 
+  const getRowUrl = id => {
+    const basePath = router.path.split(':')[0];
+    return basePath.endsWith('/') ? `${basePath}${id}` : `${basePath}/${id}`;
+  };
+
   const lastMenu = (
     <PaneMenu>
       <Button
@@ -44,7 +49,7 @@ const SettingsPage = () => {
   };
 
   const resultsFormatter = {
-    name: (item) => <TextLink to={`${item.id}`}>{item.name}</TextLink>,
+    name: (item) => <TextLink to={getRowUrl(item.id)}>{item.name}</TextLink>,
     updatedBy: (item) => (item.metadata?.modifiedBy || <NoValue />),
     updated: (item) => (item.metadata?.modifiedDate ? (
       <FormattedDate value={item.metadata?.modifiedDate} />
