@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useRouteMatch } from 'react-router';
+import { useParams, useHistory } from 'react-router-dom';
 import { isEqual } from 'lodash';
+import PropTypes from 'prop-types';
 
 import CreateEditRoleForm from './CreateEditRoleForm';
 import useCapabilities from '../../../hooks/useCapabilities';
@@ -12,16 +13,11 @@ import useRoleCapabilitySets from '../../../hooks/useRoleCapabilitySets';
 import useCapabilitySets from '../../../hooks/useCapabilitySets';
 import useSendErrorCallout from '../../../hooks/useErrorCallout';
 
-const EditRole = () => {
+const EditRole = ({ path }) => {
   const history = useHistory();
-  const router = useRouteMatch();
-  const roleId = router.params.id;
-  const { roleDetails, isSuccess: isRoleDetailsLoaded } = useRoleById(roleId);
+  const { id: roleId } = useParams();
 
-  const getRowUrl = id => {
-    const basePath = router.path.split(':')[0];
-    return basePath.endsWith('/') ? `${basePath}${id}` : `${basePath}/${id}`;
-  };
+  const { roleDetails, isSuccess: isRoleDetailsLoaded } = useRoleById(roleId);
 
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');
@@ -81,7 +77,7 @@ const EditRole = () => {
     }
   }, [isRoleDetailsLoaded, roleDetails]);
 
-  const onClose = () => history.push(getRowUrl(roleId));
+  const onClose = () => history.push(`${path}/${roleId}`);
 
   const { mutateRole, isLoading } = useEditRoleMutation(
     { id: roleId, name: roleName, description },
@@ -134,6 +130,10 @@ const EditRole = () => {
     isCapabilitiesLoading={!isInitialLoaded}
     isCapabilitySetsLoading={!isInitialLoaded}
   />;
+};
+
+EditRole.propTypes = {
+  path: PropTypes.string.isRequired
 };
 
 export default EditRole;

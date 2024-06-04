@@ -19,7 +19,7 @@ import {
 import { ViewMetaData } from '@folio/stripes/smart-components';
 import { useStripes } from '@folio/stripes/core';
 
-import { useHistory, useRouteMatch } from 'react-router';
+import { useHistory } from 'react-router';
 import css from '../../style.css';
 import useRoleById from '../../../hooks/useRoleById';
 import AccordionUsers from './AccordionUsers';
@@ -28,17 +28,15 @@ import AccordionCapabilitySets from './AccordionCapabilitySets';
 import useDeleteRoleMutation from '../../../hooks/useDeleteRoleMutation';
 import useErrorCallout from '../../../hooks/useErrorCallout';
 
-const RoleDetails = ({ roleId }) => {
+const RoleDetails = ({ roleId, path }) => {
   const { connect } = useStripes();
   const intl = useIntl();
   const ConnectedViewMetaData = connect(ViewMetaData);
 
   const history = useHistory();
   const { sendErrorCallout } = useErrorCallout();
-  const { path } = useRouteMatch();
 
-  const basePath = path.split(':')[0];
-  const onClose = () => history.push(basePath);
+  const onClose = () => history.push(path);
 
   const { roleDetails: role } = useRoleById(roleId);
   const { mutateAsync: deleteRole } = useDeleteRoleMutation(onClose, sendErrorCallout);
@@ -47,7 +45,7 @@ const RoleDetails = ({ roleId }) => {
 
   const getActionMenu = () => (
     <>
-      <Button buttonStyle="dropdownItem" onClick={() => history.push(`/${roleId}/edit`)}>
+      <Button buttonStyle="dropdownItem" onClick={() => history.push(`${path}/${roleId}/edit`)}>
         <Icon icon="edit">
           <FormattedMessage id="ui-authorization-roles.crud.edit" />
         </Icon>
@@ -123,7 +121,8 @@ const RoleDetails = ({ roleId }) => {
 };
 
 RoleDetails.propTypes = {
-  roleId: PropTypes.string.isRequired
+  roleId: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired
 };
 
 export default RoleDetails;

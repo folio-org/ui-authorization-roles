@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useRouteMatch } from 'react-router';
+import { useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { FormattedMessage, FormattedDate } from 'react-intl';
 
@@ -18,23 +19,17 @@ import useAuthorizationRoles from '../../../hooks/useAuthorizationRoles';
 import { SearchForm } from '../SearchForm';
 import { RoleDetails } from '../RoleDetails';
 
-const SettingsPage = () => {
-  const router = useRouteMatch();
-  const roleId = router.params.id;
+const SettingsPage = ({ path }) => {
+  const { id: roleId } = useParams();
 
   const [searchTerm, setSearchTerm] = useState('');
 
   const { roles, isLoading, onSubmitSearch } = useAuthorizationRoles();
 
-  const getRowUrl = id => {
-    const basePath = router.path.split(':')[0];
-    return basePath.endsWith('/') ? `${basePath}${id}` : `${basePath}/${id}`;
-  };
-
   const lastMenu = (
     <PaneMenu>
       <Button
-        to="/create"
+        to={path + '/create'}
         buttonStyle="primary"
         marginBottom0
       >
@@ -49,7 +44,7 @@ const SettingsPage = () => {
   };
 
   const resultsFormatter = {
-    name: (item) => <TextLink to={getRowUrl(item.id)}>{item.name}</TextLink>,
+    name: (item) => <TextLink to={`${path}/${item.id}`}>{item.name}</TextLink>,
     updatedBy: (item) => (item.metadata?.modifiedBy || <NoValue />),
     updated: (item) => (item.metadata?.modifiedDate ? (
       <FormattedDate value={item.metadata?.modifiedDate} />
@@ -96,9 +91,13 @@ const SettingsPage = () => {
           visibleColumns={['name', 'description', 'updated', 'updatedBy']}
         />
       </Pane>
-      {roleId && <RoleDetails roleId={roleId} />}
+      {roleId && <RoleDetails roleId={roleId} path={path} />}
     </Paneset>
   );
+};
+
+SettingsPage.propTypes = {
+  path: PropTypes.string.isRequired,
 };
 
 export default SettingsPage;

@@ -33,7 +33,13 @@ jest.mock('../../../hooks/useEditRoleMutation', () => ({
 const mockMutateFn = jest.fn();
 jest.mock('react-query', () => ({
   ...jest.requireActual('react-query'),
-  useMutation: () => ({ mutate: mockMutateFn, isLoading: false }),
+  useMutation: jest.fn(() => ({ mutate: mockMutateFn, isLoading: false })),
+}));
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: jest.fn().mockReturnValue({ id: 1 }),
+  useHistory: jest.fn(() => ({ push: jest.fn() })),
 }));
 
 const mockPluggableOnClose = jest.fn();
@@ -146,7 +152,7 @@ describe('EditRole component', () => {
 
   it('renders TextField and Button components', async () => {
     const { getByTestId } = render(renderWithRouter(
-      <EditRole roleId="1" />
+      <EditRole path="/auz/roles/1" />
     ));
 
     expect(getByTestId('create-role-form')).toBeInTheDocument();
@@ -154,7 +160,7 @@ describe('EditRole component', () => {
 
   it('changes name, description input values', async () => {
     const { getByTestId } = render(renderWithRouter(
-      <EditRole roleId="1" />
+      <EditRole path="/auz/roles/1" />
     ));
 
     const nameInput = getByTestId('rolename-input');
@@ -171,7 +177,7 @@ describe('EditRole component', () => {
 
   it('actions on click footer buttons', async () => {
     const { getByTestId, getByRole } = render(renderWithRouter(
-      <EditRole roleId="1" />
+      <EditRole path="/auz/roles/1" />
     ));
 
     const submitButton = getByRole('button', { name: 'ui-authorization-roles.crud.saveAndClose' });
@@ -188,7 +194,7 @@ describe('EditRole component', () => {
 
   it('onSubmit invalidates "ui-authorization-roles" query and calls goBack on success', async () => {
     const { getByRole, getByTestId } = render(renderWithRouter(
-      <EditRole roleId="1" />
+      <EditRole path="/auz/roles/1" />
     ));
     const submitButton = getByRole('button', { name: 'ui-authorization-roles.crud.saveAndClose' });
 
@@ -203,7 +209,7 @@ describe('EditRole component', () => {
 
   it('should set role name and description when selectedRole is truthy', () => {
     const { getByTestId } = render(renderWithRouter(
-      <EditRole roleId="1" />
+      <EditRole path="/auz/roles/1" />
     ));
 
     const roleNameInput = getByTestId('rolename-input');
@@ -216,7 +222,7 @@ describe('EditRole component', () => {
 
   it('should call capabilities checkbox handlers', async () => {
     const { getAllByRole } = render(renderWithRouter(
-      <EditRole roleId="1" />
+      <EditRole path="/auz/roles/1" />
     ));
 
     const capabilitiesCheckboxLength = 3;
@@ -233,7 +239,7 @@ describe('EditRole component', () => {
 
   it('should call initial load function from useApplicationCapabilities hook', async () => {
     render(renderWithRouter(
-      <EditRole roleId="1" />
+      <EditRole path="/auz/roles/1" />
     ));
     expect(mockOnInitialLoad).toHaveBeenCalledWith({ 'app-platform-complete-0.0.5': true });
   });

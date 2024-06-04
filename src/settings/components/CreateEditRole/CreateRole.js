@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
+import PropTypes from 'prop-types';
 
 import CreateEditRoleForm from './CreateEditRoleForm';
 import useCreateRoleMutation from '../../../hooks/useCreateRoleMutation';
 import useApplicationCapabilities from '../../../hooks/useApplicationCapabilities';
 import useErrorCallout from '../../../hooks/useErrorCallout';
 
-const CreateRole = () => {
+const CreateRole = ({ path }) => {
   const history = useHistory();
 
   const [roleName, setRoleName] = useState('');
@@ -47,7 +48,7 @@ const CreateRole = () => {
 
   const { mutateRole, isLoading } = useCreateRoleMutation(roleCapabilitiesListIds, roleCapabilitySetsListIds, sendErrorCallout);
 
-  const onClose = () => history.push('/');
+  const onClose = () => history.push(path);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -75,6 +76,10 @@ const CreateRole = () => {
     onSaveSelectedApplications={onSubmitSelectApplications}
     checkedAppIdsMap={checkedAppIdsMap}
   />;
+};
+
+CreateRole.propTypes = {
+  path: PropTypes.string.isRequired
 };
 
 export default CreateRole;
