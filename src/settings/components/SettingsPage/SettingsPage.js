@@ -29,7 +29,7 @@ const SettingsPage = ({ path }) => {
   const lastMenu = (
     <PaneMenu>
       <Button
-        to={path + '/create'}
+        to={`${path}/create`}
         buttonStyle="primary"
         marginBottom0
       >
