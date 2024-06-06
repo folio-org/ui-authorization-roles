@@ -28,15 +28,9 @@ jest.mock('../../../hooks/useAuthorizationRoles', () => {
   };
 });
 
-const mockPushFn = jest.fn();
-
-jest.mock('react-router', () => {
-  return { ...jest.requireActual('react-router'),
-    useHistory: jest.fn().mockReturnValue({ push: (path) => mockPushFn(path), location: { search: '' } }),
-    useRouteMatch: jest.fn().mockReturnValue({ params:{
-      id: 'id'
-    },
-    path: '/settings/authorization-roles/:id?' }) };
+jest.mock('react-router-dom', () => {
+  return { ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn().mockReturnValue({ id: 'id' }) };
 });
 
 describe('SettingsPage', () => {
@@ -44,7 +38,7 @@ describe('SettingsPage', () => {
     jest.clearAllMocks();
   });
 
-  const renderComponent = () => render(renderWithRouter(<SettingsPage />));
+  const renderComponent = () => render(renderWithRouter(<SettingsPage path="/settings/auz-rolez" />));
 
   it('renders the SettingsPage component', () => {
     useAuthorizationRoles.mockImplementation(() => ({

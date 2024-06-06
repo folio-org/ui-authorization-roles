@@ -25,7 +25,7 @@ jest.mock('@folio/stripes/components', () => {
 const mockOnInitialLoad = jest.fn();
 const mockSetSelectedCapabilitiesMap = jest.fn();
 
-const renderComponent = () => render(renderWithRouter(<CreateRole />));
+const renderComponent = () => render(renderWithRouter(<CreateRole path="/settings/auz-rolez" />));
 
 describe('CreateRole component', () => {
   const mockMutateRole = jest.fn();

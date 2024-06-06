@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useRouteMatch } from 'react-router';
+import { useParams, useHistory } from 'react-router-dom';
 import { isEqual } from 'lodash';
+import PropTypes from 'prop-types';
 
 import CreateEditRoleForm from './CreateEditRoleForm';
 import useCapabilities from '../../../hooks/useCapabilities';
@@ -12,10 +13,10 @@ import useRoleCapabilitySets from '../../../hooks/useRoleCapabilitySets';
 import useCapabilitySets from '../../../hooks/useCapabilitySets';
 import useSendErrorCallout from '../../../hooks/useErrorCallout';
 
-const EditRole = () => {
+const EditRole = ({ path }) => {
   const history = useHistory();
-  const router = useRouteMatch();
-  const roleId = router.params.id;
+  const { id: roleId } = useParams();
+
   const { roleDetails, isSuccess: isRoleDetailsLoaded } = useRoleById(roleId);
 
   const [roleName, setRoleName] = useState('');
@@ -76,7 +77,7 @@ const EditRole = () => {
     }
   }, [isRoleDetailsLoaded, roleDetails]);
 
-  const goBack = () => history.push(`/${roleId}`);
+  const onClose = () => history.push(`${path}/${roleId}`);
 
   const { mutateRole, isLoading } = useEditRoleMutation(
     { id: roleId, name: roleName, description },
@@ -87,7 +88,7 @@ const EditRole = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
     await mutateRole();
-    goBack();
+    onClose();
   };
 
   useEffect(() => {
@@ -122,13 +123,17 @@ const EditRole = () => {
     setRoleName={setRoleName}
     setDescription={setDescription}
     onSubmit={onSubmit}
-    onClose={goBack}
+    onClose={onClose}
     onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
     onChangeCapabilitySetCheckbox={onChangeCapabilitySetCheckbox}
     onSaveSelectedApplications={onSubmitSelectApplications}
     isCapabilitiesLoading={!isInitialLoaded}
     isCapabilitySetsLoading={!isInitialLoaded}
   />;
+};
+
+EditRole.propTypes = {
+  path: PropTypes.string.isRequired
 };
 
 export default EditRole;

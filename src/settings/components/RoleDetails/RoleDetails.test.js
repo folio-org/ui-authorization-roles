@@ -8,13 +8,14 @@ import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 import useDeleteRoleMutation from '../../../hooks/useDeleteRoleMutation';
 
 const mockHistoryPushFn = jest.fn();
+const path = '/auz-rolez/';
 
 jest.mock('../../../hooks/useRoleById');
 jest.mock('../../../hooks/useDeleteRoleMutation');
 
 jest.mock('react-router', () => {
   return { ...jest.requireActual('react-router'),
-    useHistory: jest.fn().mockReturnValue({ push: (path) => mockHistoryPushFn(path), location: { search: '' } }) };
+    useHistory: jest.fn(() => ({ push: mockHistoryPushFn, location: { search: '' } })) };
 });
 
 const getRoleData = (data) => ({
@@ -32,7 +33,7 @@ const getRoleData = (data) => ({
 
 const renderComponent = () => render(
   renderWithRouter(
-    <RoleDetails roleId="2efe1d13-eff9-4b01-a2fe-512e9d5239c7" />
+    <RoleDetails roleId="2efe1d13-eff9-4b01-a2fe-512e9d5239c7" path={path} />
   )
 );
 
@@ -84,14 +85,14 @@ describe('RoleDetails component', () => {
       const closeButton = document.querySelector('[data-test-pane-header-dismiss-button]');
       await userEvent.click(closeButton);
 
-      expect(mockHistoryPushFn).toHaveBeenCalledWith('/');
+      expect(mockHistoryPushFn).toHaveBeenCalledWith(path);
     });
 
     it('calls edit function on click dropdown edit button', async () => {
       const { getByText } = renderComponent();
 
       await userEvent.click(getByText('ui-authorization-roles.crud.edit'));
-      expect(mockHistoryPushFn).toHaveBeenCalledWith('/2efe1d13-eff9-4b01-a2fe-512e9d5239c7/edit');
+      expect(mockHistoryPushFn).toHaveBeenCalledWith(path + '/2efe1d13-eff9-4b01-a2fe-512e9d5239c7/edit');
     });
   });
 });

@@ -18,7 +18,7 @@ jest.mock('./settings', () => ({
 
 describe('App component', () => {
   it('calls the addKey of useIntlKeyStore function with the correct namespace', () => {
-    render(<App />);
+    render(<App match={{ path: '/settings/auz-rolez' }} />);
     expect(useIntlKeyStore()).toHaveBeenCalledWith('ui-authorization-roles');
   });
 });

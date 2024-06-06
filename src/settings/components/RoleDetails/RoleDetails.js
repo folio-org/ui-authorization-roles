@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import {
   AccordionSet,
@@ -28,14 +28,15 @@ import AccordionCapabilitySets from './AccordionCapabilitySets';
 import useDeleteRoleMutation from '../../../hooks/useDeleteRoleMutation';
 import useErrorCallout from '../../../hooks/useErrorCallout';
 
-const RoleDetails = ({ roleId }) => {
+const RoleDetails = ({ roleId, path }) => {
   const { connect } = useStripes();
-
+  const intl = useIntl();
   const ConnectedViewMetaData = connect(ViewMetaData);
 
   const history = useHistory();
   const { sendErrorCallout } = useErrorCallout();
-  const onClose = () => history.push('/');
+
+  const onClose = () => history.push(path);
 
   const { roleDetails: role } = useRoleById(roleId);
   const { mutateAsync: deleteRole } = useDeleteRoleMutation(onClose, sendErrorCallout);
@@ -44,7 +45,7 @@ const RoleDetails = ({ roleId }) => {
 
   const getActionMenu = () => (
     <>
-      <Button buttonStyle="dropdownItem" onClick={() => history.push(`/${roleId}/edit`)}>
+      <Button buttonStyle="dropdownItem" onClick={() => history.push(`${path}/${roleId}/edit`)}>
         <Icon icon="edit">
           <FormattedMessage id="ui-authorization-roles.crud.edit" />
         </Icon>
@@ -106,7 +107,7 @@ const RoleDetails = ({ roleId }) => {
       </AccordionStatus>
       <ConfirmationModal
         open={isDeleting}
-        heading={<FormattedMessage id="ui-authorization-roles.crud.deleteRole" />}
+        heading={intl.formatMessage({ id: 'ui-authorization-roles.crud.deleteRole' })}
         message={<FormattedMessage
           id="ui-authorization-roles.crud.deleteRoleConfirmation"
           values={{ rolename: role?.name }}
@@ -120,7 +121,8 @@ const RoleDetails = ({ roleId }) => {
 };
 
 RoleDetails.propTypes = {
-  roleId: PropTypes.string.isRequired
+  roleId: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired
 };
 
 export default RoleDetails;
