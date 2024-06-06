@@ -55,7 +55,7 @@ function CreateEditRoleForm({
     disabled={!roleName || isLoading}
     type="submit"
     onClick={onSubmit}
-  ><FormattedMessage id="ui-authorization-roles.crud.saveAndClose" /></Button>;
+  ><FormattedMessage id="stripes-components.saveAndClose" /></Button>;
 
   const intl = useIntl();
 

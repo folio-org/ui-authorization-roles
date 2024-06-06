@@ -104,7 +104,7 @@ describe('CreateRole component', () => {
   it('actions on click footer buttons', async () => {
     const { getByTestId, getByRole } = renderComponent();
 
-    const submitButton = getByRole('button', { name: 'ui-authorization-roles.crud.saveAndClose' });
+    const submitButton = getByRole('button', { name: 'stripes-components.saveAndClose' });
     const cancelButton = getByRole('button', { name: 'ui-authorization-roles.crud.cancel' });
 
     expect(submitButton).toBeDisabled();
