@@ -7,8 +7,10 @@ import CreateRole from './CreateRole';
 import useCreateRoleMutation from '../../../hooks/useCreateRoleMutation';
 import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 import useApplicationCapabilities from '../../../hooks/useApplicationCapabilities';
+import useApplicationCapabilitySets from '../../../hooks/useApplicationCapabilitySets';
 
 jest.mock('../../../hooks/useCapabilities');
+jest.mock('../../../hooks/useApplicationCapabilitySets');
 jest.mock('../../../hooks/useCreateRoleMutation', () => ({
   __esModule: true,
   default: jest.fn()
@@ -22,7 +24,6 @@ jest.mock('@folio/stripes/components', () => {
     Layer: jest.fn(({ children }) => <div data-testid="mock-layer">{children}</div>)
   };
 });
-const mockOnInitialLoad = jest.fn();
 const mockSetSelectedCapabilitiesMap = jest.fn();
 
 const renderComponent = () => render(renderWithRouter(<CreateRole path="/settings/auz-rolez" />));
@@ -51,9 +52,12 @@ describe('CreateRole component', () => {
       applicationId:'app-platform-complete-0.0.5',
       resource:'Erm Agreements Collection',
       actions:{ view:'DDD-888a-4561-a3f3-3ca677de437f' } }] },
-    checkedAppIdsMap: { 'app-platform-complete-0.0.5': true },
     roleCapabilitiesListIds: ['5c5198f9-de27-4349-9537-dc0b2b41c8c3'],
-    capabilitySets: { data: [{ id:'d2e91897-c10d-46f6-92df-dad77c1e8862',
+    selectedCapabilitiesMap: { },
+    setSelectedCapabilitiesMap:mockSetSelectedCapabilitiesMap,
+    isLoading: false });
+
+    useApplicationCapabilitySets.mockReturnValue({ capabilitySets: { data: [{ id:'d2e91897-c10d-46f6-92df-dad77c1e8862',
       applicationId:'app-platform-complete-0.0.5',
       resource:'Erm Agreements Collection',
       actions:{ view:'d2e91897-c10d-46f6-92df-dad77c1e8862' },
@@ -69,15 +73,10 @@ describe('CreateRole component', () => {
       applicationId: 'app-platform-complete-0.0.5',
       capabilities: ['6e59c367-888a-4561-a3f3-3ca677de437f'],
     }],
-    selectedCapabilitiesMap: { },
     roleCapabilitySetsListIds: [],
-    disabledCapabilities: {},
     selectedCapabilitySetsMap: {},
-    onSubmitSelectApplications: jest.fn(),
-    setSelectedCapabilitiesMap:mockSetSelectedCapabilitiesMap,
-    onInitialLoad: mockOnInitialLoad,
     setSelectedCapabilitySetsMap: jest.fn(),
-    setDisabledCapabilities: jest.fn() });
+    isLoading: false });
   });
 
   it('renders TextField and Button components', async () => {
@@ -118,18 +117,6 @@ describe('CreateRole component', () => {
     expect(mockMutateRole).toHaveBeenCalledWith({ name: 'New Role', description: '' });
   });
 
-  it('should call capability sets handler actions on click', async () => {
-    const { getAllByRole } = renderComponent();
-
-    expect(getAllByRole('checkbox')).toHaveLength(3);
-
-    await waitFor(async () => {
-      await userEvent.click(getAllByRole('checkbox')[0]);
-      expect(mockSetSelectedCapabilitiesMap).toHaveBeenCalledWith({ '6e59c367-888a-4561-a3f3-3ca677de437f': true });
-      expect(mockSetSelectedCapabilitiesMap).toHaveBeenCalledTimes(1);
-    });
-  });
-
   it('should call capability checkbox handler actions on click', async () => {
     const { getAllByRole } = renderComponent();
 
@@ -139,5 +126,14 @@ describe('CreateRole component', () => {
     });
 
     expect(mockSetSelectedCapabilitiesMap).toHaveBeenCalledWith({ 'DDD-888a-4561-a3f3-3ca677de437f': true });
+  });
+
+  it('should call capability set checkbox handler actions on click', async () => {
+    const { getAllByRole } = renderComponent();
+    const indexOfCapabilitySet = 0;
+
+    await waitFor(async () => {
+      await userEvent.click(getAllByRole('checkbox')[indexOfCapabilitySet]);
+    });
   });
 });

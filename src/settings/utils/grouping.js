@@ -165,12 +165,12 @@ export const groupById = (arr) => {
  * @param {Array.<string>} intersectingList - Intersecting list to filter from;
  * @returns {Object.<string, boolean>} - object with key string and value - true;
  */
-export const getOnlyIntersectedWithApplicationsCapabilities = (applicationCapabilities, intersectingList) => {
+export const getOnlyIntersectedWithApplicationsCapabilities = (applicationCapabilities, intersectingList, key = 'id') => {
   if (isEmpty(applicationCapabilities)) return {};
 
   return applicationCapabilities.filter(cap => intersectingList.includes(cap.id))
     .reduce((acc, cap) => {
-      acc[cap.id] = true;
+      acc[cap[key]] = true;
       return acc;
     }, {});
 };

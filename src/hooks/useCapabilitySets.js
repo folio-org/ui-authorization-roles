@@ -1,20 +1,32 @@
-import React from 'react';
-import { useQuery } from 'react-query';
+import { useChunkedCQLFetch, useNamespace, useStripes } from '@folio/stripes/core';
 
-import { useNamespace, useOkapiKy } from '@folio/stripes/core';
+import { APPLICATIONS_STEP_SIZE, CAPABILITES_LIMIT } from './constants';
 
-const LIMIT = 5000;
+// When fetching from a potentially large list of applications derived
+// from stripes.discovery.applications
+// make sure to chunk the request to avoid hitting limits.
 
 const useCapabilitySets = () => {
-  const ky = useOkapiKy();
-  const [namespace] = useNamespace({ key: 'capability-sets' });
+  const stripes = useStripes();
+  const installedApplications = Object.keys(stripes.discovery.applications);
+  const [namespace] = useNamespace({ key: 'capability-sets-list' });
 
-  const { data, isSuccess } = useQuery(
-    namespace,
-    () => ky.get(`capability-sets?limit=${LIMIT}&query=cql.allRecords=1 sortby resource`).json(),
-  );
+  const { items, isLoading } = useChunkedCQLFetch({
+    endpoint: 'capability-sets',
+    ids: installedApplications,
+    limit: CAPABILITES_LIMIT,
+    idName: 'applicationId',
+    reduceFunction: data => {
+      return data.flatMap(d => d.data?.capabilitySets || []);
+    },
+    generateQueryKey: ({ chunkedItem, endpoint }) => {
+      return [namespace, endpoint, chunkedItem];
+    },
+    STEP_SIZE: APPLICATIONS_STEP_SIZE
+  });
 
-  return { data, isSuccess };
+  return { capabilitySetsList: items,
+    isLoading };
 };
 
 export default useCapabilitySets;

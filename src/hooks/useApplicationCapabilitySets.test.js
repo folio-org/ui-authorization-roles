@@ -1,9 +1,9 @@
 import { renderHook, cleanup } from '@folio/jest-config-stripes/testing-library/react';
 import { waitFor } from '@folio/jest-config-stripes/testing-library/dom';
-import useApplicationCapabilities from './useApplicationCapabilities';
-import useChunkedApplicationCapabilities from './useChunkedApplicationCapabilities';
+import useApplicationCapabilitySets from './useApplicationCapabilitySets';
+import useChunkedApplicationCapabilitySets from './useChunkedApplicationCapabilitySets';
 
-jest.mock('./useChunkedApplicationCapabilities');
+jest.mock('./useChunkedApplicationCapabilitySets');
 
 jest.mock('@folio/stripes/core', () => ({
   ...jest.requireActual('@folio/stripes/core'),
@@ -14,7 +14,7 @@ jest.mock('@folio/stripes/core', () => ({
     } } })),
 }));
 
-describe('useApplicationCapabilities', () => {
+describe('useApplicationCapabilitySets', () => {
   afterAll(() => {
     cleanup();
     jest.clearAllMocks();
@@ -24,23 +24,23 @@ describe('useApplicationCapabilities', () => {
   });
 
   it('should test if returning fields and methods are defined', () => {
-    useChunkedApplicationCapabilities.mockReset().mockReturnValue({ items: [], isLoading: false });
-    const { result } = renderHook(useApplicationCapabilities, { initialProps: { cap1: true } });
+    useChunkedApplicationCapabilitySets.mockReset().mockReturnValue({ items: [], isLoading: false });
+    const { result } = renderHook(useApplicationCapabilitySets, { initialProps: { cap1: true } });
 
-    expect(result.current.capabilities).toStrictEqual({ data: [], settings: [], procedural: [] });
-    expect(result.current.roleCapabilitiesListIds).toStrictEqual([]);
-    expect(result.current.selectedCapabilitiesMap).toStrictEqual({});
-    expect(result.current.setSelectedCapabilitiesMap).toBeDefined();
+    expect(result.current.capabilitySets).toStrictEqual({ data: [], settings: [], procedural: [] });
+    expect(result.current.roleCapabilitySetsListIds).toStrictEqual([]);
+    expect(result.current.selectedCapabilitySetsMap).toStrictEqual({});
+    expect(result.current.setSelectedCapabilitySetsMap).toBeDefined();
     expect(result.current.isLoading).toBe(false);
   });
   it('should set checkedAppIdsMap and call onSubmitSelectApplications', async () => {
     const items = [{ id: 1, applicationId: 'cap1', type: 'data', action:'edit', resource: 'r1' },
       { id: 12, applicationId: 'cap12', type: 'data', action: 'create', resource: 'r1' }];
-    useChunkedApplicationCapabilities.mockClear().mockReturnValue({ items, isLoading: false });
+    useChunkedApplicationCapabilitySets.mockClear().mockReturnValue({ items, isLoading: false });
 
-    const { result } = renderHook(useApplicationCapabilities, { initialProps: { cap1: true } });
+    const { result } = renderHook(useApplicationCapabilitySets, { initialProps: { cap1: true } });
 
-    expect(result.current.capabilities).toStrictEqual({
+    expect(result.current.capabilitySets).toStrictEqual({
       data:  [
         {
           actions: {
@@ -65,12 +65,12 @@ describe('useApplicationCapabilities', () => {
   });
 
   it('should set empty capabilities in the case of empty appIds', async () => {
-    useChunkedApplicationCapabilities.mockClear().mockReturnValue({ items: [], isLoading: false });
-    const { result } = renderHook(useApplicationCapabilities, { initialProps: {} });
+    useChunkedApplicationCapabilitySets.mockClear().mockReturnValue({ items: [], isLoading: false });
+    const { result } = renderHook(useApplicationCapabilitySets, { initialProps: {} });
 
     await waitFor(async () => {
-      expect(result.current.capabilities).toStrictEqual({ data: [], settings: [], procedural: [] });
-      expect(result.current.selectedCapabilitiesMap).toStrictEqual({});
+      expect(result.current.capabilitySets).toStrictEqual({ data: [], settings: [], procedural: [] });
+      expect(result.current.selectedCapabilitySetsMap).toStrictEqual({});
     });
   });
 });

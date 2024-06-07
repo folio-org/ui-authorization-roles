@@ -6,24 +6,28 @@ import CreateEditRoleForm from './CreateEditRoleForm';
 import useCreateRoleMutation from '../../../hooks/useCreateRoleMutation';
 import useApplicationCapabilities from '../../../hooks/useApplicationCapabilities';
 import useErrorCallout from '../../../hooks/useErrorCallout';
+import useApplicationCapabilitySets from '../../../hooks/useApplicationCapabilitySets';
 
 const CreateRole = ({ path }) => {
   const history = useHistory();
 
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');
+  const [checkedAppIdsMap, setCheckedAppIdsMap] = useState({});
+  const [disabledCapabilities, setDisabledCapabilities] = useState({});
 
-  const { checkedAppIdsMap,
-    onSubmitSelectApplications,
-    capabilities,
+  const { capabilities,
     selectedCapabilitiesMap,
-    setSelectedCapabilitiesMap, roleCapabilitiesListIds,
+    setSelectedCapabilitiesMap,
+    roleCapabilitiesListIds,
+    isLoading: isAppCapabilitiesLoading } = useApplicationCapabilities(checkedAppIdsMap);
+
+  const { capabilitySets,
     selectedCapabilitySetsMap,
     setSelectedCapabilitySetsMap,
-    disabledCapabilities,
-    setDisabledCapabilities,
-    capabilitySets,
-    capabilitySetsList, roleCapabilitySetsListIds } = useApplicationCapabilities();
+    roleCapabilitySetsListIds,
+    capabilitySetsList,
+    isLoading: isAppCapabilitySetsLoading } = useApplicationCapabilitySets(checkedAppIdsMap);
 
   const { sendErrorCallout } = useErrorCallout();
 
@@ -39,12 +43,15 @@ const CreateRole = ({ path }) => {
 
     setDisabledCapabilities({ ...disabledCapabilities, ...capabilitySetsCap });
     setSelectedCapabilitySetsMap({ ...selectedCapabilitySetsMap, [capabilitySetId]: event.target.checked });
-    setSelectedCapabilitiesMap({ ...selectedCapabilitiesMap, ...capabilitySetsCap });
   };
 
-  const isCapabilitySelected = id => !!selectedCapabilitiesMap[id];
   const isCapabilitySetSelected = id => !!selectedCapabilitySetsMap[id];
   const isCapabilityDisabled = id => !!disabledCapabilities[id];
+  /* disabled means that capability is included in the some of the capability set,
+  and not interactively selected. And we show that capabilities as disabled and selected in the UI,
+  instead of storing them in the selected capabilities
+  */
+  const isCapabilitySelected = id => !!selectedCapabilitiesMap[id] || isCapabilityDisabled(id);
 
   const { mutateRole, isLoading } = useCreateRoleMutation(roleCapabilitiesListIds, roleCapabilitySetsListIds, sendErrorCallout);
 
@@ -54,6 +61,14 @@ const CreateRole = ({ path }) => {
     e.preventDefault();
     await mutateRole({ name: roleName, description });
     onClose();
+  };
+
+  const onSubmitSelectApplications = (appIds, onClose) => {
+    onClose?.();
+    setSelectedCapabilitiesMap({});
+    setSelectedCapabilitySetsMap({});
+    setDisabledCapabilities({});
+    setCheckedAppIdsMap(appIds);
   };
 
   return <CreateEditRoleForm
@@ -75,6 +90,8 @@ const CreateRole = ({ path }) => {
     selectedCapabilitiesMap={selectedCapabilitiesMap}
     onSaveSelectedApplications={onSubmitSelectApplications}
     checkedAppIdsMap={checkedAppIdsMap}
+    isCapabilitiesLoading={isAppCapabilitiesLoading}
+    isCapabilitySetsLoading={isAppCapabilitySetsLoading}
   />;
 };
 
