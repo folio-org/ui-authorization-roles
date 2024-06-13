@@ -29,7 +29,7 @@ const EditRole = ({ path }) => {
   const [disabledCapabilities, setDisabledCapabilities] = useState({});
 
   const { initialRoleCapabilitySetsSelectedMap,
-    capabilitySetsCapabilities, isSuccess: isRoleCapabilitySetsLoaded,
+    capabilitySetsCapabilities, isSuccess: isInitialRoleCapabilitySetsLoaded,
     capabilitySetAppIds } = useRoleCapabilitySets(roleId);
 
   const { capabilities,
@@ -104,7 +104,7 @@ const EditRole = ({ path }) => {
     onClose();
   };
 
-  const isInitialDataReady = isRoleCapabilitySetsLoaded && isInitialRoleCapabilitiesLoaded;
+  const isInitialDataReady = isInitialRoleCapabilitySetsLoaded && isInitialRoleCapabilitiesLoaded;
 
   useEffect(() => {
     if (isInitialDataReady) {
@@ -141,7 +141,7 @@ const EditRole = ({ path }) => {
     onChangeCapabilitySetCheckbox={onChangeCapabilitySetCheckbox}
     onSaveSelectedApplications={onSubmitSelectApplications}
     isCapabilitiesLoading={isAppCapabilitiesLoading || !isInitialRoleCapabilitiesLoaded}
-    isCapabilitySetsLoading={isAppCapabilitySetsLoading || !isRoleCapabilitySetsLoaded}
+    isCapabilitySetsLoading={isAppCapabilitySetsLoading || !isInitialRoleCapabilitySetsLoaded}
   />;
 };
 
