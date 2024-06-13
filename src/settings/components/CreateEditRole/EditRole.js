@@ -30,7 +30,7 @@ const EditRole = ({ path }) => {
 
   const { initialRoleCapabilitySetsSelectedMap,
     capabilitySetsCapabilities, isSuccess: isInitialRoleCapabilitySetsLoaded,
-    capabilitySetAppIds } = useRoleCapabilitySets(roleId);
+    capabilitySetsAppIds } = useRoleCapabilitySets(roleId);
 
   const { capabilities,
     selectedCapabilitiesMap,
@@ -113,7 +113,7 @@ const EditRole = ({ path }) => {
       // which triggers useChunkedApplicationCapabilities and useChunkedApplicationCapabilitySets
       // to fetch the actual data for the tables.
 
-      setCheckedAppIdsMap({ ...capabilitiesAppIds, ...capabilitySetAppIds });
+      setCheckedAppIdsMap({ ...capabilitiesAppIds, ...capabilitySetsAppIds });
       setSelectedCapabilitiesMap({ ...initialRoleCapabilitiesSelectedMap });
       setSelectedCapabilitySetsMap({ ...initialRoleCapabilitySetsSelectedMap });
       setDisabledCapabilities({ ...capabilitySetsCapabilities });

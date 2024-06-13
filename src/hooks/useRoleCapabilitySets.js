@@ -33,7 +33,7 @@ const useRoleCapabilitySets = (roleId) => {
     return obj;
   }, {});
 
-  const capabilitySetAppIds = useMemo(() => {
+  const capabilitySetsAppIds = useMemo(() => {
     const capabilitySetsById = mapValues(keyBy(data?.capabilitySets, 'applicationId'), () => true) || {};
     const filteredByInstalledApplications = pick(capabilitySetsById, installedApplications);
 
@@ -47,7 +47,7 @@ const useRoleCapabilitySets = (roleId) => {
     capabilitySetsTotalCount: data?.totalRecords || 0,
     groupedRoleCapabilitySetsByType,
     capabilitySetsCapabilities,
-    capabilitySetAppIds };
+    capabilitySetsAppIds };
 };
 
 export default useRoleCapabilitySets;

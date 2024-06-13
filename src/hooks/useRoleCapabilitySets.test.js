@@ -154,6 +154,6 @@ describe('useRoleCapabilitySets', () => {
     expect(result.current.initialRoleCapabilitySetsSelectedMap).toStrictEqual(expectedInitialRoleCapabilitySetsSelectedMap);
     expect(result.current.capabilitySetsTotalCount).toEqual(3);
     expect(result.current.groupedRoleCapabilitySetsByType).toEqual(expectedGroupedRoleCapabilitiesByType);
-    expect(result.current.capabilitySetAppIds).toEqual({ 'app-platform-minimal-0.0.4': true });
+    expect(result.current.capabilitySetsAppIds).toEqual({ 'app-platform-minimal-0.0.4': true });
   });
 });

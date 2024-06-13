@@ -97,7 +97,7 @@ describe('EditRole component', () => {
     isSuccess: true });
     useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: { '6e59c367-888a-4561-a3f3-3ca677de437f': true }, isSuccess: true });
     useRoleById.mockReturnValue({ roleDetails: { id: '1', name: 'Admin', description: 'Description' }, isSuccess: true });
-    useRoleCapabilitySets.mockReturnValue({ initialRoleCapabilitySetsSelectedMap: {}, isSuccess: true });
+    useRoleCapabilitySets.mockReturnValue({ initialRoleCapabilitySetsSelectedMap: {}, isSuccess: true, capabilitySetsAppIds: { 'app-platform-complete-0.0.5': true } });
     useCapabilitySets.mockReturnValue({ capabilitySetsList: [
       {
         'id': 'd2e91897-c10d-46f6-92df-dad77c1e8862',
