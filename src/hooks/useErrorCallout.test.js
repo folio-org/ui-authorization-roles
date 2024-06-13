@@ -13,7 +13,7 @@ const wrapper = ({ children }) => (
 );
 
 describe('useErrorCallout', () => {
-  it('sends a callout', async () => {
+  it('handles a string message', async () => {
     const message = 'some message';
     const { result } = renderHook(
       () => useErrorCallout(),
@@ -21,6 +21,27 @@ describe('useErrorCallout', () => {
     );
 
     await act(async () => { result.current.sendErrorCallout(message); });
+
+    expect(sendCallout).toHaveBeenCalledWith(expect.objectContaining({
+      type: 'error',
+      timeout: 0,
+      message
+    }));
+  });
+
+  it('handles an http response message', async () => {
+    const message = 'some message';
+    const error = {
+      response: {
+        json: () => Promise.resolve({ errors: [{ message }]}),
+      }
+    };
+    const { result } = renderHook(
+      () => useErrorCallout(),
+      { wrapper },
+    );
+
+    await act(async () => { result.current.sendErrorCallout(error); });
 
     expect(sendCallout).toHaveBeenCalledWith(expect.objectContaining({
       type: 'error',
