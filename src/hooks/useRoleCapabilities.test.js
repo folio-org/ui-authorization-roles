@@ -1,9 +1,15 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { act, renderHook } from '@folio/jest-config-stripes/testing-library/react';
+import { act, cleanup, renderHook } from '@folio/jest-config-stripes/testing-library/react';
 
-import { useOkapiKy } from '@folio/stripes/core';
+import { useOkapiKy, useStripes } from '@folio/stripes/core';
 
 import useRoleCapabilities from './useRoleCapabilities';
+
+jest.mock('@folio/stripes/core', () => ({
+  ...jest.requireActual('@folio/stripes/core'),
+  useOkapiKy: jest.fn(),
+  useStripes: jest.fn(),
+}));
 
 const queryClient = new QueryClient();
 const wrapper = ({ children }) => (
@@ -110,7 +116,7 @@ const expectedGroupedRoleCapabilitiesByType = {
     },
   ],
 };
-describe('useRoleById', () => {
+describe('useRoleCapabilities', () => {
   const mockGet = jest.fn(() => ({
     json: () => Promise.resolve(data),
   }));
@@ -121,6 +127,18 @@ describe('useRoleById', () => {
     useOkapiKy.mockClear().mockReturnValue({
       get: mockGet,
     });
+    useStripes.mockClear().mockReturnValue({
+      discovery: {
+        applications: {
+          'app-platform-minimal-0.0.4': 'app-platform-minimal',
+        }
+      }
+    });
+  });
+
+  afterAll(() => {
+    jest.clearAllMocks();
+    cleanup();
   });
 
   it('fetches role capabilities', async () => {
@@ -131,5 +149,6 @@ describe('useRoleById', () => {
     expect(result.current.initialRoleCapabilitiesSelectedMap).toEqual(expectedInitialRoleCapabilitiesSelectedMap);
     expect(result.current.capabilitiesTotalCount).toEqual(2);
     expect(result.current.groupedRoleCapabilitiesByType).toEqual(expectedGroupedRoleCapabilitiesByType);
+    expect(result.current.capabilitiesAppIds).toEqual({ 'app-platform-minimal-0.0.4': true });
   });
 });

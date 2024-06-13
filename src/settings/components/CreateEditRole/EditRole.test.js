@@ -151,7 +151,22 @@ describe('EditRole component', () => {
       setSelectedCapabilitySetsMap: mockSetSelectedCapabilitySetsMap,
       selectedCapabilitySetsMap: {},
       roleCapabilitySetsListIds: ['d2e91897-c10d-46f6-92df-dad77c1e8862'],
-      isLoading: false
+      isLoading: false,
+      capabilitySetsList: [
+        {
+          'id': 'd2e91897-c10d-46f6-92df-dad77c1e8862',
+          'description': 'Sample: Create foo item',
+          'resource': 'Erm Agreements Collection',
+          'action': 'create',
+          'type': 'data',
+          'applicationId': 'app-platform-complete-0.0.5',
+          'capabilities': [
+            '6e59c367-888a-4561-a3f3-3ca677de437f',
+            'db1ceca9-2bb1-4212-8203-755cd5bc5bf9',
+            '98af4c92-1df2-4916-96b4-886bec72ad29'
+          ]
+        }
+      ]
     });
   });
 

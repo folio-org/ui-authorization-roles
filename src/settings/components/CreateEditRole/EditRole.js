@@ -4,15 +4,12 @@ import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 
 import CreateEditRoleForm from './CreateEditRoleForm';
-import useCapabilities from '../../../hooks/useCapabilities';
 import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
 import useEditRoleMutation from '../../../hooks/useEditRoleMutation';
 import useRoleById from '../../../hooks/useRoleById';
 import useApplicationCapabilities from '../../../hooks/useApplicationCapabilities';
 import useRoleCapabilitySets from '../../../hooks/useRoleCapabilitySets';
-import useCapabilitySets from '../../../hooks/useCapabilitySets';
 import useSendErrorCallout from '../../../hooks/useErrorCallout';
-import { getOnlyIntersectedWithApplicationsCapabilities } from '../../utils';
 import useApplicationCapabilitySets from '../../../hooks/useApplicationCapabilitySets';
 
 const EditRole = ({ path }) => {
@@ -24,14 +21,16 @@ const EditRole = ({ path }) => {
   const [roleName, setRoleName] = useState('');
   const [description, setDescription] = useState('');
 
-  const { capabilitiesList, isLoading: isCapabilityListLoading } = useCapabilities();
-  const { capabilitySetsList, isLoading: isCapabilitySetsLoading } = useCapabilitySets();
-  const { initialRoleCapabilitiesSelectedMap, isSuccess: isInitialRoleCapabilitiesLoaded } = useRoleCapabilities(roleId);
+  const { initialRoleCapabilitiesSelectedMap,
+    isSuccess: isInitialRoleCapabilitiesLoaded,
+    capabilitiesAppIds } = useRoleCapabilities(roleId);
+
   const [checkedAppIdsMap, setCheckedAppIdsMap] = useState({});
   const [disabledCapabilities, setDisabledCapabilities] = useState({});
 
   const { initialRoleCapabilitySetsSelectedMap,
-    capabilitySetsCapabilities, isSuccess: isRoleCapabilitySetsLoaded } = useRoleCapabilitySets(roleId);
+    capabilitySetsCapabilities, isSuccess: isRoleCapabilitySetsLoaded,
+    capabilitySetAppIds } = useRoleCapabilitySets(roleId);
 
   const { capabilities,
     selectedCapabilitiesMap,
@@ -43,6 +42,7 @@ const EditRole = ({ path }) => {
     selectedCapabilitySetsMap,
     setSelectedCapabilitySetsMap,
     roleCapabilitySetsListIds,
+    capabilitySetsList,
     isLoading: isAppCapabilitySetsLoading } = useApplicationCapabilitySets(checkedAppIdsMap);
 
   const onSubmitSelectApplications = (appIds, onClose) => {
@@ -104,21 +104,15 @@ const EditRole = ({ path }) => {
     onClose();
   };
 
-  const isInitialDataReady = !isCapabilityListLoading && isRoleCapabilitySetsLoaded
-  && isInitialRoleCapabilitiesLoaded && !isCapabilitySetsLoading;
+  const isInitialDataReady = isRoleCapabilitySetsLoaded && isInitialRoleCapabilitiesLoaded;
 
   useEffect(() => {
     if (isInitialDataReady) {
-      // Kind of reverse engeeniring happenning here.
-      // We request all tenant installed application capabilities,capabilitySets,
-      // assigned to role capability ids,capability set ids.
-      // We iterate over capabilitiesList and capabilitySetsList for each capability id,
-      // capability-set id, to define the list of selected applications.
-      // Once we know the selected applications, we update checkedAppIdsMap,
-      // that triggers useChunkedApplicationCapabilities, useChunkedApplicationCapabilitySets
-      // in useApplicationCapabilities, useApplicationCapabilitySets again to fetch the actual data for tables.
-      const capabilitiesAppIds = getOnlyIntersectedWithApplicationsCapabilities(capabilitiesList, Object.keys(initialRoleCapabilitiesSelectedMap), 'applicationId');
-      const capabilitySetAppIds = getOnlyIntersectedWithApplicationsCapabilities(capabilitySetsList, Object.keys(initialRoleCapabilitySetsSelectedMap), 'applicationId');
+      // Define the selected applications and capability sets based on role ID
+      // and installed applications. We update checkedAppIdsMap,
+      // which triggers useChunkedApplicationCapabilities and useChunkedApplicationCapabilitySets
+      // to fetch the actual data for the tables.
+
       setCheckedAppIdsMap({ ...capabilitiesAppIds, ...capabilitySetAppIds });
       setSelectedCapabilitiesMap({ ...initialRoleCapabilitiesSelectedMap });
       setSelectedCapabilitySetsMap({ ...initialRoleCapabilitySetsSelectedMap });
@@ -146,8 +140,8 @@ const EditRole = ({ path }) => {
     onChangeCapabilityCheckbox={onChangeCapabilityCheckbox}
     onChangeCapabilitySetCheckbox={onChangeCapabilitySetCheckbox}
     onSaveSelectedApplications={onSubmitSelectApplications}
-    isCapabilitiesLoading={isAppCapabilitiesLoading || isCapabilityListLoading}
-    isCapabilitySetsLoading={isAppCapabilitySetsLoading || isCapabilitySetsLoading}
+    isCapabilitiesLoading={isAppCapabilitiesLoading || !isInitialRoleCapabilitiesLoaded}
+    isCapabilitySetsLoading={isAppCapabilitySetsLoading || !isRoleCapabilitySetsLoaded}
   />;
 };
 
