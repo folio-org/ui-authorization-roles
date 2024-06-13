@@ -19,6 +19,7 @@ const useErrorCallout = () => {
       // shaped like { errors: [{ message, type, code }] }
       if (typeof message === 'string') {
         callout.sendCallout({ type: 'error', message, timeout: 0 });
+        return;
       } else if (typeof message === 'object') {
         const promise = message?.response?.json();
         if (promise) {
@@ -27,11 +28,12 @@ const useErrorCallout = () => {
               callout.sendCallout({ type: 'error', message: i.message, timeout: 0 });
             });
           });
+          return;
         }
-      } else {
-        // we dunno how to handle this message so we're just gonna log it
-        console.error(message); // eslint-disable-line no-console
       }
+
+      // we dunno how to handle this message so we're just gonna log it
+      console.error(message); // eslint-disable-line no-console
     }
   };
 };

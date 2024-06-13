@@ -49,4 +49,18 @@ describe('useErrorCallout', () => {
       message
     }));
   });
+
+  it('logs an unknown message', async () => {
+    const spy = jest.spyOn(window.console, 'error');
+
+    const message = { funky: 'chicken' };
+    const { result } = renderHook(
+      () => useErrorCallout(),
+      { wrapper },
+    );
+
+    await act(async () => { result.current.sendErrorCallout(message); });
+
+    expect(spy).toHaveBeenCalledWith(message);
+  });
 });
