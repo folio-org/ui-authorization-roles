@@ -29,7 +29,9 @@ const ItemActionCheckbox = ({
     aria-describedby="asterisk-policy-desc"
     aria-label={getCheckboxAriaLabel(action, item.resource)}
     onChange={event => {
-      onChangeCapabilityCheckbox?.(event, item.actions[action]);
+      if (onChangeCapabilityCheckbox) {
+        onChangeCapabilityCheckbox(event, item.actions[action]);
+      }
     }}
     readOnly={readOnly || isCapabilityDisabled?.(item.actions[action])}
     checked={isCapabilitySelected(item.actions[action])}

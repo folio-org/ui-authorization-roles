@@ -1,6 +1,7 @@
 import React from 'react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { render } from '@folio/jest-config-stripes/testing-library/react';
+import { useChunkedCQLFetch } from '@folio/stripes/core';
 
 import SettingsPage from './SettingsPage';
 
@@ -34,6 +35,13 @@ jest.mock('react-router-dom', () => {
 });
 
 describe('SettingsPage', () => {
+  beforeEach(() => {
+    useChunkedCQLFetch.mockReturnValue({
+      items: [],
+      isLoading: false,
+    });
+  });
+
   afterAll(() => {
     jest.clearAllMocks();
   });
