@@ -2,6 +2,8 @@
 
 ## 1.6.0 IN PROGRESS
 
+* Show modifying users' names instead of IDs. Refs UIROLES-71.
+
 ## [1.5.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.5.0) (2024-05-27)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.4.0...v1.5.0)
 
