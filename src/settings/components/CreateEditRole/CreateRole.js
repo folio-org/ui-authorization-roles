@@ -63,8 +63,8 @@ const CreateRole = ({ path }) => {
     onClose();
   };
 
-  const onSubmitSelectApplications = (appIds, onClose) => {
-    onClose?.();
+  const onSubmitSelectApplications = (appIds, callback) => {
+    callback?.();
     setSelectedCapabilitiesMap({});
     setSelectedCapabilitySetsMap({});
     setDisabledCapabilities({});
