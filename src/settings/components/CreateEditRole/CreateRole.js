@@ -63,9 +63,9 @@ const CreateRole = ({ path }) => {
     onClose();
   };
 
-  const onSubmitSelectApplications = (appIds, onCloseHandler) => {
-    if (onCloseHandler) {
-      onCloseHandler();
+  const onSubmitSelectApplications = (appIds, callback) => {
+    if (callback) {
+      callback();
     }
     setSelectedCapabilitiesMap({});
     setSelectedCapabilitySetsMap({});

@@ -1,11 +1,14 @@
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
+import { pick, mapValues, keyBy } from 'lodash';
 
-import { useNamespace, useOkapiKy } from '@folio/stripes/core';
+import { useNamespace, useOkapiKy, useStripes } from '@folio/stripes/core';
 import { getCapabilitiesGroupedByTypeAndResource } from '../settings/utils';
 import { CAPABILITES_LIMIT } from './constants';
 
 const useRoleCapabilitySets = (roleId) => {
+  const stripes = useStripes();
+  const installedApplications = Object.keys(stripes.discovery.applications);
   const ky = useOkapiKy();
   const [namespace] = useNamespace({ key: 'role-capability-sets' });
 
@@ -30,11 +33,21 @@ const useRoleCapabilitySets = (roleId) => {
     return obj;
   }, {});
 
+  const capabilitySetsAppIds = useMemo(() => {
+    const capabilitySetsById = mapValues(keyBy(data?.capabilitySets, 'applicationId'), () => true) || {};
+    const filteredByInstalledApplications = pick(capabilitySetsById, installedApplications);
+
+    return filteredByInstalledApplications;
+    // stripes.discovery is configured during application initialization
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
   return { initialRoleCapabilitySetsSelectedMap,
     isSuccess,
     capabilitySetsTotalCount: data?.totalRecords || 0,
     groupedRoleCapabilitySetsByType,
-    capabilitySetsCapabilities };
+    capabilitySetsCapabilities,
+    capabilitySetsAppIds };
 };
 
 export default useRoleCapabilitySets;
