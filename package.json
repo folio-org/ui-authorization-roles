@@ -23,7 +23,7 @@
     ],
     "displayName": "ui-authorization-roles.meta.title",
     "route": "/authorization-roles",
-    "home": "/autorization-roles",
+    "home": "/authorization-roles",
     "hasSettings": true,
     "queryResource": "query",
     "okapiInterfaces": {
