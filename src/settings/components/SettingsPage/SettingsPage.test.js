@@ -56,8 +56,8 @@ describe('SettingsPage', () => {
           name: 'Test Role',
           description: 'Test role description',
           metadata: {
-            modifiedDate: '2023-03-14T13:11:59.601+00:00',
-            modifiedBy: 'diku, admin',
+            updatedDate: '2023-03-14T13:11:59.601+00:00',
+            updatedByUserId: '12345',
           },
         },
       ],
