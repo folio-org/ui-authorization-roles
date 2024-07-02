@@ -27,7 +27,6 @@
     "columns.execute": "Execute",
     "crud.createRole": "Create role",
     "crud.editRole": "Edit role",
-    "crud.saveAndClose": "Save and close",
     "crud.cancel": "Annuler",
     "crud.edit": "Modifier",
     "crud.delete": "Supprimer",
@@ -41,7 +40,7 @@
     "crud.selectApplication": "Select application",
     "details.capabilitySets": "Capability sets",
     "role-details.accordion-users.columns.fullName": "Name",
-    "role-details.accordion-users.columns.patronGroup": "Patron group",
+    "role-details.accordion-users.columns.patronGroup": "Groupe usagers",
     "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles",
     "crud.deleteRole": "Delete role",
     "crud.deleteRoleConfirmation": "{rolename} will be deleted"
