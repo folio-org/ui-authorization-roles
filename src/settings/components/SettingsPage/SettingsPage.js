@@ -16,8 +16,7 @@ import {
 } from '@folio/stripes/components';
 import { getFullName } from '@folio/stripes/util';
 
-import { useAuthorizationRoles } from '../../../hooks';
-import useUsers from '../../../hooks/useUsers';
+import { useAuthorizationRoles, useUsers } from '../../../hooks';
 import { RoleDetails } from '../RoleDetails';
 import { SearchForm } from '../SearchForm';
 

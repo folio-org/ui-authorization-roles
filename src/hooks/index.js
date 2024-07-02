@@ -13,6 +13,7 @@ export * from './useEditRoleMutation';
 export * from './useErrorCallout';
 export * from './useRoleById';
 export * from './useUpdateUserRolesMutation';
+export * from './useUsers';
 export * from './useUsergroups';
 export * from './useUserRolesByUserIds';
 export * from './useUsersByRoleId';
