@@ -14,11 +14,13 @@ import {
   TextArea,
   TextField
 } from '@folio/stripes/components';
+import {
+  CapabilitiesAccordion,
+  CapabilitiesSetsAccordion,
+} from '@folio/stripes-authorization-components';
 
 import PropTypes from 'prop-types';
 import css from '../../style.css';
-import CapabilitiesAccordion from './CapabilitiesAccordion';
-import CapabilitySetAccordion from './CapabilitySetAccordion';
 
 function CreateEditRoleForm({
   title,
@@ -92,7 +94,7 @@ function CreateEditRoleForm({
                 />
               </Accordion>
 
-              <CapabilitySetAccordion
+              <CapabilitiesSetsAccordion
                 isCapabilitySetSelected={isCapabilitySetSelected}
                 onChangeCapabilitySetCheckbox={onChangeCapabilitySetCheckbox}
                 capabilitySets={capabilitySets}

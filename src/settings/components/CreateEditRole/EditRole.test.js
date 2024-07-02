@@ -2,29 +2,42 @@ import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { act, render } from '@folio/jest-config-stripes/testing-library/react';
 import '@folio/jest-config-stripes/testing-library/jest-dom';
 
-import EditRole from './EditRole';
-import useCapabilities from '../../../hooks/useCapabilities';
-import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
-import useEditRoleMutation from '../../../hooks/useEditRoleMutation';
-import useRoleCapabilitySets from '../../../hooks/useRoleCapabilitySets';
-import useCapabilitySets from '../../../hooks/useCapabilitySets';
-import useRoleById from '../../../hooks/useRoleById';
+import {
+  useRoleCapabilities,
+  useRoleCapabilitySets,
+} from '@folio/stripes-authorization-components';
+
 import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
-import useApplicationCapabilities from '../../../hooks/useApplicationCapabilities';
-import useApplicationCapabilitySets from '../../../hooks/useApplicationCapabilitySets';
+import {
+  useApplicationCapabilities,
+  useApplicationCapabilitySets,
+  useCapabilities,
+  useCapabilitySets,
+  useEditRoleMutation,
+  useRoleById,
+} from '../../../hooks';
+
+import EditRole from './EditRole';
+
 
 const mockPutRequest = jest.fn().mockReturnValue({ ok:true });
 const mockPostRequest = jest.fn().mockReturnValue({ ok:true });
 const mockSetSelectedCapabilitiesMap = jest.fn();
 const mockSetSelectedCapabilitySetsMap = jest.fn();
 
-jest.mock('../../../hooks/useCapabilities');
-jest.mock('../../../hooks/useRoleCapabilities');
-jest.mock('../../../hooks/useRoleById');
-jest.mock('../../../hooks/useRoleCapabilitySets');
-jest.mock('../../../hooks/useCapabilitySets');
-jest.mock('../../../hooks/useApplicationCapabilities');
-jest.mock('../../../hooks/useApplicationCapabilitySets');
+jest.mock('@folio/stripes-authorization-components', () => ({
+  ...jest.requireActual('@folio/stripes-authorization-components'),
+  useRoleCapabilities: jest.fn(),
+  useRoleCapabilitySets: jest.fn(),
+}));
+jest.mock('../../../hooks', () => ({
+  ...jest.requireActual('../../../hooks'),
+  useCapabilities: jest.fn(),
+  useRoleById: jest.fn(),
+  useCapabilitySets: jest.fn(),
+  useApplicationCapabilities: jest.fn(),
+  useApplicationCapabilitySets: jest.fn(),
+}));
 
 jest.mock('../../../hooks/useEditRoleMutation', () => ({
   __esModule: true,

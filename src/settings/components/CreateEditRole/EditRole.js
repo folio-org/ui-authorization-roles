@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 
+import {
+  useRoleCapabilities,
+  useRoleCapabilitySets,
+} from '@folio/stripes-authorization-components';
+
+import {
+  useApplicationCapabilities,
+  useApplicationCapabilitySets,
+  useEditRoleMutation,
+  useErrorCallout,
+  useRoleById,
+} from '../../../hooks';
 import CreateEditRoleForm from './CreateEditRoleForm';
-import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
-import useEditRoleMutation from '../../../hooks/useEditRoleMutation';
-import useRoleById from '../../../hooks/useRoleById';
-import useApplicationCapabilities from '../../../hooks/useApplicationCapabilities';
-import useRoleCapabilitySets from '../../../hooks/useRoleCapabilitySets';
-import useSendErrorCallout from '../../../hooks/useErrorCallout';
-import useApplicationCapabilitySets from '../../../hooks/useApplicationCapabilitySets';
 
 const EditRole = ({ path }) => {
   const history = useHistory();
@@ -53,7 +58,7 @@ const EditRole = ({ path }) => {
     setCheckedAppIdsMap(appIds);
   };
 
-  const { sendErrorCallout } = useSendErrorCallout();
+  const { sendErrorCallout } = useErrorCallout();
 
   const shouldUpdateCapabilities = !isEqual(initialRoleCapabilitiesSelectedMap, selectedCapabilitiesMap);
   const shouldUpdateCapabilitySets = !isEqual(initialRoleCapabilitySetsSelectedMap, selectedCapabilitySetsMap);

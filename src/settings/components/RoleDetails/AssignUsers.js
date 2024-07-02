@@ -1,17 +1,23 @@
+import { keyBy } from 'lodash';
+import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 import { useQueryClient } from 'react-query';
-import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { keyBy } from 'lodash';
 
-import { useStripes, Pluggable, useOkapiKy } from '@folio/stripes/core';
+import {
+  useStripes,
+  Pluggable,
+  useOkapiKy,
+} from '@folio/stripes/core';
 
+import {
+  USERS_BY_ROLE_ID_QUERY_KEY,
+  useAssignRolesToUserMutation,
+  useDeleteUserRolesMutation,
+  useErrorCallout,
+  useUpdateUserRolesMutation,
+} from '../../../hooks';
 import { apiVerbs, createUserRolesRequests } from './utils';
-import { USERS_BY_ROLE_ID_QUERY_KEY } from '../../../hooks/useUsersByRoleId';
-import useUpdateUserRolesMutation from '../../../hooks/useUpdateUserRolesMutation';
-import useAssignRolesToUserMutation from '../../../hooks/useAssignRolesToUserMutation';
-import useDeleteUserRolesMutation from '../../../hooks/useDeleteUserRolesMutation';
-import useErrorCallout from '../../../hooks/useErrorCallout';
 
 const AssignUsers = ({ selectedUsers, roleId, refetch }) => {
   const stripes = useStripes();

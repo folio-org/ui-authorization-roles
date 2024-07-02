@@ -1,6 +1,7 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { useHistory } from 'react-router';
 
 import {
   AccordionSet,
@@ -19,14 +20,16 @@ import {
 import { ViewMetaData } from '@folio/stripes/smart-components';
 import { useStripes } from '@folio/stripes/core';
 
-import { useHistory } from 'react-router';
-import css from '../../style.css';
-import useRoleById from '../../../hooks/useRoleById';
+import {
+  useDeleteRoleMutation,
+  useErrorCallout,
+  useRoleById,
+} from '../../../hooks';
 import AccordionUsers from './AccordionUsers';
 import AccordionCapabilities from './AccordionCapabilities';
 import AccordionCapabilitySets from './AccordionCapabilitySets';
-import useDeleteRoleMutation from '../../../hooks/useDeleteRoleMutation';
-import useErrorCallout from '../../../hooks/useErrorCallout';
+
+import css from '../../style.css';
 
 const RoleDetails = ({ roleId, path }) => {
   const { connect } = useStripes();

@@ -1,14 +1,14 @@
 import { cleanup, render } from '@folio/jest-config-stripes/testing-library/react';
 import '@folio/jest-config-stripes/testing-library/jest-dom';
-
-import AccordionCapabilities from './AccordionCapabilities';
-import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
+import { useRoleCapabilities } from '@folio/stripes-authorization-components';
 
 import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
+import AccordionCapabilities from './AccordionCapabilities';
 
-jest.mock('../../../hooks/useRoleCapabilities');
-jest.mock('../Capabilities/CapabilitiesSection', () => ({
+jest.mock('@folio/stripes-authorization-components', () => ({
+  ...jest.requireActual('@folio/stripes-authorization-components'),
   CapabilitiesSection: () => <div>CapabilitiesSection</div>,
+  useRoleCapabilities: jest.fn(),
 }));
 
 const capCount = 2147483647;

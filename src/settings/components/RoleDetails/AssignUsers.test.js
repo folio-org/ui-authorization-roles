@@ -2,21 +2,25 @@ import { cleanup, render } from '@folio/jest-config-stripes/testing-library/reac
 import '@folio/jest-config-stripes/testing-library/jest-dom';
 
 import AssignUsers from './AssignUsers';
-import useUserRolesByUserIds from '../../../hooks/useUserRolesByUserIds';
-import useAssignRolesToUserMutation from '../../../hooks/useAssignRolesToUserMutation';
-import useUpdateUserRolesMutation from '../../../hooks/useUpdateUserRolesMutation';
-import useDeleteUserRolesMutation from '../../../hooks/useDeleteUserRolesMutation';
+import {
+  useAssignRolesToUserMutation,
+  useDeleteUserRolesMutation,
+  useUpdateUserRolesMutation,
+  useUserRolesByUserIds,
+} from '../../../hooks';
 
 jest.mock('react-query');
 jest.mock('@folio/stripes/core', () => ({
   ...jest.requireActual('@folio/stripes/core'),
   useStripes: () => ({ hasPerm: jest.fn().mockReturnValue(true) }),
 }));
-
-jest.mock('../../../hooks/useUserRolesByUserIds');
-jest.mock('../../../hooks/useAssignRolesToUserMutation');
-jest.mock('../../../hooks/useUpdateUserRolesMutation');
-jest.mock('../../../hooks/useDeleteUserRolesMutation');
+jest.mock('../../../hooks', () => ({
+  ...jest.requireActual('../../../hooks'),
+  useAssignRolesToUserMutation: jest.fn(),
+  useDeleteUserRolesMutation: jest.fn(),
+  useUpdateUserRolesMutation: jest.fn(),
+  useUserRolesByUserIds: jest.fn(),
+}));
 
 const userRoles = {
   'userRoles': [
