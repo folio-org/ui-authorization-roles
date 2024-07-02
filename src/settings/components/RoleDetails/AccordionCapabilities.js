@@ -2,15 +2,14 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import {
+  CapabilitiesSection,
+  useRoleCapabilities,
+} from '@folio/stripes-authorization-components';
+import {
   Accordion,
   Badge,
   Loading,
 } from '@folio/stripes/components';
-
-
-import { CapabilitiesSection } from '../Capabilities/CapabilitiesSection';
-import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
-
 
 const AccordionCapabilities = ({ roleId }) => {
   const {

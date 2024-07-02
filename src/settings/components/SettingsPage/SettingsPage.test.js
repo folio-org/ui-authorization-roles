@@ -1,16 +1,21 @@
-import React from 'react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { render } from '@folio/jest-config-stripes/testing-library/react';
+import { useRoleCapabilities } from '@folio/stripes-authorization-components';
 import { useChunkedCQLFetch } from '@folio/stripes/core';
 
 import SettingsPage from './SettingsPage';
 
-import useAuthorizationRoles from '../../../hooks/useAuthorizationRoles';
-import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
 import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
+import { useAuthorizationRoles } from '../../../hooks';
 
-jest.mock('../../../hooks/useCapabilities');
-jest.mock('../../../hooks/useRoleCapabilities');
+jest.mock('@folio/stripes-authorization-components', () => ({
+  ...jest.requireActual('@folio/stripes-authorization-components'),
+  useRoleCapabilities: jest.fn(),
+}));
+jest.mock('../../../hooks', () => ({
+  ...jest.requireActual('../../../hooks'),
+  useAuthorizationRoles: jest.fn(),
+}));
 
 useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
 

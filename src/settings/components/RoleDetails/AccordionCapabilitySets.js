@@ -2,16 +2,16 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import {
+  CapabilitiesSection,
+  useRoleCapabilitySets,
+} from '@folio/stripes-authorization-components';
+import {
   Accordion,
   Badge,
   Loading,
 } from '@folio/stripes/components';
 
-
-import { CapabilitiesSection } from '../Capabilities/CapabilitiesSection';
-import useRoleCapabilitySets from '../../../hooks/useRoleCapabilitySets';
-
-const RoleDetails = ({ roleId }) => {
+const AccordionCapabilitySets = ({ roleId }) => {
   const {
     groupedRoleCapabilitySetsByType,
     capabilitySetsTotalCount,
@@ -35,13 +35,17 @@ const RoleDetails = ({ roleId }) => {
         </Badge>
       }
     >
-      <CapabilitiesSection isCapabilitySelected={isCapabilitySetSelected} capabilities={groupedRoleCapabilitySetsByType} readOnly />
+      <CapabilitiesSection
+        readOnly
+        isCapabilitySelected={isCapabilitySetSelected}
+        capabilities={groupedRoleCapabilitySetsByType}
+      />
     </Accordion>
   );
 };
 
-RoleDetails.propTypes = {
+AccordionCapabilitySets.propTypes = {
   roleId: PropTypes.string.isRequired
 };
 
-export default RoleDetails;
+export default AccordionCapabilitySets;

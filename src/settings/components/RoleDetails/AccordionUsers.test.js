@@ -2,14 +2,19 @@ import { cleanup, render } from '@folio/jest-config-stripes/testing-library/reac
 import { QueryClient, QueryClientProvider } from 'react-query';
 import '@folio/jest-config-stripes/testing-library/jest-dom';
 
-import AccordionUsers from './AccordionUsers';
-import useUsersByRoleId from '../../../hooks/useUsersByRoleId';
-import useUsergroups from '../../../hooks/useUsergroups';
 import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
+import {
+  useUsergroups,
+  useUsersByRoleId,
+} from '../../../hooks';
+import AccordionUsers from './AccordionUsers';
 
-jest.mock('../../../hooks/useUsersByRoleId');
-jest.mock('../../../hooks/useUsergroups');
 jest.mock('./AssignUsers');
+jest.mock('../../../hooks', () => ({
+  ...jest.requireActual('../../../hooks'),
+  useUsergroups: jest.fn(),
+  useUsersByRoleId: jest.fn(),
+}));
 
 const queryClient = new QueryClient();
 

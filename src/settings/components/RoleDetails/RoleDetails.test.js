@@ -2,16 +2,21 @@ import { cleanup, render } from '@folio/jest-config-stripes/testing-library/reac
 import '@folio/jest-config-stripes/testing-library/jest-dom';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 
-import RoleDetails from './RoleDetails';
-import useRoleById from '../../../hooks/useRoleById';
 import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
-import useDeleteRoleMutation from '../../../hooks/useDeleteRoleMutation';
+import {
+  useDeleteRoleMutation,
+  useRoleById,
+} from '../../../hooks';
+import RoleDetails from './RoleDetails';
 
 const mockHistoryPushFn = jest.fn();
 const path = '/auz-rolez/';
 
-jest.mock('../../../hooks/useRoleById');
-jest.mock('../../../hooks/useDeleteRoleMutation');
+jest.mock('../../../hooks', () => ({
+  ...jest.requireActual('../../../hooks'),
+  useDeleteRoleMutation: jest.fn(),
+  useRoleById: jest.fn(),
+}));
 
 jest.mock('react-router', () => {
   return { ...jest.requireActual('react-router'),

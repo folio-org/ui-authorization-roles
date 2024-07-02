@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { FormattedMessage, FormattedDate } from 'react-intl';
 
@@ -16,10 +16,9 @@ import {
 } from '@folio/stripes/components';
 import { getFullName } from '@folio/stripes/util';
 
-import useAuthorizationRoles from '../../../hooks/useAuthorizationRoles';
-import useUsers from '../../../hooks/useUsers';
-import { SearchForm } from '../SearchForm';
+import { useAuthorizationRoles, useUsers } from '../../../hooks';
 import { RoleDetails } from '../RoleDetails';
+import { SearchForm } from '../SearchForm';
 
 const SettingsPage = ({ path }) => {
   const { id: roleId } = useParams();

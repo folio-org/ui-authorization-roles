@@ -1,6 +1,6 @@
+import keyBy from 'lodash/keyBy';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { keyBy } from 'lodash';
 
 import {
   Accordion,
@@ -13,8 +13,10 @@ import {
 
 import { getFullName } from '@folio/stripes/util';
 
-import useUsersByRoleId from '../../../hooks/useUsersByRoleId';
-import useUsergroups from '../../../hooks/useUsergroups';
+import {
+  useUsergroups,
+  useUsersByRoleId,
+} from '../../../hooks';
 import AssignUsers from './AssignUsers';
 
 const AccordionUsers = ({ roleId }) => {

@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useHistory } from 'react-router';
 
+import {
+  useApplicationCapabilities,
+  useApplicationCapabilitySets,
+  useCreateRoleMutation,
+  useErrorCallout,
+} from '../../../hooks';
 import CreateEditRoleForm from './CreateEditRoleForm';
-import useCreateRoleMutation from '../../../hooks/useCreateRoleMutation';
-import useApplicationCapabilities from '../../../hooks/useApplicationCapabilities';
-import useErrorCallout from '../../../hooks/useErrorCallout';
-import useApplicationCapabilitySets from '../../../hooks/useApplicationCapabilitySets';
+
 
 const CreateRole = ({ path }) => {
   const history = useHistory();
