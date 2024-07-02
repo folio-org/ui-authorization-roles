@@ -6,7 +6,7 @@ import {
 } from '@folio/stripes-authorization-components';
 
 import { extractSelectedIdsFromObject } from '../../settings/utils';
-import useChunkedApplicationCapabilitySets from '../useChunkedApplicationCapabilitySets/useChunkedApplicationCapabilitySets';
+import { useChunkedApplicationCapabilitySets } from '../useChunkedApplicationCapabilitySets';
 
 /**
  * Customhook that fetches and manages capability sets for a given list of checked application IDs.
@@ -38,15 +38,16 @@ const useApplicationCapabilitySets = (checkedAppIdsMap) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCapabilitySetsLoading]);
 
-  const memoizedCapabilitySets = useMemo(() => getCapabilitiesGroupedByTypeAndResource(capabilitySets),
-    [capabilitySets]);
+  const memoizedCapabilitySets = useMemo(() => getCapabilitiesGroupedByTypeAndResource(capabilitySets), [capabilitySets]);
 
-  return { capabilitySets:memoizedCapabilitySets,
+  return {
+    capabilitySets:memoizedCapabilitySets,
     capabilitySetsList: capabilitySets,
     selectedCapabilitySetsMap,
     setSelectedCapabilitySetsMap,
     roleCapabilitySetsListIds,
-    isLoading: isCapabilitySetsLoading };
+    isLoading: isCapabilitySetsLoading,
+  };
 };
 
 export default useApplicationCapabilitySets;

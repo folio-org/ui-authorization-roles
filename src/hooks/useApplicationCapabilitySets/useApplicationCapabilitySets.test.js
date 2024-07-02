@@ -1,17 +1,25 @@
 import { renderHook, cleanup } from '@folio/jest-config-stripes/testing-library/react';
 import { waitFor } from '@folio/jest-config-stripes/testing-library/dom';
-import useApplicationCapabilitySets from './useApplicationCapabilitySets';
-import useChunkedApplicationCapabilitySets from '../useChunkedApplicationCapabilitySets/useChunkedApplicationCapabilitySets';
 
-jest.mock('./useChunkedApplicationCapabilitySets');
+import { useChunkedApplicationCapabilitySets } from '../useChunkedApplicationCapabilitySets';
+import useApplicationCapabilitySets from './useApplicationCapabilitySets';
+
+jest.mock('../useChunkedApplicationCapabilitySets', () => ({
+  useChunkedApplicationCapabilitySets: jest.fn(),
+}));
 
 jest.mock('@folio/stripes/core', () => ({
   ...jest.requireActual('@folio/stripes/core'),
-  useStripes: jest.fn(() => ({ config: { maxUnpagedResourceCount: 10 },
-    discovery: { applications: {
-      cap1: {},
-      cap12: {}
-    } } })),
+  useStripes: jest.fn(() => ({
+    config: { maxUnpagedResourceCount: 10 },
+    discovery: {
+      applications: {
+        cap1: {},
+        cap12: {}
+      }
+    },
+  })),
+  useChunkedCQLFetch: jest.fn().mockReturnValue({ isLoading: false, items: [] })
 }));
 
 describe('useApplicationCapabilitySets', () => {
@@ -34,8 +42,10 @@ describe('useApplicationCapabilitySets', () => {
     expect(result.current.isLoading).toBe(false);
   });
   it('should set checkedAppIdsMap and call onSubmitSelectApplications', async () => {
-    const items = [{ id: 1, applicationId: 'cap1', type: 'data', action:'edit', resource: 'r1' },
-      { id: 12, applicationId: 'cap12', type: 'data', action: 'create', resource: 'r1' }];
+    const items = [
+      { id: 1, applicationId: 'cap1', type: 'data', action:'edit', resource: 'r1' },
+      { id: 12, applicationId: 'cap12', type: 'data', action: 'create', resource: 'r1' },
+    ];
     useChunkedApplicationCapabilitySets.mockClear().mockReturnValue({ items, isLoading: false });
 
     const { result } = renderHook(useApplicationCapabilitySets, { initialProps: { cap1: true } });

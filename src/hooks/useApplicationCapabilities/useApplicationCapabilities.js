@@ -10,7 +10,7 @@ import {
 } from '@folio/stripes-authorization-components';
 
 import { extractSelectedIdsFromObject } from '../../settings/utils';
-import useChunkedApplicationCapabilities from '../useChunkedApplicationCapabilities/useChunkedApplicationCapabilities';
+import { useChunkedApplicationCapabilities } from '../useChunkedApplicationCapabilities';
 
 /**
  * Custom hook that retrieves application capabilities based on the selected application IDs.
@@ -44,11 +44,13 @@ const useApplicationCapabilities = (checkedAppIdsMap) => {
   const memoizedCapabilities = useMemo(() => getCapabilitiesGroupedByTypeAndResource(capabilities),
     [capabilities]);
 
-  return { capabilities: memoizedCapabilities,
+  return {
+    capabilities: memoizedCapabilities,
     selectedCapabilitiesMap,
     roleCapabilitiesListIds,
     setSelectedCapabilitiesMap,
-    isLoading: isCapabilitiesLoading };
+    isLoading: isCapabilitiesLoading
+  };
 };
 
 export default useApplicationCapabilities;

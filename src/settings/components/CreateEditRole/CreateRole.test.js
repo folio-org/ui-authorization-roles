@@ -4,18 +4,20 @@ import '@folio/jest-config-stripes/testing-library/jest-dom';
 
 import CreateRole from './CreateRole';
 
-import useCreateRoleMutation from '../../../hooks/useCreateRoleMutation';
 import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
-import useApplicationCapabilities from '../../../hooks/useApplicationCapabilities';
-import useApplicationCapabilitySets from '../../../hooks/useApplicationCapabilitySets';
+import {
+  useApplicationCapabilities,
+  useApplicationCapabilitySets,
+  useCreateRoleMutation
+} from '../../../hooks';
 
-jest.mock('../../../hooks/useCapabilities');
-jest.mock('../../../hooks/useApplicationCapabilitySets');
-jest.mock('../../../hooks/useCreateRoleMutation', () => ({
-  __esModule: true,
-  default: jest.fn()
+jest.mock('../../../hooks', () => ({
+  ...jest.requireActual('../../../hooks'),
+  useApplicationCapabilities: jest.fn(),
+  useApplicationCapabilitySets: jest.fn(),
+  useCreateRoleMutation: jest.fn(),
+  useCapabilities: jest.fn(),
 }));
-jest.mock('../../../hooks/useApplicationCapabilities');
 
 jest.mock('@folio/stripes/components', () => {
   const original = jest.requireActual('@folio/stripes/components');
@@ -24,6 +26,7 @@ jest.mock('@folio/stripes/components', () => {
     Layer: jest.fn(({ children }) => <div data-testid="mock-layer">{children}</div>)
   };
 });
+
 const mockSetSelectedCapabilitiesMap = jest.fn();
 
 const renderComponent = () => render(renderWithRouter(<CreateRole path="/settings/auz-rolez" />));

@@ -5,7 +5,7 @@ import {
   useChunkedCQLFetch,
 } from '@folio/stripes/core';
 
-import useUserRolesByUserIds, { chunkedUsersReducer } from './useUserRolesByUserIds';
+import useUserRolesByUserIds, { chunkedUserRolesReducer } from './useUserRolesByUserIds';
 
 const queryClient = new QueryClient();
 const wrapper = ({ children }) => (
@@ -59,7 +59,7 @@ describe('chunkedUsersReducer', () => {
       { data: { userRoles: [{ userId: 'u2', roleId: 'r1' }, { userId: 'u1', roleId: 'r3' }] } },
     ];
 
-    const result = chunkedUsersReducer(list);
+    const result = chunkedUserRolesReducer(list);
     expect(result.length).toBe(4);
   });
 });

@@ -17,7 +17,7 @@ import { useChunkedCQLFetch } from '@folio/stripes/core';
 }
 */
 
-export const chunkedUsersReducer = (list) => (
+export const chunkedUserRolesReducer = (list) => (
   list.reduce((acc, cur) => {
     return [...acc, ...(cur?.data?.userRoles ?? [])];
   }, []));
@@ -30,7 +30,7 @@ function useUserRolesByUserIds(userIds) {
     endpoint: 'roles/users',
     ids: userIds,
     idName: 'userId',
-    reduceFunction: chunkedUsersReducer
+    reduceFunction: chunkedUserRolesReducer
   });
 
   return { userRolesResponse, isLoading };

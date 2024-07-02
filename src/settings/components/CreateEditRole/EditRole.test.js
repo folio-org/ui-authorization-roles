@@ -33,15 +33,11 @@ jest.mock('@folio/stripes-authorization-components', () => ({
 jest.mock('../../../hooks', () => ({
   ...jest.requireActual('../../../hooks'),
   useCapabilities: jest.fn(),
+  useEditRoleMutation: jest.fn(),
   useRoleById: jest.fn(),
   useCapabilitySets: jest.fn(),
   useApplicationCapabilities: jest.fn(),
   useApplicationCapabilitySets: jest.fn(),
-}));
-
-jest.mock('../../../hooks/useEditRoleMutation', () => ({
-  __esModule: true,
-  default: jest.fn()
 }));
 
 const mockMutateFn = jest.fn();

@@ -7,9 +7,25 @@ import {
   useStripes,
 } from '@folio/stripes/core';
 
-import { chunkedUsersReducer } from '../useUserRolesByUserIds';
-
 export const USERS_BY_ROLE_ID_QUERY_KEY = 'user-role-data';
+
+/**
+ * chunkedUsersReducer
+ * reducer for useChunkedCQLFetch. Given input
+ *   [
+ *     { data: { users: [1, 2, 3] } },
+ *     { data: { users: [4, 5, 6] } },
+ *   ]
+ * return
+ *   [1, 2, 3, 4, 5, 6]
+ *
+ * @param {Array} list of chunks, each item shaped like { data: { users: [] }}
+ * @returns Array flattened array of user data
+ */
+export const chunkedUsersReducer = (list) => (
+  list.reduce((acc, cur) => {
+    return [...acc, ...(cur?.data?.users ?? [])];
+  }, []));
 
 /**
  * useUsersByRoleId

@@ -4,10 +4,12 @@ import {
 } from '@folio/jest-config-stripes/testing-library/react';
 import { waitFor } from '@folio/jest-config-stripes/testing-library/dom';
 
+import { useChunkedApplicationCapabilities } from '../useChunkedApplicationCapabilities';
 import useApplicationCapabilities from './useApplicationCapabilities';
-import useChunkedApplicationCapabilities from '../useChunkedApplicationCapabilities';
 
-jest.mock('./useChunkedApplicationCapabilities');
+jest.mock('../useChunkedApplicationCapabilities', () => ({
+  useChunkedApplicationCapabilities: jest.fn()
+}));
 
 jest.mock('@folio/stripes/core', () => ({
   ...jest.requireActual('@folio/stripes/core'),
