@@ -27,7 +27,6 @@
     "columns.execute": "Vykonat",
     "crud.createRole": "Vytvořit roli",
     "crud.editRole": "Upravit roli",
-    "crud.saveAndClose": "Uložit a zavřít",
     "crud.cancel": "Zrušit",
     "crud.edit": "Upravit",
     "crud.delete": "Smazat",

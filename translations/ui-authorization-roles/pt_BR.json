@@ -27,7 +27,6 @@
     "columns.execute": "Executar",
     "crud.createRole": "Criar função",
     "crud.editRole": "Editar função",
-    "crud.saveAndClose": "Salvar e fechar",
     "crud.cancel": "Cancelar",
     "crud.edit": "Editar",
     "crud.delete": "Excluir",
