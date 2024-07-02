@@ -14,8 +14,10 @@ import {
   TextLink,
   NoValue,
 } from '@folio/stripes/components';
+import { getFullName } from '@folio/stripes/util';
 
 import { useAuthorizationRoles } from '../../../hooks';
+import useUsers from '../../../hooks/useUsers';
 import { RoleDetails } from '../RoleDetails';
 import { SearchForm } from '../SearchForm';
 
@@ -25,6 +27,7 @@ const SettingsPage = ({ path }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const { roles, isLoading, onSubmitSearch } = useAuthorizationRoles();
+  const { users } = useUsers(roles.map(i => i.metadata.updatedByUserId));
 
   const lastMenu = (
     <PaneMenu>
@@ -45,9 +48,9 @@ const SettingsPage = ({ path }) => {
 
   const resultsFormatter = {
     name: (item) => <TextLink to={`${path}/${item.id}`}>{item.name}</TextLink>,
-    updatedBy: (item) => (item.metadata?.modifiedBy || <NoValue />),
-    updated: (item) => (item.metadata?.modifiedDate ? (
-      <FormattedDate value={item.metadata?.modifiedDate} />
+    updatedBy: (item) => (item.metadata.updatedByUserId ? getFullName(users[item.metadata.updatedByUserId]) : <NoValue />),
+    updated: (item) => (item.metadata?.updatedDate ? (
+      <FormattedDate value={item.metadata?.updatedDate} />
     ) : (
       <NoValue />
     )),

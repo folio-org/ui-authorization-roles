@@ -1,6 +1,7 @@
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { render } from '@folio/jest-config-stripes/testing-library/react';
 import { useRoleCapabilities } from '@folio/stripes-authorization-components';
+import { useChunkedCQLFetch } from '@folio/stripes/core';
 
 import SettingsPage from './SettingsPage';
 
@@ -39,6 +40,13 @@ jest.mock('react-router-dom', () => {
 });
 
 describe('SettingsPage', () => {
+  beforeEach(() => {
+    useChunkedCQLFetch.mockReturnValue({
+      items: [],
+      isLoading: false,
+    });
+  });
+
   afterAll(() => {
     jest.clearAllMocks();
   });
@@ -53,8 +61,8 @@ describe('SettingsPage', () => {
           name: 'Test Role',
           description: 'Test role description',
           metadata: {
-            modifiedDate: '2023-03-14T13:11:59.601+00:00',
-            modifiedBy: 'diku, admin',
+            updatedDate: '2023-03-14T13:11:59.601+00:00',
+            updatedByUserId: '12345',
           },
         },
       ],

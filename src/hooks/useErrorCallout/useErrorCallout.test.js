@@ -33,7 +33,7 @@ describe('useErrorCallout', () => {
     const message = 'some message';
     const error = {
       response: {
-        json: () => Promise.resolve({ errors: [{ message }]}),
+        json: () => Promise.resolve({ errors: [{ message }] }),
       }
     };
     const { result } = renderHook(
