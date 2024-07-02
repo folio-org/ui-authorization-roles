@@ -2,7 +2,6 @@ import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { render } from '@folio/jest-config-stripes/testing-library/react';
 import { useRoleCapabilities } from '@folio/stripes-authorization-components';
 import { useChunkedCQLFetch } from '@folio/stripes/core';
-import { useRoleCapabilities } from '@folio/stripes-authorization-components';
 
 import SettingsPage from './SettingsPage';
 
