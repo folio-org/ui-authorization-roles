@@ -45,8 +45,10 @@ const EditRole = ({ path }) => {
     capabilitySetsList,
     isLoading: isAppCapabilitySetsLoading } = useApplicationCapabilitySets(checkedAppIdsMap);
 
-  const onSubmitSelectApplications = (appIds, onClose) => {
-    onClose?.();
+  const onSubmitSelectApplications = (appIds, onCloseHandler) => {
+    if (onCloseHandler) {
+      onCloseHandler();
+    }
     setSelectedCapabilitiesMap({});
     setSelectedCapabilitySetsMap({});
     setDisabledCapabilities({});

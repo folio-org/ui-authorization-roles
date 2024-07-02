@@ -64,7 +64,9 @@ const CreateRole = ({ path }) => {
   };
 
   const onSubmitSelectApplications = (appIds, callback) => {
-    callback?.();
+    if (callback) {
+      callback();
+    }
     setSelectedCapabilitiesMap({});
     setSelectedCapabilitySetsMap({});
     setDisabledCapabilities({});
