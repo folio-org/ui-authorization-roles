@@ -1,9 +1,9 @@
 # Change history for ui-authorization-roles
 
-## 1.6.0 IN PROGRESS
+## 2.0.0 IN PROGRESS
 
 * Show modifying users' names instead of IDs. Refs UIROLES-71.
-* Use `Capabilities` components from `stripes-authorization-components` repository instead of local files. Refs UIROLES-86.
+* *BREAKING* Use `Capabilities` components from `stripes-authorization-components` repository instead of local files. Refs UIROLES-86.
 
 ## [1.5.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.5.0) (2024-05-27)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.4.0...v1.5.0)
