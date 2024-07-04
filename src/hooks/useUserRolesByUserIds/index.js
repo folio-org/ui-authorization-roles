@@ -1,4 +1,1 @@
-export {
-  default as useUserRolesByUserIds,
-  chunkedUsersReducer,
-} from './useUserRolesByUserIds';
+export { default as useUserRolesByUserIds } from './useUserRolesByUserIds';
