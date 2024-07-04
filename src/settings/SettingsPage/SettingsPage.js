@@ -16,9 +16,12 @@ import {
 } from '@folio/stripes/components';
 import { getFullName } from '@folio/stripes/util';
 
-import { useAuthorizationRoles, useUsers } from '../../../hooks';
-import { RoleDetails } from '../RoleDetails';
-import { SearchForm } from '../SearchForm';
+import {
+  RoleDetails,
+  SearchForm,
+  useAuthorizationRoles,
+  useUsers,
+} from '@folio/stripes-authorization-components';
 
 const SettingsPage = ({ path }) => {
   const { id: roleId } = useParams();
