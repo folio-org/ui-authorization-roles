@@ -1,16 +1,20 @@
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { render } from '@folio/jest-config-stripes/testing-library/react';
-import { useRoleCapabilities, useAuthorizationRoles } from '@folio/stripes-authorization-components';
+import {
+  useRoleCapabilities,
+  useAuthorizationRoles,
+} from '@folio/stripes-authorization-components';
 import { useChunkedCQLFetch } from '@folio/stripes/core';
 
+import { renderWithRouter } from 'helpers';
 import SettingsPage from './SettingsPage';
 
-import renderWithRouter from '../../../test/jest/helpers/renderWithRouter';
 
 jest.mock('@folio/stripes-authorization-components', () => ({
   ...jest.requireActual('@folio/stripes-authorization-components'),
   useRoleCapabilities: jest.fn(),
   useAuthorizationRoles: jest.fn(),
+  useUsers: jest.fn().mockReturnValue({ users: {} }),
   RoleDetails: () => <div data-testid="mock-role-details">Role details pane</div>,
 }));
 

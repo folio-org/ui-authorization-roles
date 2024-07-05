@@ -20,5 +20,14 @@
   "env": {
     "jest": true
   },
-  "settings": {}
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["__mock__", "./test/jest/__mock__"],
+          ["helpers", "./test/jest/helpers"]
+        ]
+      }
+    }
+  }
 }
