@@ -16,6 +16,12 @@ jest.mock('@folio/stripes-authorization-components', () => ({
   useAuthorizationRoles: jest.fn(),
   useUsers: jest.fn().mockReturnValue({ users: {} }),
   RoleDetails: () => <div data-testid="mock-role-details">Role details pane</div>,
+  SearchForm: ({ onSubmit }) => (
+    <div>
+      <input data-testid="search-field" />
+      <button type="submit" onClick={onSubmit}>ui-authorization-roles.search</button>
+    </div>
+  ),
 }));
 
 useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
