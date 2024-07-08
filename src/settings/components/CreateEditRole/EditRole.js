@@ -115,7 +115,7 @@ const EditRole = ({ roleId }) => {
     capabilities={capabilities}
     capabilitySets={capabilitySets}
     checkedAppIdsMap={checkedAppIdsMap}
-    isLoading={isLoading}
+    isLoading={isLoading || !isInitialDataReady || !isRoleDetailsLoaded}
     isCapabilitySelected={isCapabilitySelected}
     isCapabilityDisabled={isCapabilityDisabled}
     isCapabilitySetSelected={isCapabilitySetSelected}
