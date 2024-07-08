@@ -1,33 +1,34 @@
-import React from 'react';
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { render } from '@folio/jest-config-stripes/testing-library/react';
+import {
+  useRoleCapabilities,
+  useAuthorizationRoles,
+} from '@folio/stripes-authorization-components';
 import { useChunkedCQLFetch } from '@folio/stripes/core';
 
+import { renderWithRouter } from 'helpers';
 import SettingsPage from './SettingsPage';
 
-import useAuthorizationRoles from '../../../hooks/useAuthorizationRoles';
-import useRoleCapabilities from '../../../hooks/useRoleCapabilities';
-import renderWithRouter from '../../../../test/jest/helpers/renderWithRouter';
 
-jest.mock('../../../hooks/useCapabilities');
-jest.mock('../../../hooks/useRoleCapabilities');
+jest.mock('@folio/stripes-authorization-components', () => ({
+  ...jest.requireActual('@folio/stripes-authorization-components'),
+  useRoleCapabilities: jest.fn(),
+  useAuthorizationRoles: jest.fn(),
+  useUsers: jest.fn().mockReturnValue({ users: {} }),
+  RoleDetails: () => <div data-testid="mock-role-details">Role details pane</div>,
+  SearchForm: ({ onSubmit }) => (
+    <div>
+      <input data-testid="search-field" />
+      <button type="submit" onClick={onSubmit}>ui-authorization-roles.search</button>
+    </div>
+  ),
+}));
 
 useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
-
-jest.mock('../RoleDetails/RoleDetails', () => () => (
-  <div data-testid="mock-role-details">Role details pane</div>
-));
 
 jest.mock('@folio/stripes-smart-components', () => ({
   UserName: jest.fn(() => <div>user name</div>),
 }));
-
-jest.mock('../../../hooks/useAuthorizationRoles', () => {
-  return {
-    __esModule: true,
-    default: jest.fn(),
-  };
-});
 
 jest.mock('react-router-dom', () => {
   return { ...jest.requireActual('react-router-dom'),
