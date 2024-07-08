@@ -131,7 +131,7 @@ const EditRole = ({ path }) => {
     capabilities={capabilities}
     capabilitySets={capabilitySets}
     checkedAppIdsMap={checkedAppIdsMap}
-    isLoading={isLoading}
+    isLoading={isLoading || !isInitialDataReady || !isRoleDetailsLoaded}
     isCapabilitySelected={isCapabilitySelected}
     isCapabilityDisabled={isCapabilityDisabled}
     isCapabilitySetSelected={isCapabilitySetSelected}
