@@ -27,7 +27,6 @@
     "columns.execute": "执行",
     "crud.createRole": "创建角色",
     "crud.editRole": "编辑角色",
-    "crud.saveAndClose": "保存并关闭",
     "crud.cancel": "取消",
     "crud.edit": "编辑",
     "crud.delete": "删除",
