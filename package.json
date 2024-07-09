@@ -35,7 +35,8 @@
       "roles-user": "1.0"
     },
     "stripesDeps": [
-      "@folio/stripes-erm-components"
+      "@folio/stripes-erm-components",
+      "@folio/stripes-authorization-components"
     ],
     "icons": [
       {
