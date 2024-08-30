@@ -1,10 +1,10 @@
 {
-    "meta.title": "Authorization roles",
-    "search": "Search",
-    "new": "New",
-    "columns.name": "Name",
-    "columns.description": "Description",
-    "columns.updatedDate": "Updated",
-    "columns.updatedBy": "Updated by",
-    "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles"
+    "meta.title": "Autorisatierollen",
+    "search": "Zoeken",
+    "new": "Nieuw",
+    "columns.name": "Naam",
+    "columns.description": "Omschrijving",
+    "columns.updatedDate": "Bijgewerkt op",
+    "columns.updatedBy": "Bijgewerkt door",
+    "permission.settings.admin": "Instellingen (Autorisatiebeleid): Kan autorisatiebeleid beheren"
 }
