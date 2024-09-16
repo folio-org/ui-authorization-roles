@@ -1,21 +1,25 @@
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-import { render } from '@folio/jest-config-stripes/testing-library/react';
+import { act, render, screen } from '@folio/jest-config-stripes/testing-library/react';
 import {
   useRoleCapabilities,
   useAuthorizationRoles,
+  useAuthorizationRolesMutation,
+  useRoleById,
+  RoleDetails,
 } from '@folio/stripes-authorization-components';
 import { useChunkedCQLFetch } from '@folio/stripes/core';
 
 import { renderWithRouter } from 'helpers';
 import SettingsPage from './SettingsPage';
 
-
 jest.mock('@folio/stripes-authorization-components', () => ({
   ...jest.requireActual('@folio/stripes-authorization-components'),
   useRoleCapabilities: jest.fn(),
   useAuthorizationRoles: jest.fn(),
   useUsers: jest.fn().mockReturnValue({ users: {} }),
-  RoleDetails: () => <div data-testid="mock-role-details">Role details pane</div>,
+  useAuthorizationRolesMutation: jest.fn(),
+  useRoleById: jest.fn(),
+  RoleDetails: jest.fn(() => <div data-testid="mock-role-details">Role details pane</div>),
   SearchForm: ({ onSubmit }) => (
     <div>
       <input data-testid="search-field" />
@@ -35,19 +39,23 @@ jest.mock('react-router-dom', () => {
     useParams: jest.fn().mockReturnValue({ id: 'id' }) };
 });
 
+const duplicateAuthorizationRole = jest.fn().mockResolvedValue({ data: 'some data' });
+
 describe('SettingsPage', () => {
   beforeEach(() => {
     useChunkedCQLFetch.mockReturnValue({
       items: [],
       isLoading: false,
     });
+    useAuthorizationRolesMutation.mockClear().mockReturnValue({
+      duplicateAuthorizationRole,
+    });
+    useRoleById.mockClear().mockReturnValue({
+      roleDetails: { id: '1', name: 'test' }
+    });
   });
 
-  afterAll(() => {
-    jest.clearAllMocks();
-  });
-
-  const renderComponent = () => render(renderWithRouter(<SettingsPage path="/settings/auz-rolez" />));
+  const renderComponent = () => render(renderWithRouter(<SettingsPage path="/settings/authorization-roles" />));
 
   it('renders the SettingsPage component', () => {
     useAuthorizationRoles.mockImplementation(() => ({
@@ -130,5 +138,15 @@ describe('SettingsPage', () => {
     await userEvent.click(getByRole('button', { name: 'ui-authorization-roles.search' }));
 
     expect(mockFilterRoles).toHaveBeenCalledTimes(1);
+  });
+
+  it('should duplicate role on click `Duplicate` button', async () => {
+    renderComponent();
+
+    expect(screen.getByText('Role details pane')).toBeInTheDocument();
+
+    await act(() => RoleDetails.mock.calls[0][0].onDuplicate());
+
+    expect(duplicateAuthorizationRole).toHaveBeenCalledTimes(1);
   });
 });
