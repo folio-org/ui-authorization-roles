@@ -7,5 +7,8 @@
   "columns.updatedDate": "Updated",
   "columns.updatedBy": "Updated by",
 
+  "authorizationsRoles.duplicate.success": "The role <b>{name}</b> has been successfully <b>duplicated</b>",
+  "authorizationsRoles.duplicate.error": "There was an error while duplicating the role <b>{name}</b>",
+
   "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles"
 }

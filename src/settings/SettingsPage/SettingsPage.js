@@ -47,7 +47,7 @@ const SettingsPage = ({ path }) => {
 
   const onDuplicate = () => {
     const roleName = roleDetails?.name;
-    const messageIdPrefix = 'ui-consortia-settings.consortiumManager.members.authorizationsRoles.duplicate';
+    const messageIdPrefix = 'ui-authorization-roles.authorizationsRoles.duplicate';
 
     duplicateAuthorizationRole(roleId)
       .then(({ id }) => {
