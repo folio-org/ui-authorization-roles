@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useMemo, useState } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 
 import { FormattedMessage, FormattedDate } from 'react-intl';
 
@@ -20,16 +20,52 @@ import {
   RoleDetails,
   SearchForm,
   useAuthorizationRoles,
+  useAuthorizationRolesMutation,
+  useRoleById,
+  useShowCallout,
   useUsers,
 } from '@folio/stripes-authorization-components';
 
 const SettingsPage = ({ path }) => {
+  const history = useHistory();
   const { id: roleId } = useParams();
+  const showCallout = useShowCallout();
 
   const [searchTerm, setSearchTerm] = useState('');
 
   const { roles, isLoading, onSubmitSearch } = useAuthorizationRoles();
-  const { users } = useUsers(roles.map(i => i.metadata.updatedByUserId));
+
+  const updatedByUserIds = useMemo(() => roles.map(i => i?.metadata.updatedByUserId), [roles]);
+  const { users } = useUsers(updatedByUserIds);
+
+  const {
+    duplicateAuthorizationRole,
+    isLoading: isDuplicating,
+  } = useAuthorizationRolesMutation();
+
+  const { roleDetails } = useRoleById(roleId);
+
+  const onDuplicate = () => {
+    const roleName = roleDetails?.name;
+    const messageIdPrefix = 'ui-authorization-roles.authorizationsRoles.duplicate';
+
+    duplicateAuthorizationRole(roleId)
+      .then(({ id }) => {
+        history.push(`${path}/${id}`);
+
+        showCallout({
+          messageId: `${messageIdPrefix}.success`,
+          type: 'success',
+          values: { name: roleName },
+        });
+      }).catch(() => {
+        showCallout({
+          messageId: `${messageIdPrefix}.error`,
+          type: 'error',
+          values: { name: roleName },
+        });
+      });
+  };
 
   const lastMenu = (
     <PaneMenu>
@@ -96,7 +132,14 @@ const SettingsPage = ({ path }) => {
           visibleColumns={['name', 'description', 'updated', 'updatedBy']}
         />
       </Pane>
-      {roleId && <RoleDetails roleId={roleId} path={path} />}
+      {roleId && (
+        <RoleDetails
+          isLoading={isDuplicating}
+          onDuplicate={onDuplicate}
+          path={path}
+          roleId={roleId}
+        />
+      )}
     </Paneset>
   );
 };
