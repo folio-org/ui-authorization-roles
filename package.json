@@ -78,8 +78,9 @@
           "role-capability-sets.collection.put",
           "role-capability-sets.collection.post",
           "role-capability-sets.collection.delete",
-          "capability-sets.capabilities.collection.get",
           "capabilities.collection.get",
+          "capability-sets.capabilities.collection.get",
+          "capability-sets.collection.get",
           "users.collection.get"
         ],
         "visible": true
