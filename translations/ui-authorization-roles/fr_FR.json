@@ -6,5 +6,7 @@
     "columns.description": "Description",
     "columns.updatedDate": "Mis à jour",
     "columns.updatedBy": "Mis à jour par",
-    "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles"
+    "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles",
+    "authorizationsRoles.duplicate.success": "The role <b>{name}</b> has been successfully <b>duplicated</b>",
+    "authorizationsRoles.duplicate.error": "There was an error while duplicating the role <b>{name}</b>"
 }

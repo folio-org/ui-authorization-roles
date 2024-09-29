@@ -6,5 +6,7 @@
     "columns.description": "Omschrijving",
     "columns.updatedDate": "Bijgewerkt op",
     "columns.updatedBy": "Bijgewerkt door",
-    "permission.settings.admin": "Instellingen (Autorisatiebeleid): Kan autorisatiebeleid beheren"
+    "permission.settings.admin": "Instellingen (Autorisatiebeleid): Kan autorisatiebeleid beheren",
+    "authorizationsRoles.duplicate.success": "The role <b>{name}</b> has been successfully <b>duplicated</b>",
+    "authorizationsRoles.duplicate.error": "There was an error while duplicating the role <b>{name}</b>"
 }

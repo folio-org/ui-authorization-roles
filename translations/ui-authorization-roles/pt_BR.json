@@ -6,5 +6,7 @@
     "columns.description": "Descrição",
     "columns.updatedDate": "Atualizado",
     "columns.updatedBy": "Atualizado por",
-    "permission.settings.admin": "Configurações (funções de autorização): Pode gerenciar funções de autorização"
+    "permission.settings.admin": "Configurações (funções de autorização): Pode gerenciar funções de autorização",
+    "authorizationsRoles.duplicate.success": "A função <b>{name}</b> foi <b>duplicada</b> com sucesso",
+    "authorizationsRoles.duplicate.error": "Ocorreu um erro ao duplicar a função <b>{name}</b>"
 }
