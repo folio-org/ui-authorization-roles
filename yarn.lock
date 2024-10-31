@@ -1668,13 +1668,12 @@
     jest-location-mock "^1.0.9"
     jsdom "^22.1.0"
 
-"@folio/plugin-select-application@^0.1.0":
-  version "0.1.10000047"
-  resolved "https://repository.folio.org/repository/npm-folioci/@folio/plugin-select-application/-/plugin-select-application-0.1.10000047.tgz#49becf37419201b5308c4b7e937b839e680c4cb6"
-  integrity sha512-SlkZlOdX48ewREisv28V72iWOzANtP3t7dz+uoh6JLjjR34gQDQMSs5a19XOS2kpzYkNCmnrxpYdnT0gAuMwzQ==
+"@folio/plugin-select-application@^1.0.0":
+  version "1.1.10900000094"
+  resolved "https://repository.folio.org/repository/npm-folioci/@folio/plugin-select-application/-/plugin-select-application-1.1.10900000094.tgz#ad55c9bbbc9cc13fdf98f5c5c692746bb2b9583e"
+  integrity sha512-Z8aijE8R+i0f03tQMGNK7fAqX+UYEUW4re3SpFCy8AH1MuxumVbcRjrjgDaaogr9n+mwBqm1a76rsm2i01ASpA==
   dependencies:
     "@k-int/stripes-kint-components" "^5.1.1"
-    "@testing-library/user-event" "^14.5.2"
     classnames "^2.2.5"
     dom-helpers "^3.4.0"
     lodash "^4.17.11"
@@ -2914,7 +2913,7 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
-"@testing-library/user-event@^14.4.3", "@testing-library/user-event@^14.5.2":
+"@testing-library/user-event@^14.4.3":
   version "14.5.2"
   resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-14.5.2.tgz#db7257d727c891905947bd1c1a99da20e03c2ebd"
   integrity sha512-YAh82Wh4TIrxYLmfGcixwD18oIjyC1pFQC2Y01F2lzV2HTMiYrI0nze0FD0ocB//CKS/7jIUgae+adPqxK5yCQ==
@@ -10893,7 +10892,7 @@ postcss-calc@^9.0.1:
     postcss-selector-parser "^6.0.11"
     postcss-value-parser "^4.2.0"
 
-"postcss-color-function@github:folio-org/postcss-color-function":
+postcss-color-function@folio-org/postcss-color-function:
   version "4.1.0"
   resolved "https://codeload.github.com/folio-org/postcss-color-function/tar.gz/c128aad740ae740fb571c4b6493f467dd51efe85"
   dependencies:
