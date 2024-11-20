@@ -101,7 +101,8 @@
         "permissionName": "ui-authorization-roles.settings.create",
         "displayName": "Settings (Authorization roles): Can create authorization role",
         "description": "",
-        "subPermissions": ["ui-authorization-roles.settings.view",
+        "subPermissions": [
+          "ui-authorization-roles.settings.view",
           "roles.item.post",
           "roles.collection.post",
           "roles.users.item.post",
@@ -114,7 +115,8 @@
         "permissionName": "ui-authorization-roles.settings.edit",
         "displayName": "Settings (Authorization roles): Can edit authorization role",
         "description": "",
-        "subPermissions": ["ui-authorization-roles.settings.view",
+        "subPermissions": [
+          "ui-authorization-roles.settings.view",
           "roles.item.put",
           "roles.users.item.put",
           "role-capabilities.collection.put",
