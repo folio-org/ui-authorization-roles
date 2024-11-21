@@ -136,12 +136,14 @@ const SettingsPage = ({ path }) => {
         />
       </Pane>
       {roleId && (
+      <IfPermission perm="ui-authorization-roles.settings.view">
         <RoleDetails
           isLoading={isDuplicating}
           onDuplicate={onDuplicate}
           path={path}
           roleId={roleId}
         />
+      </IfPermission>
       )}
     </Paneset>
   );
