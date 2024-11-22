@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useMemo, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
+import { IfPermission } from '@folio/stripes/core';
 
 import { FormattedMessage, FormattedDate } from 'react-intl';
 
@@ -68,15 +69,17 @@ const SettingsPage = ({ path }) => {
   };
 
   const lastMenu = (
-    <PaneMenu>
-      <Button
-        to={`${path}/create`}
-        buttonStyle="primary"
-        marginBottom0
-      >
-        + <FormattedMessage id="ui-authorization-roles.new" />
-      </Button>
-    </PaneMenu>
+    <IfPermission perm="ui-authorization-roles.settings.create">
+      <PaneMenu>
+        <Button
+          to={`${path}/create`}
+          buttonStyle="primary"
+          marginBottom0
+        >
+          + <FormattedMessage id="ui-authorization-roles.new" />
+        </Button>
+      </PaneMenu>
+    </IfPermission>
   );
 
   const handleSearchSubmit = (event) => {
@@ -133,12 +136,14 @@ const SettingsPage = ({ path }) => {
         />
       </Pane>
       {roleId && (
+      <IfPermission perm="ui-authorization-roles.settings.view">
         <RoleDetails
           isLoading={isDuplicating}
           onDuplicate={onDuplicate}
           path={path}
           roleId={roleId}
         />
+      </IfPermission>
       )}
     </Paneset>
   );

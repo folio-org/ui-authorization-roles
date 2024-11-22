@@ -58,30 +58,69 @@
         "displayName": "Settings (Authorization roles): Can manage authorization roles",
         "description": "",
         "subPermissions": [
+          "ui-authorization-roles.settings.create",
+          "ui-authorization-roles.settings.view",
+          "ui-authorization-roles.settings.edit",
+          "ui-authorization-roles.settings.delete"
+        ],
+        "visible": true
+      },
+      {
+        "permissionName": "ui-authorization-roles.settings.view",
+        "displayName": "Settings (Authorization roles): Can view authorization role details",
+        "description": "",
+        "subPermissions": [
           "settings.authorization-roles.enabled",
           "roles.item.get",
-          "roles.item.put",
-          "roles.item.delete",
-          "roles.item.post",
           "roles.collection.get",
-          "roles.collection.post",
           "roles.users.item.get",
-          "roles.users.item.put",
-          "roles.users.item.delete",
-          "roles.users.item.post",
           "roles.users.collection.get",
           "role-capabilities.collection.get",
-          "role-capabilities.collection.put",
-          "role-capabilities.collection.post",
-          "role-capabilities.collection.delete",
           "role-capability-sets.collection.get",
-          "role-capability-sets.collection.put",
-          "role-capability-sets.collection.post",
-          "role-capability-sets.collection.delete",
           "capabilities.collection.get",
           "capability-sets.capabilities.collection.get",
           "capability-sets.collection.get",
           "users.collection.get"
+        ],
+        "visible": true
+      },
+      {
+        "permissionName": "ui-authorization-roles.settings.delete",
+        "displayName": "Settings (Authorization roles): Can delete authorization roles",
+        "description": "",
+        "subPermissions": [
+          "ui-authorization-roles.settings.view",
+          "roles.item.delete",
+          "roles.users.item.delete",
+          "role-capabilities.collection.delete",
+          "role-capability-sets.collection.delete"
+        ],
+        "visible": true
+      },
+      {
+        "permissionName": "ui-authorization-roles.settings.create",
+        "displayName": "Settings (Authorization roles): Can create authorization roles",
+        "description": "",
+        "subPermissions": [
+          "ui-authorization-roles.settings.view",
+          "roles.item.post",
+          "roles.collection.post",
+          "roles.users.item.post",
+          "role-capabilities.collection.post",
+          "role-capability-sets.collection.post"
+        ],
+        "visible": true
+      },
+      {
+        "permissionName": "ui-authorization-roles.settings.edit",
+        "displayName": "Settings (Authorization roles): Can edit authorization roles",
+        "description": "",
+        "subPermissions": [
+          "ui-authorization-roles.settings.view",
+          "roles.item.put",
+          "roles.users.item.put",
+          "role-capabilities.collection.put",
+          "role-capability-sets.collection.put"
         ],
         "visible": true
       }
