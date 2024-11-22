@@ -86,7 +86,7 @@
       },
       {
         "permissionName": "ui-authorization-roles.settings.delete",
-        "displayName": "Settings (Authorization roles): Can delete authorization role",
+        "displayName": "Settings (Authorization roles): Can delete authorization roles",
         "description": "",
         "subPermissions": [
           "ui-authorization-roles.settings.view",
@@ -99,7 +99,7 @@
       },
       {
         "permissionName": "ui-authorization-roles.settings.create",
-        "displayName": "Settings (Authorization roles): Can create authorization role",
+        "displayName": "Settings (Authorization roles): Can create authorization roles",
         "description": "",
         "subPermissions": [
           "ui-authorization-roles.settings.view",
@@ -113,7 +113,7 @@
       },
       {
         "permissionName": "ui-authorization-roles.settings.edit",
-        "displayName": "Settings (Authorization roles): Can edit authorization role",
+        "displayName": "Settings (Authorization roles): Can edit authorization roles",
         "description": "",
         "subPermissions": [
           "ui-authorization-roles.settings.view",
