@@ -80,7 +80,11 @@
           "capabilities.collection.get",
           "capability-sets.capabilities.collection.get",
           "capability-sets.collection.get",
-          "users.collection.get"
+          "users.collection.get",
+          "capabilities.item.get",
+          "roles.users.collection.get",
+          "capability-sets.item.get",
+          "role.capability-sets.collection.get"
         ],
         "visible": true
       },
