@@ -6,7 +6,7 @@
     "columns.description": "描述",
     "columns.updatedDate": "已更新",
     "columns.updatedBy": "最後更新：",
-    "permission.settings.admin": "設定（授權角色）：可以管理授權角色",
+    "permission.settings.admin": "設定 ( 授權角色 ) : 可以管理授權角色",
     "authorizationsRoles.duplicate.success": "The role <b>{name}</b> has been successfully <b>duplicated</b>",
     "authorizationsRoles.duplicate.error": "There was an error while duplicating the role <b>{name}</b>"
 }
