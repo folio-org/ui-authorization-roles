@@ -61,7 +61,8 @@
           "ui-authorization-roles.settings.create",
           "ui-authorization-roles.settings.view",
           "ui-authorization-roles.settings.edit",
-          "ui-authorization-roles.settings.delete"
+          "ui-authorization-roles.settings.delete",
+          "ui-authorization-roles.users.settings.manage"
         ],
         "visible": true
       },
@@ -73,7 +74,6 @@
           "settings.authorization-roles.enabled",
           "roles.item.get",
           "roles.collection.get",
-          "roles.users.item.get",
           "roles.users.collection.get",
           "role-capabilities.collection.get",
           "role-capability-sets.collection.get",
@@ -82,9 +82,13 @@
           "capability-sets.collection.get",
           "users.collection.get",
           "capabilities.item.get",
-          "roles.users.collection.get",
           "capability-sets.item.get",
-          "role.capability-sets.collection.get"
+          "role.capability-sets.collection.get",
+          "ui-authorization-roles.settings.view",
+          "roles.users.collection.get",
+          "roles.users.item.get",
+          "usergroups.collection.get",
+          "usergroups.item.get"
         ],
         "visible": true
       },
@@ -95,7 +99,6 @@
         "subPermissions": [
           "ui-authorization-roles.settings.view",
           "roles.item.delete",
-          "roles.users.item.delete",
           "role-capabilities.collection.delete",
           "role-capability-sets.collection.delete"
         ],
@@ -109,7 +112,6 @@
           "ui-authorization-roles.settings.view",
           "roles.item.post",
           "roles.collection.post",
-          "roles.users.item.post",
           "role-capabilities.collection.post",
           "role-capability-sets.collection.post"
         ],
@@ -122,9 +124,22 @@
         "subPermissions": [
           "ui-authorization-roles.settings.view",
           "roles.item.put",
-          "roles.users.item.put",
           "role-capabilities.collection.put",
           "role-capability-sets.collection.put"
+        ],
+        "visible": true
+      },
+      {
+        "permissionName": "ui-authorization-roles.users.settings.manage",
+        "displayName": "Settings (Authorization roles): Can manage user/role assignments",
+        "description": "",
+        "subPermissions": [
+          "ui-authorization-roles.users.settings.view",
+          "roles.users.item.post",
+          "roles.users.item.put",
+          "roles.users.item.delete",
+          "users-keycloak.auth-users.item.get",
+          "users-keycloak.auth-users.item.post"
         ],
         "visible": true
       }
