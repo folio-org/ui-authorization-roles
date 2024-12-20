@@ -83,12 +83,7 @@
           "users.collection.get",
           "capabilities.item.get",
           "capability-sets.item.get",
-          "role.capability-sets.collection.get",
-          "ui-authorization-roles.settings.view",
-          "roles.users.collection.get",
-          "roles.users.item.get",
-          "usergroups.collection.get",
-          "usergroups.item.get"
+          "role.capability-sets.collection.get"
         ],
         "visible": true
       },
@@ -126,6 +121,19 @@
           "roles.item.put",
           "role-capabilities.collection.put",
           "role-capability-sets.collection.put"
+        ],
+        "visible": true
+      },
+      {
+        "permissionName": "ui-authorization-roles.users.settings.view",
+        "displayName": "Settings (Authorization roles): Can view user/role assignments",
+        "description": "Also includes basic permissions to view roles",
+        "subPermissions": [
+          "ui-authorization-roles.settings.view",
+          "roles.users.collection.get",
+          "roles.users.item.get",
+          "usergroups.collection.get",
+          "usergroups.item.get"
         ],
         "visible": true
       },
