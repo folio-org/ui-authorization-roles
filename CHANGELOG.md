@@ -9,6 +9,7 @@
 * Add missed permission to see list of capabilities set on Edit role page. Refs UIROLES-115.
 * Create separate capability sets for CRUD actions with authorization roles in UI. Refs UIROLES-112.
 * [UIROLES-125](https://folio-org.atlassian.net/browse/UIROLES-125) Remove unused sub-permissions and add "view" and "manage" assigned users permission sets.
+* Add Deque Axe a11y tests. Refs UIROLES-131.
 
 ## [1.5.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.5.0) (2024-05-27)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.4.0...v1.5.0)

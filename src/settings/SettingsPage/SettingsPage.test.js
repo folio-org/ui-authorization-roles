@@ -1,4 +1,6 @@
 import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
+const { axe, toHaveNoViolations } = require('jest-axe')
+
 import { act, render, screen } from '@folio/jest-config-stripes/testing-library/react';
 import {
   useRoleCapabilities,
@@ -148,5 +150,14 @@ describe('SettingsPage', () => {
     await act(() => RoleDetails.mock.calls[0][0].onDuplicate());
 
     expect(duplicateAuthorizationRole).toHaveBeenCalledTimes(1);
+  });
+
+  it('has no a11y violations according to axe', async () => {
+    expect.extend(toHaveNoViolations)
+
+    const { container } = render(renderWithRouter(<SettingsPage path="/settings/authorization-roles" />));
+    const results = await axe(container)
+
+    expect(results).toHaveNoViolations();
   });
 });
