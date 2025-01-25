@@ -1,6 +1,6 @@
-import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
-const { axe, toHaveNoViolations } = require('jest-axe')
+import { axe, toHaveNoViolations } from 'jest-axe';
 
+import userEvent from '@folio/jest-config-stripes/testing-library/user-event';
 import { act, render, screen } from '@folio/jest-config-stripes/testing-library/react';
 import {
   useRoleCapabilities,
@@ -153,10 +153,10 @@ describe('SettingsPage', () => {
   });
 
   it('has no a11y violations according to axe', async () => {
-    expect.extend(toHaveNoViolations)
+    expect.extend(toHaveNoViolations);
 
     const { container } = render(renderWithRouter(<SettingsPage path="/settings/authorization-roles" />));
-    const results = await axe(container)
+    const results = await axe(container);
 
     expect(results).toHaveNoViolations();
   });
