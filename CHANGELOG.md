@@ -1,9 +1,12 @@
 # Change history for ui-authorization-roles
 
-## 1.7.0 IN PROGRESS
+## [1.7.1](https://github.com/folio-org/ui-authorization-roles/tree/v1.7.1) (2025-02-1)
+[Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.6.0...v1.7.1)
+
 * Create separate capability sets for CRUD actions with authorization roles in UI. Refs UIROLES-112.
 
-## 1.6.0 IN PROGRESS
+## [1.6.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.6.0) (2024-11-04)
+[Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.5.0...v1.6.0)
 
 * Show modifying users' names instead of IDs. Refs UIROLES-71.
 * Use `Capabilities` components from `stripes-authorization-components` repository instead of local files. Refs UIROLES-86.
