@@ -22,19 +22,10 @@ jest.mock('@folio/stripes-authorization-components', () => ({
   useAuthorizationRolesMutation: jest.fn(),
   useRoleById: jest.fn(),
   RoleDetails: jest.fn(() => <div data-testid="mock-role-details">Role details pane</div>),
-  SearchForm: ({ onSubmit }) => (
-    <div>
-      <input data-testid="search-field" />
-      <button type="submit" onClick={onSubmit}>ui-authorization-roles.search</button>
-    </div>
-  ),
 }));
 
 useRoleCapabilities.mockReturnValue({ initialRoleCapabilitiesSelectedMap: {}, isSuccess: true });
 
-jest.mock('@folio/stripes-smart-components', () => ({
-  UserName: jest.fn(() => <div>user name</div>),
-}));
 
 jest.mock('react-router-dom', () => {
   return { ...jest.requireActual('react-router-dom'),
@@ -136,8 +127,11 @@ describe('SettingsPage', () => {
 
     const inputElement = queryByTestId('search-field');
 
-    await userEvent.type(inputElement, 'Test');
-    await userEvent.click(getByRole('button', { name: 'ui-authorization-roles.search' }));
+    await act(async () => {
+      await userEvent.type(inputElement, 'Test');
+      await userEvent.click(getByRole('button', { name: 'stripes-authorization-components.search' }));
+    });
+
 
     expect(mockFilterRoles).toHaveBeenCalledTimes(1);
   });
