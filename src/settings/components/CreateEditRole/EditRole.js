@@ -90,6 +90,8 @@ const EditRole = ({ roleId }) => {
     goBack();
   };
 
+  const isInitialDataReady = isRoleCapabilitySetsLoaded && isInitialRoleCapabilitiesLoaded;
+
   useEffect(() => {
     if (capabilitiesList && isCapabilitiesLoaded && isRoleCapabilitySetsLoaded && isInitialRoleCapabilitiesLoaded && isCapabilitySetsLoaded) {
       const appIds = capabilitiesList?.filter(cap => Object.keys(initialRoleCapabilitiesSelectedMap).includes(cap.id))
@@ -115,7 +117,7 @@ const EditRole = ({ roleId }) => {
     capabilities={capabilities}
     capabilitySets={capabilitySets}
     checkedAppIdsMap={checkedAppIdsMap}
-    isLoading={isLoading}
+    isLoading={isLoading || !isInitialDataReady || !isRoleDetailsLoaded}
     isCapabilitySelected={isCapabilitySelected}
     isCapabilityDisabled={isCapabilityDisabled}
     isCapabilitySetSelected={isCapabilitySetSelected}
