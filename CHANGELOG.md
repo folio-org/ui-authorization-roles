@@ -3,6 +3,11 @@
 ## [1.5.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.5.0) (2024-05-27)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.4.0...v1.5.0)
 
+* Disable save until all data for capabilities/capabilitySets has loaded. Refs UIROLES-100.
+
+## [1.5.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.5.0) (2024-05-27)
+[Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.4.0...v1.5.0)
+
 * Fix Patron group not always shown for assigned users in detailed view of authorization role. Refs UIROLES-52.
 * Use `<NoValue>` to represent unselected checkboxes in read-only mode. Refs UIROLES-41.
 * Show user name instead of UUID in Role Detail page. Refs UIROLES-71.
