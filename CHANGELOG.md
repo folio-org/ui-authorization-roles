@@ -1,5 +1,10 @@
 # Change history for ui-authorization-roles
 
+## [1.5.1](https://github.com/folio-org/ui-authorization-roles/tree/v1.5.1) (2025-02-13)
+[Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.5.0...v1.5.1)
+
+* Disable Role's "save" button until capabilities/capability-sets are fully loaded. Refs UIROLES-100.
+
 ## [1.5.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.5.0) (2024-05-27)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.4.0...v1.5.0)
 
