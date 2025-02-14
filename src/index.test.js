@@ -4,10 +4,7 @@ import {
 } from 'react-query';
 import { MemoryRouter } from 'react-router-dom';
 
-import {
-  render,
-  screen,
-} from '@folio/jest-config-stripes/testing-library/react';
+import { render } from '@folio/jest-config-stripes/testing-library/react';
 
 import AuthorizationRoles from './index';
 
@@ -24,44 +21,34 @@ jest.mock('./settings', () => () => <div>Settings</div>);
 
 const queryClient = new QueryClient();
 
-const wrapper = ({ children }) => (
-  <QueryClientProvider client={queryClient}>
-    <MemoryRouter
-      initialEntries={[{
-        pathname: '/settings',
-      }]}
-    >
-      {children}
-    </MemoryRouter>
-  </QueryClientProvider>
-);
-
-const renderComponent = () => render(
-  <AuthorizationRoles match={{ path: '/settings' }} />,
-  { wrapper },
-);
+const renderComponent = (initialPath) => {
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter initialEntries={[initialPath]}>
+        <AuthorizationRoles match={{ path: '/settings' }} />
+      </MemoryRouter>
+    </QueryClientProvider>
+  );
+};
 
 describe('AuthorizationRoles', () => {
-  it('should display authorization roles page', async () => {
-    window.location.pathname = '/settings/authorization-roles';
-    renderComponent();
+  it('should display settings page', async () => {
+    const { findByText } = renderComponent('/settings/authorization-roles');
 
-    const listConfigurationTitle = await screen.findByText('Settings');
+    const listConfigurationTitle = await findByText('Settings');
 
     expect(listConfigurationTitle).toBeInTheDocument();
   });
 
-  it('should display email preview content', async () => {
-    window.location.pathname = '/settings/create';
-    renderComponent();
+  it('should display RoleCreate page', async () => {
+    const { getByText } = renderComponent('/settings/create');
 
-    expect(screen.getByText('RoleCreate')).toBeInTheDocument();
+    expect(getByText('RoleCreate')).toBeInTheDocument();
   });
 
-  it('should display email preview content', async () => {
-    window.location.pathname = '/settings/authorization-roles/edit';
-    renderComponent();
+  it('should display RoleEdit page', async () => {
+    const { getByText } = renderComponent('/settings/123/edit');
 
-    expect(screen.getByText('RoleEdit')).toBeInTheDocument();
+    expect(getByText('RoleEdit')).toBeInTheDocument();
   });
 });

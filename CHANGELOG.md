@@ -1,5 +1,11 @@
 # Change history for ui-authorization-roles
 
+## 1.7.0 IN PROGRESS
+* Create separate capability sets for CRUD actions with authorization roles in UI. Refs UIROLES-112.
+* [UIROLES-125](https://folio-org.atlassian.net/browse/UIROLES-125) Remove unused sub-permissions and add "view" and "manage" assigned users permission sets.
+* Fix the scope of the internal Router scope, that fixes issue "cannot open user detailed view from role detailed view". Refs UIROLES-81. 
+* Add Deque Axe a11y tests. Refs UIROLES-131.
+
 ## 1.6.0 IN PROGRESS
 
 * Show modifying users' names instead of IDs. Refs UIROLES-71.
@@ -7,9 +13,7 @@
 * Include `stripes-authorization-components` in `stripesDeps` to pull its assets into the bundle. Refs UIROLES-102.
 * Duplicate authorization roles. Refs UIROLES-64.
 * Add missed permission to see list of capabilities set on Edit role page. Refs UIROLES-115.
-* Create separate capability sets for CRUD actions with authorization roles in UI. Refs UIROLES-112.
-* [UIROLES-125](https://folio-org.atlassian.net/browse/UIROLES-125) Remove unused sub-permissions and add "view" and "manage" assigned users permission sets.
-* Add Deque Axe a11y tests. Refs UIROLES-131.
+
 
 ## [1.5.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.5.0) (2024-05-27)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.4.0...v1.5.0)
