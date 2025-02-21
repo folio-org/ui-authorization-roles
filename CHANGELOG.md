@@ -1,5 +1,10 @@
 # Change history for ui-authorization-roles
 
+## [1.5.2](https://github.com/folio-org/ui-authorization-roles/tree/v1.5.2) (2025-02-21)
+[Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.5.1...v1.5.2)
+
+* Fix issue where already assigned users to a role don't have checkboxes during unassign process. Refs UIROLES-138.
+
 ## [1.5.1](https://github.com/folio-org/ui-authorization-roles/tree/v1.5.1) (2025-02-13)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.5.0...v1.5.1)
 
