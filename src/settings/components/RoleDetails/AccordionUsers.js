@@ -57,7 +57,7 @@ const AccordionUsers = ({ roleId }) => {
         </Badge>
       }
       displayWhenOpen={<AssignUsers
-        selectedUsers={usersData}
+        selectedUsers={users}
         roleId={roleId}
         refetch={refetch}
       />}
