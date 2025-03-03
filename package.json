@@ -1,6 +1,6 @@
 {
   "name": "@folio/authorization-roles",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "FOLIO app for Authorization Roles",
   "main": "src/index.js",
   "repository": "folio/ui-authorization-roles",
@@ -155,7 +155,7 @@
   "dependencies": {
     "@folio/plugin-select-application": "^1.0.0",
     "@folio/stripes-acq-components": "^5.0.0",
-    "@folio/stripes-authorization-components": "^1.0.2",
+    "@folio/stripes-authorization-components": "^1.0.3",
     "@k-int/stripes-kint-components": "^5.0.0",
     "classnames": "^2.2.6",
     "compose-function": "^3.0.3",

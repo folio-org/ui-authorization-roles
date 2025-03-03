@@ -1,4 +1,8 @@
 # Change history for ui-authorization-roles
+## [1.7.3](https://github.com/folio-org/ui-authorization-roles/tree/v1.7.3) (2025-03-03)
+[Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.7.2...v1.7.3)
+
+* Bump `@folio/stripes-authorization-components` to `v1.0.3`.
 
 ## [1.7.2](https://github.com/folio-org/ui-authorization-roles/tree/v1.7.2) (2025-02-11)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.7.1...v1.7.2)
