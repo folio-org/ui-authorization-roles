@@ -1700,10 +1700,10 @@
     react-virtualized-auto-sizer "^1.0.6"
     redux-form "^8.3.0"
 
-"@folio/stripes-authorization-components@^1.0.2":
-  version "1.1.109900000000110"
-  resolved "https://repository.folio.org/repository/npm-folioci/@folio/stripes-authorization-components/-/stripes-authorization-components-1.1.109900000000110.tgz#c7cf45ce60905585c32c2ab58c88c4cfa0735e08"
-  integrity sha512-FJ6U0VHar6KiX9RDcn5kQjbqBSzrzVAdvW9nSd3O4/v6YAnXe4MCU/UONEODVuCjz2WSpB4b6JMOWTIRWdJlew==
+"@folio/stripes-authorization-components@^1.0.3":
+  version "1.0.3"
+  resolved "https://repository.folio.org/repository/npm-folio/@folio/stripes-authorization-components/-/stripes-authorization-components-1.0.3.tgz#710635dd382bc09961f2cc075ba4c0d4327031d2"
+  integrity sha512-xIjrTDYQEpxOXpCrNz5EQ2PzDI1Ns0ox9BVu+DCWUSZjEetkjFbB/C6vRIdxG89AeQQaaVjr48C47t1KkwV3RA==
   dependencies:
     "@folio/plugin-select-application" "^1.0.0"
     classnames "^2.2.6"
