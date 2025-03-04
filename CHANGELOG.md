@@ -5,6 +5,7 @@
 * [UIROLES-125](https://folio-org.atlassian.net/browse/UIROLES-125) Remove unused sub-permissions and add "view" and "manage" assigned users permission sets.
 * Fix the scope of the internal Router scope, that fixes issue "cannot open user detailed view from role detailed view". Refs UIROLES-81. 
 * Add Deque Axe a11y tests. Refs UIROLES-131.
+* *BREAKING* migrate react-intl to v7. Refs UIROLES-134.
 
 ## 1.6.0 IN PROGRESS
 
