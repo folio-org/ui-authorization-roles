@@ -1,5 +1,9 @@
 # Change history for ui-authorization-roles
 
+## 2.0.0 IN PROGRESS
+
+* *BREAKING* migrate react-intl to v7. Refs UIROLES-134.
+
 ## 1.7.0 IN PROGRESS
 * Create separate capability sets for CRUD actions with authorization roles in UI. Refs UIROLES-112.
 * [UIROLES-125](https://folio-org.atlassian.net/browse/UIROLES-125) Remove unused sub-permissions and add "view" and "manage" assigned users permission sets.
