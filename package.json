@@ -155,10 +155,10 @@
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",
-    "@folio/eslint-config-stripes": "^7.0.0",
-    "@folio/jest-config-stripes": "^2.0.0",
-    "@folio/stripes": "^9.0.0",
-    "@folio/stripes-cli": "^3.0.0",
+    "@folio/eslint-config-stripes": "^8.0.0",
+    "@folio/jest-config-stripes": "^3.0.0",
+    "@folio/stripes": "^10.0.0",
+    "@folio/stripes-cli": "^4.0.0",
     "@folio/stripes-erm-testing": "^2.0.0",
     "graphql": "^16.0.0",
     "history": "^4.10.1",
@@ -177,9 +177,10 @@
     "rxjs": "^6.6.3"
   },
   "dependencies": {
-    "@folio/plugin-select-application": "^1.0.0",
+    "@folio/plugin-select-application": "^2.0.0",
     "@folio/stripes-acq-components": "^5.0.0",
-    "@folio/stripes-authorization-components": "^1.0.0",
+    "@folio/stripes-authorization-components": "^2.0.0",
+    "@folio/stripes-testing": "^5.0.0",
     "@k-int/stripes-kint-components": "^5.0.0",
     "classnames": "^2.2.6",
     "compose-function": "^3.0.3",
@@ -193,7 +194,7 @@
     "react-final-form-arrays": "^3.1.1"
   },
   "peerDependencies": {
-    "@folio/stripes": "^9.0.0",
+    "@folio/stripes": "^10.0.0",
     "@folio/stripes-erm-components": "^9.0.0",
     "moment": "^2.22.2",
     "react": "^18.2.0",
