@@ -3,6 +3,7 @@
 ## 2.0.0 IN PROGRESS
 
 * *BREAKING* migrate react-intl to v7. Refs UIROLES-134.
+* *BREAKING* migrate stripes dependencies to their Sunflower versions. Refs UIROLES-139.
 
 ## 1.7.0 IN PROGRESS
 * Create separate capability sets for CRUD actions with authorization roles in UI. Refs UIROLES-112.
