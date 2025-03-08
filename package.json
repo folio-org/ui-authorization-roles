@@ -159,7 +159,7 @@
     "@folio/jest-config-stripes": "^3.0.0",
     "@folio/stripes": "^10.0.0",
     "@folio/stripes-cli": "^4.0.0",
-    "@folio/stripes-erm-testing": "^2.0.0",
+    "@folio/stripes-erm-testing": "^3.0.0",
     "graphql": "^16.0.0",
     "history": "^4.10.1",
     "jest-axe": "^9.0.0",
@@ -178,8 +178,9 @@
   },
   "dependencies": {
     "@folio/plugin-select-application": "^2.0.0",
-    "@folio/stripes-acq-components": "^5.0.0",
+    "@folio/stripes-acq-components": "^7.0.0",
     "@folio/stripes-authorization-components": "^2.0.0",
+    "@folio/stripes-erm-components": "^10.0.0",
     "@folio/stripes-testing": "^5.0.0",
     "@k-int/stripes-kint-components": "^5.0.0",
     "classnames": "^2.2.6",
@@ -195,7 +196,7 @@
   },
   "peerDependencies": {
     "@folio/stripes": "^10.0.0",
-    "@folio/stripes-erm-components": "^9.0.0",
+    "@folio/stripes-erm-components": "^10.0.0",
     "moment": "^2.22.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
