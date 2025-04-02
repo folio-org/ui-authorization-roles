@@ -3,7 +3,7 @@
     "search": "Search",
     "new": "New",
     "columns.name": "Name",
-    "columns.description": "Description",
+    "columns.description": "Опис",
     "columns.updatedDate": "Updated",
     "columns.updatedBy": "Оновлено за",
     "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles",
