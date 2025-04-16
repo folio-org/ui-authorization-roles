@@ -1,17 +1,21 @@
 # Change history for ui-authorization-roles
 
-## 2.0.0 IN PROGRESS
+## 2.0.1
+
+* Update `stripes-authorization-components` to v2.0.1
+
+## 2.0.0
 
 * *BREAKING* migrate react-intl to v7. Refs UIROLES-134.
 * *BREAKING* migrate stripes dependencies to their Sunflower versions. Refs UIROLES-139.
 
-## 1.7.0 IN PROGRESS
+## 1.7.0
 * Create separate capability sets for CRUD actions with authorization roles in UI. Refs UIROLES-112.
 * [UIROLES-125](https://folio-org.atlassian.net/browse/UIROLES-125) Remove unused sub-permissions and add "view" and "manage" assigned users permission sets.
 * Fix the scope of the internal Router scope, that fixes issue "cannot open user detailed view from role detailed view". Refs UIROLES-81. 
 * Add Deque Axe a11y tests. Refs UIROLES-131.
 
-## 1.6.0 IN PROGRESS
+## 1.6.0
 
 * Show modifying users' names instead of IDs. Refs UIROLES-71.
 * Use `Capabilities` components from `stripes-authorization-components` repository instead of local files. Refs UIROLES-86.
