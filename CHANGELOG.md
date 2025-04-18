@@ -1,11 +1,17 @@
 # Change history for ui-authorization-roles
 
-## 2.0.0 (2025-03-13)
-[Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v2.0.0...v1.7.3)
+## 2.0.2
+
+* Update `stripes-authorization-components` to v2.0.2
+
+## 2.0.1
+
+* Update `stripes-authorization-components` to v2.0.1
+
+## 2.0.0
 
 * *BREAKING* migrate react-intl to v7. Refs UIROLES-134.
 * *BREAKING* migrate stripes dependencies to their Sunflower versions. Refs UIROLES-139.
-* Bump @folio/stripes-authorization-components to v2.0.0.
 
 ## 1.7.0 
 * Create separate capability sets for CRUD actions with authorization roles in UI. Refs UIROLES-112.
