@@ -139,7 +139,6 @@ const SettingsPage = ({ path }) => {
       <IfPermission perm="ui-authorization-roles.settings.view">
         <RoleDetails
           isLoading={isDuplicating}
-          isUserLinkEnabled
           onDuplicate={onDuplicate}
           path={path}
           roleId={roleId}
