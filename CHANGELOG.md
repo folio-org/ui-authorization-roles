@@ -1,32 +1,41 @@
 # Change history for ui-authorization-roles
 
-## 2.0.2
+## IN PROGRESS
+
+* Update `stripes-authorization-components` to v2.0.3
+
+## [2.0.2](https://github.com/folio-org/ui-authorization-roles/tree/v2.0.2) (2025-04-18)
+[Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v2.0.1...v2.0.2)
 
 * Update `stripes-authorization-components` to v2.0.2
 
-## 2.0.1
+## [2.0.1](https://github.com/folio-org/ui-authorization-roles/tree/v2.0.1) (2025-04-11)
+[Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v2.0.0...v2.0.1)
 
 * Update `stripes-authorization-components` to v2.0.1
 
-## 2.0.0
+## [2.0.0](https://github.com/folio-org/ui-authorization-roles/tree/v2.0.0) (2025-03-13)
+[Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.7.0...v2.0.0)
 
 * *BREAKING* migrate react-intl to v7. Refs UIROLES-134.
 * *BREAKING* migrate stripes dependencies to their Sunflower versions. Refs UIROLES-139.
-
-## 1.7.0 
-* Create separate capability sets for CRUD actions with authorization roles in UI. Refs UIROLES-112.
 * [UIROLES-125](https://folio-org.atlassian.net/browse/UIROLES-125) Remove unused sub-permissions and add "view" and "manage" assigned users permission sets.
 * Fix the scope of the internal Router scope, that fixes issue "cannot open user detailed view from role detailed view". Refs UIROLES-81. 
 * Add Deque Axe a11y tests. Refs UIROLES-131.
 
-## 1.6.0 IN PROGRESS
+## [1.7.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.7.0) (2024-11-29)
+[Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.6.0...v1.7.0)
+
+* Create separate capability sets for CRUD actions with authorization roles in UI. Refs UIROLES-112.
+
+## [1.6.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.6.0) (2024-11-29)
+[Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.5.0...v1.6.0)
 
 * Show modifying users' names instead of IDs. Refs UIROLES-71.
 * Use `Capabilities` components from `stripes-authorization-components` repository instead of local files. Refs UIROLES-86.
 * Include `stripes-authorization-components` in `stripesDeps` to pull its assets into the bundle. Refs UIROLES-102.
 * Duplicate authorization roles. Refs UIROLES-64.
 * Add missed permission to see list of capabilities set on Edit role page. Refs UIROLES-115.
-
 
 ## [1.5.0](https://github.com/folio-org/ui-authorization-roles/tree/v1.5.0) (2024-05-27)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v1.4.0...v1.5.0)
