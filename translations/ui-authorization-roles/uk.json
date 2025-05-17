@@ -1,7 +1,7 @@
 {
     "meta.title": "Authorization roles",
-    "search": "Search",
-    "new": "New",
+    "search": "Пошук",
+    "new": "Нове",
     "columns.name": "Name",
     "columns.description": "Опис",
     "columns.updatedDate": "Updated",
