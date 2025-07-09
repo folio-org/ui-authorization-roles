@@ -1,10 +1,10 @@
 {
-    "meta.title": "Authorization roles",
+    "meta.title": "Ролі авторизації",
     "search": "Пошук",
     "new": "Нове",
-    "columns.name": "Name",
+    "columns.name": "Ім'я/Назва",
     "columns.description": "Опис",
-    "columns.updatedDate": "Updated",
+    "columns.updatedDate": "Оновлено",
     "columns.updatedBy": "Оновлено за",
     "permission.settings.admin": "Налаштування (Ролі авторизації): Управління ролями авторизації",
     "authorizationsRoles.duplicate.success": "Роль <b>{name}</b> успішно <b>здубльовано</b>",
