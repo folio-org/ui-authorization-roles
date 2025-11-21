@@ -5,7 +5,7 @@
     "columns.name": "Jméno",
     "columns.description": "Popis",
     "columns.updatedDate": "Aktualizováno",
-    "columns.updatedBy": "Aktualizoval",
+    "columns.updatedBy": "Aktualizoval/a",
     "permission.settings.admin": "Nastavení (Autorizační role): Může spravovat autorizační role",
     "authorizationsRoles.duplicate.success": "Role <b>{name}</b> byla úspěšně <b>duplikována</b>",
     "authorizationsRoles.duplicate.error": "Při duplikování role došlo k chybě <b>{name}</b>"
