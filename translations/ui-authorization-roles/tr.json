@@ -1,12 +1,12 @@
 {
-    "meta.title": "Authorization roles",
-    "search": "Search",
-    "new": "New",
-    "columns.name": "Name",
-    "columns.description": "Description",
-    "columns.updatedDate": "Updated",
-    "columns.updatedBy": "Updated by",
-    "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles",
-    "authorizationsRoles.duplicate.success": "The role <b>{name}</b> has been successfully <b>duplicated</b>",
-    "authorizationsRoles.duplicate.error": "There was an error while duplicating the role <b>{name}</b>"
+    "meta.title": "Yetkilendirme rolleri",
+    "search": "Ara",
+    "new": "Yeni",
+    "columns.name": "İsim",
+    "columns.description": "Açıklama",
+    "columns.updatedDate": "Güncelle",
+    "columns.updatedBy": "Tarafından güncelle",
+    "permission.settings.admin": "Ayarlar (Yetkilendirme rolleri): Yetkilendirme rollerini Yönetebilir",
+    "authorizationsRoles.duplicate.success": "Rol <b>{name}</b> başarıyla <b>kopya</b>",
+    "authorizationsRoles.duplicate.error": "Rol kopyalanırken bir hata oluştu <b>{name}</b>"
 }
