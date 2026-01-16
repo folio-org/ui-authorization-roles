@@ -3,6 +3,7 @@
 ## 2.0.1
 
 * Update `stripes-authorization-components` to v2.0.1
+* Include universal read-only permissions. Refs UIROLES-178.
 
 ## 2.0.0
 

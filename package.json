@@ -50,7 +50,8 @@
         "permissionName": "settings.authorization-roles.enabled",
         "displayName": "Settings (Authorization roles): display list of settings pages",
         "subPermissions": [
-          "settings.enabled"
+          "settings.enabled",
+          "stripes-core.settings.read"
         ]
       },
       {
