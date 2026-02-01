@@ -5,7 +5,7 @@
     "columns.name": "Ім'я/Назва",
     "columns.description": "Опис",
     "columns.updatedDate": "Оновлено",
-    "columns.updatedBy": "Оновлено за",
+    "columns.updatedBy": "Оновлено (ким)",
     "permission.settings.admin": "Налаштування (Ролі авторизації): Управління ролями авторизації",
     "authorizationsRoles.duplicate.success": "Роль <b>{name}</b> успішно <b>здубльовано</b>",
     "authorizationsRoles.duplicate.error": "Під час дублювання ролі <b>{name}</b> сталася помилка"
