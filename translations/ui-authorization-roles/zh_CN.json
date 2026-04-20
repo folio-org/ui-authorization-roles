@@ -6,7 +6,7 @@
     "columns.description": "描述",
     "columns.updatedDate": "已更新",
     "columns.updatedBy": "更新者",
-    "permission.settings.admin": "设置（授权角色）：可管理授权角色",
+    "permission.settings.admin": "设置 : 授权角色 )  : 可管理授权角色",
     "authorizationsRoles.duplicate.success": "角色<b> {name} </b>已成功<b>复制</b>",
     "authorizationsRoles.duplicate.error": "复制角色<b> {name} </b>时出错"
 }

@@ -1,0 +1,12 @@
+{
+    "meta.title": "Yetkilendirme rolleri",
+    "search": "Ara",
+    "new": "Yeni",
+    "columns.name": "İsim",
+    "columns.description": "Açıklama",
+    "columns.updatedDate": "Güncelle",
+    "columns.updatedBy": "Tarafından güncelle",
+    "permission.settings.admin": "Ayarlar (Yetkilendirme rolleri): Yetkilendirme rollerini Yönetebilir",
+    "authorizationsRoles.duplicate.success": "Rol <b>{name}</b> başarıyla <b>kopya</b>",
+    "authorizationsRoles.duplicate.error": "Rol kopyalanırken bir hata oluştu <b>{name}</b>"
+}

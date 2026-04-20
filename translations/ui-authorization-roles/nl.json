@@ -7,6 +7,6 @@
     "columns.updatedDate": "Bijgewerkt op",
     "columns.updatedBy": "Bijgewerkt door",
     "permission.settings.admin": "Instellingen (Autorisatiebeleid): Kan autorisatiebeleid beheren",
-    "authorizationsRoles.duplicate.success": "The role <b>{name}</b> has been successfully <b>duplicated</b>",
-    "authorizationsRoles.duplicate.error": "There was an error while duplicating the role <b>{name}</b>"
+    "authorizationsRoles.duplicate.success": "De Rol <b>{name}</b> is succesvol <b>gedupliceerd</b>.",
+    "authorizationsRoles.duplicate.error": "Er is een fout opgetreden bij het dupliceren van de rol <b>.{name}</b>"
 }

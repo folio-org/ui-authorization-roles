@@ -1,6 +1,6 @@
 {
   "name": "@folio/authorization-roles",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "FOLIO app for Authorization Roles",
   "main": "src/index.js",
   "repository": "folio/ui-authorization-roles",
@@ -50,7 +50,8 @@
         "permissionName": "settings.authorization-roles.enabled",
         "displayName": "Settings (Authorization roles): display list of settings pages",
         "subPermissions": [
-          "settings.enabled"
+          "settings.enabled",
+          "stripes-core.settings.read"
         ]
       },
       {

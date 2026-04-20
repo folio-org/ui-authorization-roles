@@ -1,12 +1,12 @@
 {
-    "meta.title": "Authorization roles",
-    "search": "Search",
-    "new": "New",
-    "columns.name": "Name",
-    "columns.description": "Description",
-    "columns.updatedDate": "Updated",
-    "columns.updatedBy": "Оновлено за",
-    "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles",
-    "authorizationsRoles.duplicate.success": "The role <b>{name}</b> has been successfully <b>duplicated</b>",
-    "authorizationsRoles.duplicate.error": "There was an error while duplicating the role <b>{name}</b>"
+    "meta.title": "Ролі авторизації",
+    "search": "Пошук",
+    "new": "Нове",
+    "columns.name": "Ім'я/Назва",
+    "columns.description": "Опис",
+    "columns.updatedDate": "Оновлено",
+    "columns.updatedBy": "Оновлено (ким)",
+    "permission.settings.admin": "Налаштування (Ролі авторизації): Управління ролями авторизації",
+    "authorizationsRoles.duplicate.success": "Роль <b>{name}</b> успішно <b>здубльовано</b>",
+    "authorizationsRoles.duplicate.error": "Під час дублювання ролі <b>{name}</b> сталася помилка"
 }

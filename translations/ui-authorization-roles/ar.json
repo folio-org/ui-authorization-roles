@@ -1,12 +1,12 @@
 {
-    "meta.title": "Authorization roles",
+    "meta.title": "أدوار التصاريح",
     "search": "Search",
-    "new": "New",
-    "columns.name": "Name",
-    "columns.description": "Description",
-    "columns.updatedDate": "Updated",
-    "columns.updatedBy": "Updated by",
-    "permission.settings.admin": "Settings (Authorization roles): Can manage authorization roles",
-    "authorizationsRoles.duplicate.success": "The role <b>{name}</b> has been successfully <b>duplicated</b>",
-    "authorizationsRoles.duplicate.error": "There was an error while duplicating the role <b>{name}</b>"
+    "new": "جديد",
+    "columns.name": "الاسم",
+    "columns.description": "الوصف",
+    "columns.updatedDate": "تم التحديث",
+    "columns.updatedBy": "تم التحديث بواسطة",
+    "permission.settings.admin": "الإعدادات (أدوار التصاريح): إمكانية إدارة أدوار التصاريح",
+    "authorizationsRoles.duplicate.success": "تم <b>تكرار</b> الدور <b>{name}</b> بنجاح",
+    "authorizationsRoles.duplicate.error": "حدث خطأ أثناء تكرار الدور <b>{name}</b>"
 }
