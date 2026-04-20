@@ -1,5 +1,13 @@
 # Change history for ui-authorization-roles
 
+## [3.0.0](https://github.com/folio-org/ui-authorization-roles/tree/v3.0.0) (2026-04-20)
+[Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v2.0.3...v3.0.0)
+
+* Update `stripes-authorization-components` to v2.1.0
+* Update `stripes` to v10.1.0
+* Update `stripes-erm-components` to v10.1.0
+* Update `stripes-acq-components` to v7.1.0
+
 ## [2.0.3](https://github.com/folio-org/ui-authorization-roles/tree/v2.0.3) (2025-05-13)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v2.0.2...v2.0.3)
 

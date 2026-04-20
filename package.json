@@ -1,6 +1,6 @@
 {
   "name": "@folio/authorization-roles",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "FOLIO app for Authorization Roles",
   "main": "src/index.js",
   "repository": "folio/ui-authorization-roles",
@@ -158,7 +158,7 @@
     "@babel/core": "^7.18.6",
     "@folio/eslint-config-stripes": "^8.0.0",
     "@folio/jest-config-stripes": "^3.0.0",
-    "@folio/stripes": "^10.0.0",
+    "@folio/stripes": "^10.1.0",
     "@folio/stripes-cli": "^4.0.0",
     "@folio/stripes-erm-testing": "^3.0.0",
     "graphql": "^16.0.0",
@@ -179,8 +179,8 @@
   },
   "dependencies": {
     "@folio/plugin-select-application": "^2.0.0",
-    "@folio/stripes-acq-components": "^7.0.0",
-    "@folio/stripes-authorization-components": "^2.0.3",
+    "@folio/stripes-acq-components": "^7.1.0",
+    "@folio/stripes-authorization-components": "^2.1.0",
     "@k-int/stripes-kint-components": "^5.0.0",
     "classnames": "^2.2.6",
     "compose-function": "^3.0.3",
@@ -194,8 +194,8 @@
     "react-final-form-arrays": "^3.1.1"
   },
   "peerDependencies": {
-    "@folio/stripes": "^10.0.0",
-    "@folio/stripes-erm-components": "^10.0.0",
+    "@folio/stripes": "^10.1.0",
+    "@folio/stripes-erm-components": "^10.1.0",
     "moment": "^2.22.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
