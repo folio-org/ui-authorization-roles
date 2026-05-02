@@ -1,8 +1,8 @@
 {
     "meta.title": "Authorization roles",
-    "search": "Search",
-    "new": "New",
-    "columns.name": "Name",
+    "search": "Rechercher",
+    "new": "Nouveau",
+    "columns.name": "Nom",
     "columns.description": "Description",
     "columns.updatedDate": "Mis à jour",
     "columns.updatedBy": "Mis à jour par",
