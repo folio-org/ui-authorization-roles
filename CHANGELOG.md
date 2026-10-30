@@ -1,5 +1,9 @@
 # Change history for ui-authorization-roles
 
+## IN PROGRESS
+
+* Remove the "+" sign in front of the word "New". Refs UIROLES-203.
+
 ## [3.0.0](https://github.com/folio-org/ui-authorization-roles/tree/v3.0.0) (2026-04-20)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v2.0.3...v3.0.0)
 
