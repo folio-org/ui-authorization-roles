@@ -1,5 +1,9 @@
 # Change history for ui-authorization-roles
 
+## 3.1.0 IN-PROGRESS
+
+* Role listing pane - assign `id` prop and set `defaultWidth` to 'fill'. Refs UIROLES-205.
+
 ## [3.0.0](https://github.com/folio-org/ui-authorization-roles/tree/v3.0.0) (2026-04-20)
 [Full Changelog](https://github.com/folio-org/ui-authorization-roles/compare/v2.0.3...v3.0.0)
 
