@@ -100,7 +100,8 @@ const SettingsPage = ({ path }) => {
   return (
     <Paneset>
       <Pane
-        defaultWidth="100"
+        defaultWidth="fill"
+        id="settings-system-roles-list"
         fluidContentWidth
         renderHeader={() => (
           <PaneHeader
@@ -136,14 +137,14 @@ const SettingsPage = ({ path }) => {
         />
       </Pane>
       {roleId && (
-      <IfPermission perm="ui-authorization-roles.settings.view">
-        <RoleDetails
-          isLoading={isDuplicating}
-          onDuplicate={onDuplicate}
-          path={path}
-          roleId={roleId}
-        />
-      </IfPermission>
+        <IfPermission perm="ui-authorization-roles.settings.view">
+          <RoleDetails
+            isLoading={isDuplicating}
+            onDuplicate={onDuplicate}
+            path={path}
+            roleId={roleId}
+          />
+        </IfPermission>
       )}
     </Paneset>
   );
