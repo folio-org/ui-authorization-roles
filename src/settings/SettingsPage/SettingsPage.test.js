@@ -66,7 +66,7 @@ describe('SettingsPage', () => {
     }));
     const { getByText, getAllByRole, getByTestId } = renderComponent();
 
-    expect(getByText('+ ui-authorization-roles.new')).toBeInTheDocument();
+    expect(getByText('ui-authorization-roles.new')).toBeInTheDocument();
     expect(getByTestId('search-field')).toBeInTheDocument();
 
     expect(getAllByRole('gridcell')).toHaveLength(4);

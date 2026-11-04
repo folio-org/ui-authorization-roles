@@ -76,7 +76,7 @@ const SettingsPage = ({ path }) => {
           buttonStyle="primary"
           marginBottom0
         >
-          + <FormattedMessage id="ui-authorization-roles.new" />
+          <FormattedMessage id="ui-authorization-roles.new" />
         </Button>
       </PaneMenu>
     </IfPermission>
